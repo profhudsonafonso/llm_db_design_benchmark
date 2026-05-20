@@ -1,0 +1,180 @@
+schema_metadata:
+  schema_id: ""
+  dataset_name: ""
+  dataset_complexity: ""        # low | medium | high
+  version: "0.1"
+  created_by: ""
+  reviewed_by: ""
+  creation_date: ""
+  source_description: ""
+  source_files_or_tables: []
+  notes: ""
+
+model_scope:
+  included_entities: []
+  excluded_entities: []
+  inclusion_criteria: ""
+  exclusion_criteria: ""
+
+representation:
+  language: "EER-YAML"
+  mermaid_available: false
+  mermaid_file: null
+  description: "Expert-defined textual EER model used as controlled input for LLMs."
+
+entities:
+  - id: "E001"
+    name: ""
+    entity_type: "regular"      # regular | weak | associative | abstract
+    description: ""
+    source_artifacts: []        # source tables, files, collections, or documentation
+    aliases: []
+
+    identifiers:
+      primary:
+        name: ""
+        attributes: []
+        identifier_type: ""     # natural | surrogate | composite | partial | unknown
+      candidates: []
+      alternate_keys: []
+
+    attributes:
+      - name: ""
+        description: ""
+        data_type: ""           # string | integer | float | boolean | date | datetime | text | json | unknown
+        required: true
+        nullable: false
+        attribute_kind: "simple" # simple | composite | multivalued | derived
+        components: []          # for composite attributes
+        cardinality:
+          min: 1
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: false
+        source_field: ""
+        notes: ""
+
+    weak_entity:
+      is_weak: false
+      owner_entities: []
+      identifying_relationship: null
+      partial_key: []
+      notes: ""
+
+relationships:
+  - id: "R001"
+    name: ""
+    relationship_type: "association"  # association | identifying | aggregation | composition | recursive | n_ary
+    arity: 2                          # 1 for recursive unary, 2 for binary, 3 for ternary, etc.
+    description: ""
+    source_artifacts: []
+    aliases: []
+
+    participants:
+      - entity: ""
+        role: ""
+        cardinality:
+          min: 0
+          max: "many"                 # use integer or many
+        participation: "optional"      # optional | mandatory
+        identifying: false
+        notes: ""
+
+      - entity: ""
+        role: ""
+        cardinality:
+          min: 0
+          max: "many"
+        participation: "optional"
+        identifying: false
+        notes: ""
+
+    relationship_attributes:
+      - name: ""
+        description: ""
+        data_type: ""
+        required: false
+        nullable: true
+        attribute_kind: "simple"       # simple | composite | multivalued | derived
+        components: []
+        source_field: ""
+        notes: ""
+
+    constraints:
+      cardinality_class: ""            # one_to_one | one_to_many | many_to_many | n_ary | recursive
+      is_functional: false
+      functional_from: null
+      functional_to: null
+      requires_relationship_table: null # true | false | null when undecided
+      notes: ""
+
+specializations:
+  - id: "S001"
+    name: ""
+    supertype: ""
+    subtypes:
+      - entity: ""
+        predicate: null
+        notes: ""
+    completeness: "unknown"            # total | partial | unknown
+    disjointness: "unknown"            # disjoint | overlapping | unknown
+    inheritance_type: "single"         # single | multiple
+    is_supertype_abstract: false
+    notes: ""
+
+global_constraints:
+  key_constraints:
+    - id: "KC001"
+      applies_to: ""                   # entity or relationship
+      attributes: []
+      constraint_type: "primary"        # primary | candidate | unique | composite | partial
+      notes: ""
+
+  participation_constraints:
+    - id: "PC001"
+      entity: ""
+      relationship: ""
+      min: 0
+      max: "many"
+      mandatory: false
+      notes: ""
+
+  cardinality_constraints:
+    - id: "CC001"
+      relationship: ""
+      description: ""
+      notes: ""
+
+  inclusion_constraints:
+    - id: "IC001"
+      description: ""
+      notes: ""
+
+  exclusion_constraints:
+    - id: "EC001"
+      description: ""
+      notes: ""
+
+  business_rules:
+    - id: "BR001"
+      description: ""
+      affects_mapping: false
+      notes: ""
+
+complexity_metadata:
+  number_of_entities: null
+  number_of_relationships: null
+  number_of_attributes: null
+  number_of_specializations: null
+  number_of_weak_entities: null
+  number_of_multivalued_attributes: null
+  number_of_relationship_attributes: null
+  estimated_schema_complexity: ""       # low | medium | high
+  notes: ""
+
+expert_notes:
+  assumptions: []
+  ambiguities: []
+  mapping_relevant_observations: []
+  excluded_details: []

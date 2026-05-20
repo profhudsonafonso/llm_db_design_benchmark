@@ -1,0 +1,135 @@
+{
+  "schema_metadata": {
+    "schema_id": "",
+    "dataset_name": "",
+    "dataset_complexity": "",
+    "target_model": "relational",
+    "version": "0.1",
+    "created_by": "",
+    "reviewed_by": "",
+    "creation_date": "",
+    "notes": ""
+  },
+  "tables": [
+    {
+      "name": "",
+      "description": "",
+      "origin": {
+        "conceptual_elements": [],
+        "mapping_rule": "",
+        "notes": ""
+      },
+      "columns": [
+        {
+          "name": "",
+          "data_type": "",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "",
+          "source_conceptual_entity": "",
+          "notes": ""
+        }
+      ],
+      "primary_key": {
+        "name": "",
+        "columns": []
+      },
+      "candidate_keys": [
+        {
+          "name": "",
+          "columns": []
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "",
+          "columns": [],
+          "referenced_table": "",
+          "referenced_columns": [],
+          "source_relationship": "",
+          "mandatory": false,
+          "nullable": true,
+          "on_delete": "not_specified",
+          "on_update": "not_specified",
+          "notes": ""
+        }
+      ],
+      "unique_constraints": [
+        {
+          "name": "",
+          "columns": []
+        }
+      ],
+      "check_constraints": [
+        {
+          "name": "",
+          "expression": "",
+          "notes": ""
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "relationship_tables": [
+    {
+      "table_name": "",
+      "source_relationship": "",
+      "relationship_type": "",
+      "participating_entities": [],
+      "primary_key": [],
+      "foreign_keys": [
+        {
+          "columns": [],
+          "referenced_table": "",
+          "referenced_columns": []
+        }
+      ],
+      "relationship_attributes": [],
+      "notes": ""
+    }
+  ],
+  "specialization_mapping": [
+    {
+      "specialization_id": "",
+      "supertype": "",
+      "subtypes": [],
+      "strategy": "",
+      "allowed_values": [
+        "single_table_inheritance",
+        "class_table_inheritance",
+        "concrete_table_inheritance",
+        "not_applicable"
+      ],
+      "tables": [],
+      "discriminator_column": null,
+      "notes": ""
+    }
+  ],
+  "mapping_decisions": [
+    {
+      "id": "MD001",
+      "conceptual_element": "",
+      "decision": "",
+      "reason": "",
+      "affected_tables": [],
+      "notes": ""
+    }
+  ],
+  "evaluation_units": {
+    "entities_expected": [],
+    "attributes_expected": [],
+    "primary_keys_expected": [],
+    "foreign_keys_expected": [],
+    "relationship_tables_expected": [],
+    "specialization_mappings_expected": []
+  },
+  "expert_notes": {
+    "assumptions": [],
+    "ambiguities": [],
+    "alternative_valid_mappings": [],
+    "excluded_details": []
+  }
+}
