@@ -240,6 +240,22 @@ The evaluated schema components include:
 - relationship tables;
 - specialization/generalization mapping, when present.
 
+
+## Experimental Conditions
+
+The benchmark evaluates four experimental conditions.
+
+| Condition | Name | Description |
+|---|---|---|
+| C1 | Basic generation | The LLM receives the textual EER input and directly generates the relational JSON schema |
+| C2 | Rule-augmented generation | The LLM receives the textual EER input plus explicit EER-to-relational mapping rules |
+| C3 | Self-check generation | The LLM generates the schema, reviews its own output, and returns a final corrected JSON |
+| C4 | Validation-guided repair | The LLM first generates a relational JSON; a deterministic validator reports errors; the LLM then repairs the output using the validation report |
+
+The C4 condition is a lightweight hybrid strategy. It does not use fine-tuning, GNNs, or a complex multi-agent architecture. Instead, it combines LLM generation with deterministic validation and repair.
+
+This allows the benchmark to measure not only the initial quality of LLM-generated schemas, but also whether LLMs can correct their own outputs when given structured feedback.
+
 ## Prompting Strategies
 
 The benchmark currently considers three prompt types.
