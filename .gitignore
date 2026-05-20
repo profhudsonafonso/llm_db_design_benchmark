@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Virtual environments
+.env
+.venv/
+venv/
+env/
+
+# API keys and secrets
+*.key
+secrets/
+config/private_config.yaml
+
+# Large raw datasets
+data_raw/
+raw_data/
+datasets_raw/
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Temporary files
+tmp/
+temp/
+logs/
+
+# Large generated database files
+*.duckdb
+*.db
+*.sqlite
+*.parquet
+
+# Operating system files
+.DS_Store
+Thumbs.db
