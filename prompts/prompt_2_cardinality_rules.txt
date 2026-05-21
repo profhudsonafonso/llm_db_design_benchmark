@@ -1,0 +1,104 @@
+You are assisting with a conceptual-to-logical database design task.
+
+You will receive a textual EER schema.
+
+Your task is to generate a logical relational schema in JSON format using explicit EER-to-relational mapping rules.
+
+Input:
+- A textual EER schema describing entities, attributes, identifiers, relationships, cardinalities, weak entities, relationship attributes, and specialization/generalization when applicable.
+- A required relational JSON output format.
+- Mapping rules for transforming EER constructs into relational structures.
+
+General output rules:
+- Return only valid JSON.
+- Do not include Markdown code fences.
+- Do not include explanations outside the JSON.
+- Use only information supported by the EER input.
+- Do not invent unsupported schema elements.
+- Preserve names consistently whenever possible.
+- Every table must have a primary key.
+- Every foreign key must reference an existing table and existing columns.
+
+EER-to-relational mapping rules:
+
+1. Regular entities
+- Map each regular entity to one table.
+- Map simple attributes to columns.
+- Map the entity identifier to the table primary key.
+- Candidate identifiers may be mapped as unique constraints.
+
+2. Composite attributes
+- Prefer mapping each component of a composite attribute as a separate column.
+- Do not create a column for the composite attribute itself unless the EER input explicitly requires it.
+
+3. Multivalued attributes
+- Map each multivalued attribute to a separate table.
+- The new table must include the owner entity primary key as a foreign key.
+- The primary key should usually combine the owner key and the multivalued attribute value, unless the EER input indicates another identifier.
+
+4. Derived attributes
+- Do not map derived attributes as stored columns unless the EER input explicitly says they must be stored.
+- If omitted, record the decision in the notes field.
+
+5. Weak entities
+- Map each weak entity to its own table.
+- Include the owner entity primary key as a foreign key.
+- The weak entity primary key should combine the owner key and the weak entity partial key.
+- Preserve the identifying relationship in the mapping notes.
+
+6. Binary one-to-one relationships
+- Prefer a foreign key rather than a separate relationship table when the relationship has no attributes.
+- Place the foreign key in the table with mandatory participation when only one side is mandatory.
+- If both sides are mandatory, place the foreign key in the semantically dependent entity when clear.
+- If neither side is clearly dependent, create a relationship table to avoid an arbitrary choice.
+- If the relationship has attributes, create a relationship table unless the EER input clearly supports placing the attributes in one entity table.
+
+7. Binary one-to-many relationships
+- Place the foreign key in the table on the side whose maximum participation toward the other side is one.
+- The foreign key is NOT NULL when participation is mandatory.
+- The foreign key is nullable when participation is optional.
+- If the relationship has attributes, place them in the table containing the foreign key when this preserves the relationship semantics.
+- If the relationship attributes cannot be safely placed on one side, create a relationship table.
+
+8. Binary many-to-many relationships
+- Create a relationship table.
+- Include foreign keys to both participating entity tables.
+- The primary key should usually be the combination of the participating foreign keys, unless the EER input specifies another identifier.
+- Include relationship attributes as columns in the relationship table.
+
+9. Ternary and n-ary relationships
+- Create a relationship table.
+- Include foreign keys to all participating entities.
+- Include relationship attributes as columns.
+- Define the primary key according to the EER semantics and documented cardinalities.
+
+10. Recursive relationships
+- Preserve role names.
+- For recursive one-to-many relationships, use a self-referencing foreign key when appropriate.
+- For recursive many-to-many relationships, create a relationship table with separate role-based foreign keys.
+- Do not collapse role names if they express different semantics.
+
+11. Specialization and generalization
+- Unless the EER input explicitly requires another strategy, use class-table inheritance.
+- Create one table for the supertype.
+- Create one table for each subtype.
+- Each subtype table must use the supertype primary key as both primary key and foreign key.
+- Record completeness and disjointness constraints in the notes or constraints fields.
+- Use a discriminator only when the EER input or mapping notes require single-table inheritance.
+
+12. Associative entities
+- Map each associative entity to a table.
+- Include its own attributes.
+- Include foreign keys to the related entity tables.
+- Define the primary key using the associative entity identifier or the combination of participating foreign keys.
+
+13. Constraints
+- Map mandatory participation to NOT NULL foreign keys when the FK is placed in a table.
+- Map uniqueness constraints where required by one-to-one relationships or candidate identifiers.
+- Record constraints that cannot be directly represented in the logical JSON in the notes field.
+
+Textual EER schema:
+{{EER_INPUT_TEXT}}
+
+Required output format:
+{{OUTPUT_FORMAT_SPEC}}

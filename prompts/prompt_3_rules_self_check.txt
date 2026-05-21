@@ -1,0 +1,61 @@
+You are assisting with a conceptual-to-logical database design task.
+
+You will receive a textual EER schema.
+
+Your task is to generate a logical relational schema in JSON format using explicit EER-to-relational mapping rules and an internal self-check step.
+
+Input:
+- A textual EER schema.
+- A required relational JSON output format.
+- Explicit EER-to-relational mapping rules.
+
+Task:
+Generate the relational JSON schema and internally review it before returning the final answer.
+
+Do not show your self-check reasoning.
+Return only the final corrected JSON.
+
+Mapping rules:
+- Map each regular entity to a table.
+- Map simple attributes to columns.
+- Map primary identifiers to primary keys.
+- Map candidate identifiers to unique constraints when appropriate.
+- Map multivalued attributes to separate tables.
+- Map weak entities using owner keys and partial keys.
+- Map one-to-many relationships using a foreign key on the appropriate side.
+- Map many-to-many relationships using relationship tables.
+- Map ternary and n-ary relationships using relationship tables.
+- Preserve recursive relationship role names.
+- Map relationship attributes to the relationship table or the table containing the relationship foreign key, according to the relationship type.
+- Map specialization/generalization using class-table inheritance unless the EER input explicitly requires another strategy.
+- Do not invent unsupported schema elements.
+
+Internal self-check:
+Before returning the final JSON, silently verify:
+
+1. Did every EER entity become a table or part of a documented inheritance mapping?
+2. Did every expected attribute become a column or a documented derived/omitted attribute?
+3. Does every table have a primary key?
+4. Are all primary keys represented as lists of columns?
+5. Are all foreign keys valid and do they reference existing tables and columns?
+6. Are one-to-many relationships mapped with the foreign key on the correct side?
+7. Are many-to-many relationships mapped as relationship tables?
+8. Are relationship attributes preserved?
+9. Are weak entities mapped with owner keys and partial keys?
+10. Are specialization/generalization structures mapped consistently?
+11. Are mandatory participations reflected as non-nullable foreign keys when applicable?
+12. Is the final answer valid JSON?
+13. Does the output avoid hallucinated entities, attributes, keys, and relationships?
+
+Output rules:
+- Return only valid JSON.
+- Do not include Markdown code fences.
+- Do not include explanations outside the JSON.
+- Do not include the self-check notes.
+- Do not include comments.
+
+Textual EER schema:
+{{EER_INPUT_TEXT}}
+
+Required output format:
+{{OUTPUT_FORMAT_SPEC}}

@@ -1,0 +1,34 @@
+You are assisting with a conceptual-to-logical database design task.
+
+You will receive a textual EER schema.
+
+Your task is to generate a logical relational schema in JSON format.
+
+Input:
+- A textual EER schema describing entities, attributes, identifiers, relationships, cardinalities, weak entities, relationship attributes, and specialization/generalization when applicable.
+- A required relational JSON output format.
+
+Task:
+Transform the textual EER schema into a logical relational schema.
+
+Important rules:
+- Use only information supported by the EER input.
+- Do not invent entities, attributes, primary keys, foreign keys, relationships, or constraints.
+- Preserve names consistently whenever possible.
+- Every table must have a primary key.
+- Foreign keys must reference existing tables and existing columns.
+- Relationship tables must be created when necessary.
+- If specialization/generalization exists, represent it using a clear relational mapping.
+- If an element is ambiguous, record the ambiguity in the notes field instead of inventing information.
+- Return only valid JSON.
+- Do not include Markdown code fences.
+- Do not include explanations outside the JSON.
+
+Expected output:
+A JSON object following the relational schema format defined in the benchmark.
+
+Textual EER schema:
+{{EER_INPUT_TEXT}}
+
+Required output format:
+{{OUTPUT_FORMAT_SPEC}}
