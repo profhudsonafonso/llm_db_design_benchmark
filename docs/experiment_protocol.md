@@ -222,6 +222,19 @@ The C4 workflow is:
 
 The validator does not replace the expert gold standard. It only produces structured feedback for the repair step.
 
+## Prompt Template Implementation
+
+The four experimental conditions are implemented as separate prompt templates.
+
+| Condition | Prompt file | Status |
+|---|---|---|
+| C1 | prompts/prompt_1_basic.txt | created |
+| C2 | prompts/prompt_2_cardinality_rules.txt | created |
+| C3 | prompts/prompt_3_rules_self_check.txt | created |
+| C4 | prompts/prompt_4_validation_guided_repair.txt | created |
+
+The detailed prompt design is documented in `docs/prompt_design.md`.
+
 ## 10. Models
 
 The benchmark can evaluate different LLMs, including commercial APIs and local text-only models.

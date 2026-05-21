@@ -8,130 +8,138 @@ The benchmark evaluates how Large Language Models support conceptual-to-logical 
 
 The benchmark uses four experimental conditions.
 
-| Condition | Name | Description |
-|---|---|---|
-| C1 | Basic generation | The LLM receives only the textual EER input and generates the relational JSON schema directly. |
-| C2 | Rule-augmented generation | The LLM receives the textual EER input plus explicit EER-to-relational mapping rules. |
-| C3 | Self-check generation | The LLM generates the schema, checks its own output, and returns a final corrected JSON. |
-| C4 | Validation-guided repair | The LLM first generates a relational JSON; a deterministic validator reports errors; the LLM then repairs the output using the validation report. |
+| Condition | Name | Prompt file | Description |
+|---|---|---|---|
+| C1 | Basic generation | prompts/prompt_1_basic.txt | The LLM receives only the textual EER input and generates the relational JSON schema directly. |
+| C2 | Rule-augmented generation | prompts/prompt_2_cardinality_rules.txt | The LLM receives the textual EER input plus explicit EER-to-relational mapping rules. |
+| C3 | Self-check generation | prompts/prompt_3_rules_self_check.txt | The LLM generates the schema, checks its own output, and returns a final corrected JSON. |
+| C4 | Validation-guided repair | prompts/prompt_4_validation_guided_repair.txt | The LLM first generates a relational JSON; a deterministic validator reports errors; the LLM then repairs the output using the validation report. |
 
 ## C1 — Basic Generation
 
-In C1, the model receives the EER input and the required JSON output format.
+C1 is the direct baseline.
+
+The model receives:
+
+- the textual EER schema;
+- the required relational JSON output format.
 
 This condition evaluates the model's direct ability to perform conceptual-to-logical schema mapping without explicit mapping rules.
 
-Expected input:
-
-- textual EER schema;
-- required relational JSON output format.
-
-Expected output:
-
-- relational schema in valid JSON.
+The prompt is based on the previous basic extraction prompt used in the earlier version of the study, but it no longer uses image input. The new input is the textual EER representation.
 
 ## C2 — Rule-Augmented Generation
 
-In C2, the model receives the EER input, the required output format, and explicit EER-to-relational mapping rules.
+C2 is the rule-based condition.
 
-This condition evaluates whether explicit design rules improve the generation of:
+The model receives:
 
-- tables;
-- attributes;
-- primary keys;
-- foreign keys;
-- relationship tables;
-- inheritance mappings.
+- the textual EER schema;
+- the required relational JSON output format;
+- explicit EER-to-relational mapping rules.
+
+The rules cover:
+
+- regular entities;
+- composite attributes;
+- multivalued attributes;
+- derived attributes;
+- weak entities;
+- one-to-one relationships;
+- one-to-many relationships;
+- many-to-many relationships;
+- ternary and n-ary relationships;
+- recursive relationships;
+- specialization and generalization;
+- associative entities;
+- mandatory participation and nullable foreign keys.
+
+This condition extends the previous cardinality-aware prompt from the earlier article. The new version is more complete because it uses the richer EER-YAML representation instead of image-based ERD input.
 
 ## C3 — Self-Check Generation
 
-In C3, the model receives the same information as C2, but it is also instructed to review its own output before returning the final JSON.
+C3 extends C2 with an internal self-check step.
 
-The model must check whether:
+The model is instructed to silently verify whether:
 
-- all entities were mapped;
-- all attributes were included;
-- all primary keys were defined;
-- all expected foreign keys were created;
-- relationship cardinalities were respected;
-- specialization/generalization was handled correctly;
-- the final answer is valid JSON.
+- every EER entity was mapped;
+- every expected attribute was included;
+- every table has a primary key;
+- all primary keys are represented as lists of columns;
+- all foreign keys reference existing tables and columns;
+- one-to-many relationships are mapped with the foreign key on the correct side;
+- many-to-many relationships are mapped as relationship tables;
+- relationship attributes are preserved;
+- weak entities are mapped with owner keys and partial keys;
+- specialization/generalization structures are mapped consistently;
+- mandatory participation is reflected as non-nullable foreign keys when applicable;
+- the final answer is valid JSON;
+- the output avoids hallucinated schema elements.
 
-The model must return only the final JSON.
+The model must return only the final JSON. It must not return the self-check reasoning.
 
 ## C4 — Validation-Guided Repair
 
-In C4, the model receives three inputs:
+C4 is a lightweight hybrid condition.
+
+The model receives:
 
 1. the original textual EER schema;
-2. its previous generated relational JSON;
-3. a deterministic validation report.
+2. a previous relational JSON generated by an LLM;
+3. a deterministic validation report;
+4. the required relational JSON output format.
 
-The validation report identifies problems such as:
+The model must repair the previous output using the validation report.
 
-- invalid JSON;
-- missing tables;
-- missing attributes;
-- missing primary keys;
-- missing foreign keys;
-- wrong foreign key targets;
-- wrong relationship tables;
-- cardinality mapping errors;
-- specialization mapping errors;
-- hallucinated elements.
+The repair prompt instructs the model to:
 
-The model must repair only the reported errors and return a corrected relational JSON.
+- preserve correct parts of the previous output;
+- fix reported errors;
+- use the original EER input as the source of truth;
+- avoid inventing unsupported elements;
+- ensure that every table has a primary key;
+- ensure that every foreign key references valid tables and columns;
+- ensure that relationship tables are created when required;
+- return only valid JSON.
 
-This condition evaluates whether structured feedback helps the model improve its output.
-
-## Prompt Files
-
-The prompt files are stored in the `prompts/` folder.
-
-Expected files:
-
-- `prompts/prompt_1_basic.txt`
-- `prompts/prompt_2_cardinality_rules.txt`
-- `prompts/prompt_3_rules_self_check.txt`
-- `prompts/prompt_4_validation_guided_repair.txt`
+C4 does not use fine-tuning, GNNs, RAG, or a complex multi-agent architecture. It evaluates whether deterministic validation feedback can help LLMs improve their own outputs.
 
 ## General Output Rules
 
-For all prompting conditions, the model must:
+For all conditions, the model must:
 
 - return only valid JSON;
-- avoid explanations outside the JSON;
 - avoid Markdown code fences;
+- avoid explanations outside the JSON;
+- avoid comments;
 - preserve names consistently;
-- not invent unsupported entities, attributes, keys, or relationships;
+- not invent unsupported entities, attributes, keys, relationships, or constraints;
 - follow the required relational output format.
 
-## Relation to the Evaluation Protocol
+## Related Files
 
-The four prompting conditions are evaluated using the same ground truth files:
+Prompt files:
 
-- `datasets/<dataset>/ground_truth/conceptual_eer.yaml`
-- `datasets/<dataset>/ground_truth/logical_relational_gold.json`
+- prompts/prompt_1_basic.txt
+- prompts/prompt_2_cardinality_rules.txt
+- prompts/prompt_3_rules_self_check.txt
+- prompts/prompt_4_validation_guided_repair.txt
 
-The conceptual EER file is used to generate the LLM input.
+Related documentation:
 
-The logical relational gold file is used only for evaluation.
+- docs/experiment_protocol.md
+- docs/llm_output_format.md
+- docs/validator_report_format.md
+- docs/error_taxonomy.md
+- docs/scoring_metrics.md
 
-## Relation to C4 Validation-Guided Repair
+Ground truth files:
 
-The C4 condition depends on the deterministic validator and the validation report format.
-
-Related files:
-
-- `docs/validator_report_format.md`
-- `docs/error_taxonomy.md`
-- `docs/llm_output_format.md`
-- `scripts/validation_report.py`
-
-The validator does not replace the expert ground truth. It only produces structured feedback to guide the LLM repair step.
+- datasets/<dataset>/ground_truth/conceptual_eer.yaml
+- datasets/<dataset>/ground_truth/logical_relational_gold.json
 
 ## Current Status
 
-This document defines the prompt design protocol.
+The C1-C4 prompt templates have been created.
 
-The detailed prompt templates are maintained separately in the `prompts/` folder.
+The next step is to define the scoring metrics and implement the normalization/evaluation scripts.

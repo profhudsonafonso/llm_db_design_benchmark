@@ -283,6 +283,19 @@ The benchmark currently considers three prompt types.
 | Prompt 2 | Schema extraction with cardinality mapping rules |
 | Prompt 3 | Schema extraction with cardinality rules and self-check validation |
 
+## Prompt Templates
+
+The benchmark uses four prompt templates corresponding to the four experimental conditions.
+
+| Condition | Prompt file | Purpose |
+|---|---|---|
+| C1 | prompts/prompt_1_basic.txt | Direct conceptual-to-logical generation without explicit mapping rules |
+| C2 | prompts/prompt_2_cardinality_rules.txt | Generation with explicit EER-to-relational mapping rules |
+| C3 | prompts/prompt_3_rules_self_check.txt | Generation with mapping rules and internal self-check |
+| C4 | prompts/prompt_4_validation_guided_repair.txt | Repair of a previous LLM output using a deterministic validation report |
+
+The prompt design is documented in `docs/prompt_design.md`.
+
 ## Evaluation Metrics
 
 The evaluation compares the LLM-generated logical schema against the expert-defined logical ground truth.
