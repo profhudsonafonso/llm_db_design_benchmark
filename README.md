@@ -219,6 +219,23 @@ paper_material/
 └── text_blocks/
 ```
 
+
+## Experimental Protocol
+
+The full experimental protocol is documented in `docs/experiment_protocol.md`.
+
+It defines:
+
+- the benchmark goal;
+- the datasets and complexity levels;
+- the expert ground truth strategy;
+- the four experimental conditions C1-C4;
+- the validation-guided repair workflow;
+- the evaluation components;
+- the metrics;
+- the error taxonomy;
+- the reproducibility requirements.
+
 ## Experiment Conditions
 
 The experiments compare:
