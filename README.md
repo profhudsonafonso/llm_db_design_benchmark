@@ -460,3 +460,29 @@ The next step is to define the official format for:
 conceptual_eer.yaml
 logical_relational_gold.json
 ```
+
+## Toy Example
+
+The repository includes a synthetic toy example used to test the benchmark pipeline before running experiments on the real datasets.
+
+Location:
+
+- `datasets/toy_example/`
+
+The toy example includes:
+
+- a conceptual EER ground truth;
+- a logical relational gold standard;
+- a prompt-ready EER input;
+- an example raw LLM output;
+- a discretionary one-to-one mapping with an acceptable alternative;
+- a relationship table naming mismatch used to test similarity/structure-aware evaluation.
+
+The example raw output is stored in:
+
+- `llm_outputs/toy_example/gpt_c1_raw.txt`
+
+The toy example can be normalized with:
+
+`python scripts/normalize_output.py --input llm_outputs/toy_example/gpt_c1_raw.txt --dataset toy_example --model gpt --condition C1 --prompt-file prompts/prompt_1_basic.txt --input-eer-file datasets/toy_example/prompt_inputs/eer_input_text.md`
+

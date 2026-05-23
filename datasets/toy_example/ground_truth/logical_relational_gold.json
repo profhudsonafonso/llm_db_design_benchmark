@@ -1,0 +1,525 @@
+{
+  "schema_metadata": {
+    "schema_id": "toy_example_v1",
+    "dataset_name": "toy_example",
+    "dataset_complexity": "low",
+    "target_model": "relational",
+    "version": "0.2",
+    "created_by": "benchmark_team",
+    "reviewed_by": "benchmark_team",
+    "creation_date": "2026-05-20",
+    "notes": "Preferred logical schema for the toy example."
+  },
+  "tables": [
+    {
+      "name": "Customer",
+      "description": "Customer table.",
+      "origin": {
+        "conceptual_elements": ["E001"],
+        "mapping_rule": "regular_entity_to_table",
+        "is_preferred_mapping": true,
+        "alternative_group_id": null,
+        "notes": ""
+      },
+      "columns": [
+        {
+          "name": "customer_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "is_unique": true,
+          "source_conceptual_attribute": "customer_id",
+          "source_conceptual_entity": "Customer",
+          "notes": ""
+        },
+        {
+          "name": "name",
+          "data_type": "string",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "name",
+          "source_conceptual_entity": "Customer",
+          "notes": ""
+        },
+        {
+          "name": "email",
+          "data_type": "string",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": true,
+          "source_conceptual_attribute": "email",
+          "source_conceptual_entity": "Customer",
+          "notes": ""
+        }
+      ],
+      "primary_key": {
+        "name": "CustomerPK",
+        "columns": ["customer_id"]
+      },
+      "candidate_keys": [
+        {
+          "name": "CustomerEmailUK",
+          "columns": ["email"]
+        }
+      ],
+      "foreign_keys": [],
+      "unique_constraints": [
+        {
+          "name": "CustomerEmailUK",
+          "columns": ["email"]
+        }
+      ],
+      "check_constraints": [],
+      "notes": ""
+    },
+    {
+      "name": "CustomerProfile",
+      "description": "Optional profile table for Customer.",
+      "origin": {
+        "conceptual_elements": ["E002", "R003"],
+        "mapping_rule": "one_to_one_separate_table_with_shared_primary_key",
+        "is_preferred_mapping": true,
+        "alternative_group_id": "ALT_R003",
+        "notes": "Preferred mapping keeps profile data in a separate table."
+      },
+      "columns": [
+        {
+          "name": "customer_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": true,
+          "is_unique": true,
+          "source_conceptual_attribute": "customer_id",
+          "source_conceptual_entity": "Customer",
+          "notes": "Shared PK and FK to Customer."
+        },
+        {
+          "name": "bio",
+          "data_type": "text",
+          "nullable": true,
+          "required": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "bio",
+          "source_conceptual_entity": "CustomerProfile",
+          "notes": ""
+        },
+        {
+          "name": "birth_date",
+          "data_type": "date",
+          "nullable": true,
+          "required": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "birth_date",
+          "source_conceptual_entity": "CustomerProfile",
+          "notes": ""
+        }
+      ],
+      "primary_key": {
+        "name": "CustomerProfilePK",
+        "columns": ["customer_id"]
+      },
+      "candidate_keys": [],
+      "foreign_keys": [
+        {
+          "name": "CustomerProfileCustomerFK",
+          "columns": ["customer_id"],
+          "referenced_table": "Customer",
+          "referenced_columns": ["customer_id"],
+          "source_relationship": "CustomerHasProfile",
+          "mandatory": true,
+          "nullable": false,
+          "on_delete": "not_specified",
+          "on_update": "not_specified",
+          "notes": ""
+        }
+      ],
+      "unique_constraints": [],
+      "check_constraints": [],
+      "notes": ""
+    },
+    {
+      "name": "Order",
+      "description": "Order table.",
+      "origin": {
+        "conceptual_elements": ["E003", "R001"],
+        "mapping_rule": "regular_entity_to_table_with_foreign_key",
+        "is_preferred_mapping": true,
+        "alternative_group_id": null,
+        "notes": "CustomerPlacesOrder is mapped with customer_id FK in Order."
+      },
+      "columns": [
+        {
+          "name": "order_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "is_unique": true,
+          "source_conceptual_attribute": "order_id",
+          "source_conceptual_entity": "Order",
+          "notes": ""
+        },
+        {
+          "name": "order_date",
+          "data_type": "date",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "order_date",
+          "source_conceptual_entity": "Order",
+          "notes": ""
+        },
+        {
+          "name": "customer_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "is_unique": false,
+          "source_conceptual_attribute": "customer_id",
+          "source_conceptual_entity": "Customer",
+          "notes": "FK produced by CustomerPlacesOrder."
+        }
+      ],
+      "primary_key": {
+        "name": "OrderPK",
+        "columns": ["order_id"]
+      },
+      "candidate_keys": [],
+      "foreign_keys": [
+        {
+          "name": "OrderCustomerFK",
+          "columns": ["customer_id"],
+          "referenced_table": "Customer",
+          "referenced_columns": ["customer_id"],
+          "source_relationship": "CustomerPlacesOrder",
+          "mandatory": true,
+          "nullable": false,
+          "on_delete": "not_specified",
+          "on_update": "not_specified",
+          "notes": ""
+        }
+      ],
+      "unique_constraints": [],
+      "check_constraints": [],
+      "notes": ""
+    },
+    {
+      "name": "Product",
+      "description": "Product table.",
+      "origin": {
+        "conceptual_elements": ["E004"],
+        "mapping_rule": "regular_entity_to_table",
+        "is_preferred_mapping": true,
+        "alternative_group_id": null,
+        "notes": ""
+      },
+      "columns": [
+        {
+          "name": "product_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "is_unique": true,
+          "source_conceptual_attribute": "product_id",
+          "source_conceptual_entity": "Product",
+          "notes": ""
+        },
+        {
+          "name": "product_name",
+          "data_type": "string",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "product_name",
+          "source_conceptual_entity": "Product",
+          "notes": ""
+        },
+        {
+          "name": "price",
+          "data_type": "float",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "price",
+          "source_conceptual_entity": "Product",
+          "notes": ""
+        }
+      ],
+      "primary_key": {
+        "name": "ProductPK",
+        "columns": ["product_id"]
+      },
+      "candidate_keys": [],
+      "foreign_keys": [],
+      "unique_constraints": [],
+      "check_constraints": [],
+      "notes": ""
+    },
+    {
+      "name": "OrderProduct",
+      "description": "Relationship table for OrderContainsProduct.",
+      "origin": {
+        "conceptual_elements": ["R002"],
+        "mapping_rule": "many_to_many_relationship_table",
+        "is_preferred_mapping": true,
+        "alternative_group_id": null,
+        "notes": "Required because R002 is many-to-many and has relationship attribute quantity."
+      },
+      "columns": [
+        {
+          "name": "order_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": true,
+          "is_unique": false,
+          "source_conceptual_attribute": "order_id",
+          "source_conceptual_entity": "Order",
+          "notes": ""
+        },
+        {
+          "name": "product_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": true,
+          "is_unique": false,
+          "source_conceptual_attribute": "product_id",
+          "source_conceptual_entity": "Product",
+          "notes": ""
+        },
+        {
+          "name": "quantity",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "quantity",
+          "source_conceptual_entity": "OrderContainsProduct",
+          "notes": "Relationship attribute."
+        }
+      ],
+      "primary_key": {
+        "name": "OrderProductPK",
+        "columns": ["order_id", "product_id"]
+      },
+      "candidate_keys": [],
+      "foreign_keys": [
+        {
+          "name": "OrderProductOrderFK",
+          "columns": ["order_id"],
+          "referenced_table": "Order",
+          "referenced_columns": ["order_id"],
+          "source_relationship": "OrderContainsProduct",
+          "mandatory": true,
+          "nullable": false,
+          "on_delete": "not_specified",
+          "on_update": "not_specified",
+          "notes": ""
+        },
+        {
+          "name": "OrderProductProductFK",
+          "columns": ["product_id"],
+          "referenced_table": "Product",
+          "referenced_columns": ["product_id"],
+          "source_relationship": "OrderContainsProduct",
+          "mandatory": true,
+          "nullable": false,
+          "on_delete": "not_specified",
+          "on_update": "not_specified",
+          "notes": ""
+        }
+      ],
+      "unique_constraints": [],
+      "check_constraints": [],
+      "notes": ""
+    }
+  ],
+  "relationship_tables": [
+    {
+      "table_name": "OrderProduct",
+      "source_relationship": "OrderContainsProduct",
+      "relationship_type": "many_to_many",
+      "participating_entities": ["Order", "Product"],
+      "primary_key": ["order_id", "product_id"],
+      "foreign_keys": [
+        {
+          "columns": ["order_id"],
+          "referenced_table": "Order",
+          "referenced_columns": ["order_id"]
+        },
+        {
+          "columns": ["product_id"],
+          "referenced_table": "Product",
+          "referenced_columns": ["product_id"]
+        }
+      ],
+      "relationship_attributes": ["quantity"],
+      "is_preferred_mapping": true,
+      "alternative_group_id": null,
+      "notes": ""
+    }
+  ],
+  "specialization_mapping": [],
+  "mapping_decisions": [
+    {
+      "id": "MD001",
+      "conceptual_element": "CustomerPlacesOrder",
+      "decision": "Map as customer_id foreign key in Order.",
+      "decision_type": "foreign_key_column",
+      "status": "preferred",
+      "reason": "One-to-many relationship from Customer to Order.",
+      "affected_tables": ["Order"],
+      "affected_columns": ["Order.customer_id"],
+      "affected_foreign_keys": ["OrderCustomerFK"],
+      "alternative_group_id": null,
+      "notes": ""
+    },
+    {
+      "id": "MD002",
+      "conceptual_element": "OrderContainsProduct",
+      "decision": "Map as relationship table OrderProduct.",
+      "decision_type": "relationship_table",
+      "status": "preferred",
+      "reason": "Many-to-many relationship with relationship attribute quantity.",
+      "affected_tables": ["OrderProduct"],
+      "affected_columns": ["OrderProduct.order_id", "OrderProduct.product_id", "OrderProduct.quantity"],
+      "affected_foreign_keys": ["OrderProductOrderFK", "OrderProductProductFK"],
+      "alternative_group_id": null,
+      "notes": ""
+    },
+    {
+      "id": "MD003",
+      "conceptual_element": "CustomerHasProfile",
+      "decision": "Map as separate CustomerProfile table with customer_id as PK and FK.",
+      "decision_type": "foreign_key_column",
+      "status": "preferred",
+      "reason": "Keeps optional profile attributes separate while preserving one-to-one relationship.",
+      "affected_tables": ["CustomerProfile"],
+      "affected_columns": ["CustomerProfile.customer_id"],
+      "affected_foreign_keys": ["CustomerProfileCustomerFK"],
+      "alternative_group_id": "ALT_R003",
+      "notes": ""
+    }
+  ],
+  "mapping_alternatives": [
+    {
+      "id": "ALT_R003",
+      "conceptual_element_id": "R003",
+      "conceptual_element_name": "CustomerHasProfile",
+      "conceptual_element_type": "binary_one_to_one_relationship",
+      "decision_context": "Optional profile information can be represented as a separate table or merged into Customer.",
+      "preferred_mapping": {
+        "mapping_type": "foreign_key_column",
+        "status": "preferred",
+        "expected_tables": ["CustomerProfile"],
+        "expected_columns": ["CustomerProfile.customer_id", "CustomerProfile.bio", "CustomerProfile.birth_date"],
+        "expected_foreign_keys": ["CustomerProfile.customer_id -> Customer.customer_id"],
+        "expected_constraints": ["CustomerProfile.customer_id is PK and FK"],
+        "rationale": "Keeps optional profile attributes separate and avoids nulls in Customer."
+      },
+      "acceptable_mappings": [
+        {
+          "mapping_type": "table_merge",
+          "status": "acceptable",
+          "expected_tables": ["Customer"],
+          "expected_columns": ["Customer.bio", "Customer.birth_date"],
+          "expected_foreign_keys": [],
+          "expected_constraints": [],
+          "conditions": "Acceptable because CustomerProfile has optional descriptive attributes and a one-to-one relationship with Customer.",
+          "rationale": "A table merge is a valid simplification for this toy case."
+        }
+      ],
+      "not_allowed_mappings": [
+        {
+          "mapping_type": "unrelated_profile_table",
+          "status": "not_allowed",
+          "reason": "CustomerProfile cannot be disconnected from Customer."
+        },
+        {
+          "mapping_type": "many_to_many_relationship_table",
+          "status": "not_allowed",
+          "reason": "CustomerHasProfile is one-to-one, not many-to-many."
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evaluation_units": {
+    "entities_expected": ["Customer", "CustomerProfile", "Order", "Product"],
+    "attributes_expected": [
+      "Customer.customer_id",
+      "Customer.name",
+      "Customer.email",
+      "CustomerProfile.customer_id",
+      "CustomerProfile.bio",
+      "CustomerProfile.birth_date",
+      "Order.order_id",
+      "Order.order_date",
+      "Order.customer_id",
+      "Product.product_id",
+      "Product.product_name",
+      "Product.price",
+      "OrderProduct.order_id",
+      "OrderProduct.product_id",
+      "OrderProduct.quantity"
+    ],
+    "primary_keys_expected": [
+      "Customer.customer_id",
+      "CustomerProfile.customer_id",
+      "Order.order_id",
+      "Product.product_id",
+      "OrderProduct.order_id+product_id"
+    ],
+    "foreign_keys_expected": [
+      "CustomerProfile.customer_id -> Customer.customer_id",
+      "Order.customer_id -> Customer.customer_id",
+      "OrderProduct.order_id -> Order.order_id",
+      "OrderProduct.product_id -> Product.product_id"
+    ],
+    "relationship_tables_expected": ["OrderProduct"],
+    "specialization_mappings_expected": [],
+    "mapping_decisions_expected": ["MD001", "MD002", "MD003"],
+    "alternative_mapping_groups": ["ALT_R003"]
+  },
+  "expert_notes": {
+    "assumptions": [
+      "CustomerProfile is optional for Customer.",
+      "OrderProduct is required for the many-to-many relationship."
+    ],
+    "ambiguities": [
+      "CustomerHasProfile may be implemented using a separate table or merged into Customer."
+    ],
+    "alternative_valid_mappings": ["ALT_R003"],
+    "discretionary_decisions": ["MD003"],
+    "excluded_details": []
+  }
+}

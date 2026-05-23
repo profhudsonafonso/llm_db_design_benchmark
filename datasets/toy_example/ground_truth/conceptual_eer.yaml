@@ -1,0 +1,429 @@
+schema_metadata:
+  schema_id: "toy_example_v1"
+  dataset_name: "toy_example"
+  dataset_complexity: "low"
+  version: "0.1"
+  created_by: "benchmark_team"
+  reviewed_by: "benchmark_team"
+  creation_date: "2026-05-20"
+  source_description: "Synthetic toy schema for testing the benchmark pipeline."
+  source_files_or_tables: []
+  notes: "This example is not a real dataset. It is used only for testing scripts and evaluation logic."
+
+model_scope:
+  included_entities:
+    - Customer
+    - CustomerProfile
+    - Order
+    - Product
+  excluded_entities: []
+  inclusion_criteria: "Minimal schema with basic EER-to-relational mapping cases."
+  exclusion_criteria: "No advanced specialization or weak entity cases included."
+
+representation:
+  language: "EER-YAML"
+  mermaid_available: false
+  mermaid_file: null
+  description: "Expert-defined textual EER model used as controlled input for LLMs."
+
+entities:
+  - id: "E001"
+    name: "Customer"
+    entity_type: "regular"
+    description: "A customer who places orders."
+    source_artifacts: []
+    aliases: ["Client"]
+    identifiers:
+      primary:
+        name: "CustomerPK"
+        attributes: ["customer_id"]
+        identifier_type: "surrogate"
+      candidates: []
+      alternate_keys:
+        - name: "CustomerEmailUK"
+          attributes: ["email"]
+    attributes:
+      - name: "customer_id"
+        description: "Unique customer identifier."
+        data_type: "integer"
+        required: true
+        nullable: false
+        attribute_kind: "simple"
+        components: []
+        cardinality:
+          min: 1
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: true
+        source_field: "customer_id"
+        notes: ""
+      - name: "name"
+        description: "Customer name."
+        data_type: "string"
+        required: true
+        nullable: false
+        attribute_kind: "simple"
+        components: []
+        cardinality:
+          min: 1
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: false
+        source_field: "name"
+        notes: ""
+      - name: "email"
+        description: "Customer email."
+        data_type: "string"
+        required: true
+        nullable: false
+        attribute_kind: "simple"
+        components: []
+        cardinality:
+          min: 1
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: false
+        source_field: "email"
+        notes: "Candidate unique attribute."
+    weak_entity:
+      is_weak: false
+      owner_entities: []
+      identifying_relationship: null
+      partial_key: []
+      notes: ""
+
+  - id: "E002"
+    name: "CustomerProfile"
+    entity_type: "regular"
+    description: "Optional profile information for a customer."
+    source_artifacts: []
+    aliases: ["Profile"]
+    identifiers:
+      primary:
+        name: "CustomerProfilePK"
+        attributes: ["customer_id"]
+        identifier_type: "derived_from_relationship"
+      candidates: []
+      alternate_keys: []
+    attributes:
+      - name: "bio"
+        description: "Short customer biography."
+        data_type: "text"
+        required: false
+        nullable: true
+        attribute_kind: "simple"
+        components: []
+        cardinality:
+          min: 0
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: false
+        source_field: "bio"
+        notes: ""
+      - name: "birth_date"
+        description: "Customer birth date."
+        data_type: "date"
+        required: false
+        nullable: true
+        attribute_kind: "simple"
+        components: []
+        cardinality:
+          min: 0
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: false
+        source_field: "birth_date"
+        notes: ""
+    weak_entity:
+      is_weak: false
+      owner_entities: []
+      identifying_relationship: null
+      partial_key: []
+      notes: ""
+
+  - id: "E003"
+    name: "Order"
+    entity_type: "regular"
+    description: "A purchase order placed by a customer."
+    source_artifacts: []
+    aliases: ["Purchase"]
+    identifiers:
+      primary:
+        name: "OrderPK"
+        attributes: ["order_id"]
+        identifier_type: "surrogate"
+      candidates: []
+      alternate_keys: []
+    attributes:
+      - name: "order_id"
+        description: "Unique order identifier."
+        data_type: "integer"
+        required: true
+        nullable: false
+        attribute_kind: "simple"
+        components: []
+        cardinality:
+          min: 1
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: true
+        source_field: "order_id"
+        notes: ""
+      - name: "order_date"
+        description: "Date when the order was placed."
+        data_type: "date"
+        required: true
+        nullable: false
+        attribute_kind: "simple"
+        components: []
+        cardinality:
+          min: 1
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: false
+        source_field: "order_date"
+        notes: ""
+    weak_entity:
+      is_weak: false
+      owner_entities: []
+      identifying_relationship: null
+      partial_key: []
+      notes: ""
+
+  - id: "E004"
+    name: "Product"
+    entity_type: "regular"
+    description: "A product that can appear in orders."
+    source_artifacts: []
+    aliases: ["Item"]
+    identifiers:
+      primary:
+        name: "ProductPK"
+        attributes: ["product_id"]
+        identifier_type: "surrogate"
+      candidates: []
+      alternate_keys: []
+    attributes:
+      - name: "product_id"
+        description: "Unique product identifier."
+        data_type: "integer"
+        required: true
+        nullable: false
+        attribute_kind: "simple"
+        components: []
+        cardinality:
+          min: 1
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: true
+        source_field: "product_id"
+        notes: ""
+      - name: "product_name"
+        description: "Product name."
+        data_type: "string"
+        required: true
+        nullable: false
+        attribute_kind: "simple"
+        components: []
+        cardinality:
+          min: 1
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: false
+        source_field: "product_name"
+        notes: ""
+      - name: "price"
+        description: "Product unit price."
+        data_type: "float"
+        required: true
+        nullable: false
+        attribute_kind: "simple"
+        components: []
+        cardinality:
+          min: 1
+          max: 1
+        domain: null
+        default_value: null
+        is_identifier_attribute: false
+        source_field: "price"
+        notes: ""
+    weak_entity:
+      is_weak: false
+      owner_entities: []
+      identifying_relationship: null
+      partial_key: []
+      notes: ""
+
+relationships:
+  - id: "R001"
+    name: "CustomerPlacesOrder"
+    relationship_type: "association"
+    arity: 2
+    description: "A customer places zero or more orders. Each order belongs to exactly one customer."
+    source_artifacts: []
+    aliases: ["places"]
+    participants:
+      - entity: "Customer"
+        role: "customer"
+        cardinality:
+          min: 0
+          max: "many"
+        participation: "optional"
+        identifying: false
+        notes: ""
+      - entity: "Order"
+        role: "order"
+        cardinality:
+          min: 1
+          max: 1
+        participation: "mandatory"
+        identifying: false
+        notes: ""
+    relationship_attributes: []
+    constraints:
+      cardinality_class: "one_to_many"
+      is_functional: true
+      functional_from: "Order"
+      functional_to: "Customer"
+      requires_relationship_table: false
+      notes: "Map as customer_id FK in Order."
+
+  - id: "R002"
+    name: "OrderContainsProduct"
+    relationship_type: "association"
+    arity: 2
+    description: "An order may contain many products, and a product may appear in many orders."
+    source_artifacts: []
+    aliases: ["contains"]
+    participants:
+      - entity: "Order"
+        role: "order"
+        cardinality:
+          min: 1
+          max: "many"
+        participation: "mandatory"
+        identifying: false
+        notes: ""
+      - entity: "Product"
+        role: "product"
+        cardinality:
+          min: 0
+          max: "many"
+        participation: "optional"
+        identifying: false
+        notes: ""
+    relationship_attributes:
+      - name: "quantity"
+        description: "Quantity of the product in the order."
+        data_type: "integer"
+        required: true
+        nullable: false
+        attribute_kind: "simple"
+        components: []
+        source_field: "quantity"
+        notes: ""
+    constraints:
+      cardinality_class: "many_to_many"
+      is_functional: false
+      functional_from: null
+      functional_to: null
+      requires_relationship_table: true
+      notes: "Map as relationship table OrderProduct."
+
+  - id: "R003"
+    name: "CustomerHasProfile"
+    relationship_type: "association"
+    arity: 2
+    description: "A customer may have at most one profile, and each profile belongs to exactly one customer."
+    source_artifacts: []
+    aliases: ["has_profile"]
+    participants:
+      - entity: "Customer"
+        role: "customer"
+        cardinality:
+          min: 0
+          max: 1
+        participation: "optional"
+        identifying: false
+        notes: ""
+      - entity: "CustomerProfile"
+        role: "profile"
+        cardinality:
+          min: 1
+          max: 1
+        participation: "mandatory"
+        identifying: false
+        notes: ""
+    relationship_attributes: []
+    constraints:
+      cardinality_class: "one_to_one"
+      is_functional: true
+      functional_from: "CustomerProfile"
+      functional_to: "Customer"
+      requires_relationship_table: false
+      notes: "Preferred mapping keeps CustomerProfile as a separate table with customer_id as PK and FK."
+
+specializations: []
+
+global_constraints:
+  key_constraints:
+    - id: "KC001"
+      applies_to: "Customer"
+      attributes: ["customer_id"]
+      constraint_type: "primary"
+      notes: ""
+    - id: "KC002"
+      applies_to: "Order"
+      attributes: ["order_id"]
+      constraint_type: "primary"
+      notes: ""
+    - id: "KC003"
+      applies_to: "Product"
+      attributes: ["product_id"]
+      constraint_type: "primary"
+      notes: ""
+  participation_constraints:
+    - id: "PC001"
+      entity: "Order"
+      relationship: "CustomerPlacesOrder"
+      min: 1
+      max: 1
+      mandatory: true
+      notes: "Each order must reference exactly one customer."
+  cardinality_constraints:
+    - id: "CC001"
+      relationship: "OrderContainsProduct"
+      description: "Many-to-many relationship requiring relationship table."
+      notes: ""
+  inclusion_constraints: []
+  exclusion_constraints: []
+  business_rules: []
+
+complexity_metadata:
+  number_of_entities: 4
+  number_of_relationships: 3
+  number_of_attributes: 9
+  number_of_specializations: 0
+  number_of_weak_entities: 0
+  number_of_multivalued_attributes: 0
+  number_of_relationship_attributes: 1
+  estimated_schema_complexity: "low"
+  notes: "Toy example for pipeline testing."
+
+expert_notes:
+  assumptions:
+    - "CustomerProfile is optional for Customer but mandatory for CustomerProfile."
+  ambiguities:
+    - "CustomerHasProfile may be mapped as a separate profile table or merged into Customer."
+  mapping_relevant_observations:
+    - "OrderContainsProduct must be mapped as a relationship table because it is many-to-many and has quantity."
+  excluded_details: []

@@ -451,6 +451,28 @@ Its outputs are saved by default under:
 
 - `results/normalization_runs/<run_id>/`
 
+## Toy Example for Pipeline Testing
+
+Before running the benchmark on Chinook, IMDb, and Yelp, the repository includes a synthetic toy example.
+
+Location:
+
+- `datasets/toy_example/`
+
+The toy example is used to test:
+
+- ground truth structure;
+- prompt input format;
+- raw LLM output normalization;
+- JSON extraction from Markdown code fences;
+- name normalization;
+- flattened table, column, primary-key, and foreign-key outputs;
+- alternative valid mapping representation;
+- future schema matching and evaluation scripts.
+
+The toy example contains a naming mismatch in the generated output: the preferred relationship table is `OrderProduct`, while the LLM output uses `OrdProd`. This case is useful for testing similarity and structure-aware matching.
+
+
 ## 17. Reproducibility
 
 Each experiment must record:
