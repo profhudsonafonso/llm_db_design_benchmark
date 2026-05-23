@@ -352,6 +352,39 @@ C4-specific metrics:
 - new error rate;
 - remaining constraint violation rate.
 
+## Detailed Scoring Strategy
+
+The detailed scoring strategy is documented in `docs/scoring_metrics.md`.
+
+The evaluator reports both strict and matched scores.
+
+Strict scores use exact normalized matching.
+
+Matched scores use similarity and structure-aware matching. This avoids penalizing a generated schema only because the LLM used a different but semantically compatible name.
+
+The benchmark also supports preferred and alternative valid mappings. This is necessary because conceptual-to-logical database design may have more than one valid implementation.
+
+The main score groups are:
+
+- component-level Precision, Recall, and F1-score;
+- strict and matched F1;
+- hallucination rate;
+- omission rate;
+- naming mismatch rate;
+- preferred mapping accuracy;
+- valid mapping accuracy;
+- normalized weighted structural Manhattan distance;
+- validation-guided repair metrics for C4.
+
+The normalized weighted structural Manhattan distance is used as a complementary metric. It measures not only the number of errors, but also their structural severity.
+
+The C4 condition additionally reports:
+
+- repair gain;
+- error reduction;
+- new error rate;
+- remaining constraint violation rate.
+
 ## 15. Error Taxonomy
 
 Errors are classified according to the taxonomy defined in:

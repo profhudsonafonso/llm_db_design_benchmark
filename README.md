@@ -329,6 +329,25 @@ The benchmark uses four prompt templates corresponding to the four experimental 
 
 The prompt design is documented in `docs/prompt_design.md`.
 
+## Scoring Metrics
+
+The benchmark scoring strategy is documented in `docs/scoring_metrics.md`.
+
+The evaluation uses:
+
+- strict matching;
+- similarity and structure-aware matching;
+- preferred and alternative valid mapping evaluation;
+- component-level Precision, Recall, and F1-score;
+- hallucination and omission rates;
+- naming mismatch rate;
+- preferred mapping accuracy;
+- valid mapping accuracy;
+- normalized weighted structural Manhattan distance;
+- C4 repair metrics.
+
+This design avoids over-penalizing LLM outputs that use different names for semantically equivalent schema elements and also accounts for discretionary conceptual-to-logical mapping decisions.
+
 ## Evaluation Metrics
 
 The evaluation compares the LLM-generated logical schema against the expert-defined logical ground truth.
