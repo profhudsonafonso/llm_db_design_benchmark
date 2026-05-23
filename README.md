@@ -348,6 +348,31 @@ The benchmark uses four prompt templates corresponding to the four experimental 
 
 The prompt design is documented in `docs/prompt_design.md`.
 
+## Evaluation Script
+
+The first schema evaluation script is:
+
+- `scripts/evaluate_schema.py`
+
+It compares an LLM-generated schema against the expert logical relational gold standard.
+
+It produces:
+
+- strict matching metrics;
+- similarity and structure-aware matching metrics;
+- component-level Precision, Recall, and F1;
+- preferred and alternative valid mapping classification;
+- weighted structural Manhattan distance;
+- error reports;
+- reproducibility manifest.
+
+Default outputs are saved in:
+
+- `results/evaluation_runs/<run_id>/`
+
+The script is documented in `scripts/README.md`.
+
+
 ## Scoring Metrics
 
 The benchmark scoring strategy is documented in `docs/scoring_metrics.md`.

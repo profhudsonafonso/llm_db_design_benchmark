@@ -105,3 +105,85 @@ The manifest records:
 - generated files;
 - normalization summary;
 - warning count.
+
+## `evaluate_schema.py`
+
+### Goal
+
+Evaluate an LLM-generated relational schema against the expert logical relational gold standard.
+
+This script compares the generated schema with the gold schema using:
+
+- strict matching;
+- similarity and structure-aware matching;
+- component-level Precision, Recall, and F1;
+- preferred and alternative valid mapping classification;
+- weighted structural Manhattan distance.
+
+### Inputs
+
+Required inputs:
+
+- `--gold`: path to `logical_relational_gold.json`;
+- `--prediction`: path to the generated schema JSON, preferably `normalized_schema.json`;
+- `--dataset`: dataset name;
+- `--model`: model name;
+- `--condition`: experimental condition, such as C1, C2, C3, or C4.
+
+Optional inputs:
+
+- `--output-dir`: base output folder;
+- `--run-id`: custom run identifier;
+- `--normalization-run-dir`: path to the normalization run folder;
+- `--notes`: execution notes.
+
+### Example
+
+Command:
+
+`python scripts/evaluate_schema.py --gold datasets/toy_example/ground_truth/logical_relational_gold.json --prediction results/normalization_runs/<normalization_run_id>/normalized_schema.json --dataset toy_example --model gpt --condition C1`
+
+### Outputs
+
+By default, outputs are saved under:
+
+`results/evaluation_runs/<run_id>/`
+
+Expected output files:
+
+- `evaluation_metrics.json`;
+- `strict_component_results.json`;
+- `matched_component_results.json`;
+- `table_mapping_evidence.json`;
+- `mapping_alternative_report.json`;
+- `component_metrics.csv`;
+- `evaluation_errors.csv`;
+- `evaluation_errors.json`;
+- `evaluation_manifest.json`.
+
+### Processing Steps
+
+The script performs the following steps:
+
+1. loads the expert gold schema;
+2. loads the generated schema;
+3. extracts comparable schema units;
+4. computes strict matching metrics;
+5. computes similarity and structure-aware matching metrics;
+6. classifies preferred and acceptable alternative mappings;
+7. computes weighted structural Manhattan distance;
+8. saves metrics, errors, mapping evidence, and manifest.
+
+### Reproducibility
+
+The manifest records:
+
+- run id;
+- timestamp;
+- input files;
+- input file hashes;
+- dataset;
+- model;
+- condition;
+- normalization run directory;
+- generated files.

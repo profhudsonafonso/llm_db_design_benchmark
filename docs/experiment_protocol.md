@@ -420,6 +420,32 @@ The validation report includes:
 - found value;
 - summary counts.
 
+## Evaluation Script Implementation
+
+The initial evaluator is implemented in:
+
+- `scripts/evaluate_schema.py`
+
+The evaluator compares each generated schema with the expert logical relational gold standard.
+
+It reports:
+
+- strict component metrics;
+- matched component metrics;
+- table mapping evidence;
+- mapping alternative classifications;
+- evaluation errors;
+- weighted structural Manhattan distance;
+- normalized weighted structural distance;
+- execution manifest.
+
+The evaluator writes all outputs to:
+
+- `results/evaluation_runs/<run_id>/`
+
+This implementation follows the reproducibility rule that every script execution must produce a dedicated output folder and a manifest file.
+
+
 ## Script Output Reproducibility
 
 All scripts used in the benchmark must save their outputs in a dedicated run folder.
