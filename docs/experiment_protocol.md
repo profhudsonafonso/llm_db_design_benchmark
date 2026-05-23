@@ -376,6 +376,18 @@ The main score groups are:
 - normalized weighted structural Manhattan distance;
 - validation-guided repair metrics for C4.
 
+The evaluator also computes an alternative-aware score.
+
+Alternative-aware evaluation treats expert-documented acceptable non-preferred mappings as valid. This prevents a valid logical design from being penalized only because it differs from the preferred expert mapping.
+
+The evaluator therefore reports:
+
+- strict scores and distance;
+- matched scores and distance;
+- alternative-aware scores and distance.
+
+The difference between matched distance and alternative-aware distance is reported as distance reduction from alternatives.
+
 The evaluator computes structural Manhattan distance in two ways:
 
 - strict distance, before similarity/structure-aware matching;

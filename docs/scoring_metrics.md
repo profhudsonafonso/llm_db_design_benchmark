@@ -505,3 +505,32 @@ Example interpretation:
 - high strict distance and low matched distance: naming mismatch problem;
 - high strict distance and high matched distance: real structural design problem;
 - low strict distance and low matched distance: output closely follows the preferred gold schema.
+
+## 21. Alternative-Aware Scores and Distances
+
+The benchmark also reports an alternative-aware evaluation mode.
+
+| Evaluation mode | Meaning |
+|---|---|
+| strict | Compares against the preferred gold schema using exact normalized names. |
+| matched | Compares against the preferred gold schema using similarity and structural compatibility. |
+| alternative_aware | Treats acceptable non-preferred mappings as correct when they are documented by the expert. |
+
+Alternative-aware evaluation is necessary because conceptual-to-logical design may have more than one valid relational implementation.
+
+For example, a one-to-one optional profile relationship may be mapped as:
+
+- a separate profile table, which may be the preferred mapping;
+- a merge of profile attributes into the owner table, which may be an acceptable alternative.
+
+In this case, the matched score may still show residual distance from the preferred gold schema, while the alternative-aware distance should remove this penalty.
+
+The evaluator reports:
+
+Alternative Distance Reduction = matched normalized distance - alternative-aware normalized distance
+
+Interpretation:
+
+- high matched distance and low alternative-aware distance: the model selected a valid alternative mapping;
+- high matched distance and high alternative-aware distance: the model made a real structural mistake;
+- low matched distance and low alternative-aware distance: the model followed the preferred or structurally equivalent schema.

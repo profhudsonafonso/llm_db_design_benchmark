@@ -192,3 +192,17 @@ The evaluator reports both strict and matched weighted structural Manhattan dist
 
 This makes it possible to measure how much apparent structural error is removed by similarity and structure-aware matching.
 
+
+The evaluator also reports an `alternative_aware` mode.
+
+This mode treats expert-documented acceptable non-preferred mappings as correct. It is useful for cases where the LLM chooses a valid design that differs from the preferred gold schema.
+
+Additional output file:
+
+- `alternative_aware_component_results.json`
+
+Additional metrics:
+
+- alternative-aware global F1;
+- alternative-aware normalized weighted structural distance;
+- distance reduction from alternatives.

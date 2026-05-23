@@ -697,6 +697,217 @@ def build_error_items(mode: str, results: Dict[str, Any]) -> List[Dict[str, Any]
     return rows
 
 
+def normalize_column_reference(value: Any) -> Optional[str]:
+    """
+    Normalize a table.column reference.
+
+    Example:
+    CustomerProfile.customer_id -> customerprofile.customerid
+    """
+    value = str(value).strip()
+    if "." not in value:
+        return None
+
+    table, column = value.split(".", 1)
+    table_norm = normalize_name(table)
+    column_norm = normalize_name(column)
+
+    if not table_norm or not column_norm:
+        return None
+
+    return f"{table_norm}.{column_norm}"
+
+
+def normalize_fk_reference_to_unit(value: Any) -> Optional[str]:
+    """
+    Normalize an expected FK reference into the same unit format used by extract_units.
+
+    Example:
+    CustomerProfile.customer_id -> Customer.customer_id
+
+    Becomes:
+    customerprofile:customerid->customer:customerid
+    """
+    value = str(value).strip().replace(" ", "")
+
+    if "->" not in value:
+        return None
+
+    left, right = value.split("->", 1)
+
+    if "." not in left or "." not in right:
+        return None
+
+    left_table, left_col = left.split(".", 1)
+    right_table, right_col = right.split(".", 1)
+
+    left_table_norm = normalize_name(left_table)
+    left_col_norm = normalize_name(left_col)
+    right_table_norm = normalize_name(right_table)
+    right_col_norm = normalize_name(right_col)
+
+    if not all([left_table_norm, left_col_norm, right_table_norm, right_col_norm]):
+        return None
+
+    return f"{left_table_norm}:{left_col_norm}->{right_table_norm}:{right_col_norm}"
+
+
+def copy_units(units: Dict[str, Set[str]]) -> Dict[str, Set[str]]:
+    """Deep-copy unit sets."""
+    return {component: set(values) for component, values in units.items()}
+
+
+def remove_table_from_units(units: Dict[str, Set[str]], table_norm: str) -> None:
+    """
+    Remove a table and all units that depend on it from comparable units.
+    """
+    if not table_norm:
+        return
+
+    units.setdefault("tables", set()).discard(table_norm)
+
+    units.setdefault("attributes", set()).difference_update({
+        item for item in units.get("attributes", set())
+        if item.startswith(f"{table_norm}.")
+    })
+
+    units.setdefault("primary_keys", set()).difference_update({
+        item for item in units.get("primary_keys", set())
+        if item.startswith(f"{table_norm}:")
+    })
+
+    units.setdefault("foreign_keys", set()).difference_update({
+        item for item in units.get("foreign_keys", set())
+        if item.startswith(f"{table_norm}:")
+    })
+
+    units.setdefault("relationship_tables", set()).discard(table_norm)
+
+
+def apply_valid_alternatives_to_gold_units(
+    gold_units: Dict[str, Set[str]],
+    gold_schema: Dict[str, Any],
+    mapping_report: Dict[str, Any],
+) -> Dict[str, Set[str]]:
+    """
+    Adjust gold units when the LLM output follows an acceptable non-preferred mapping.
+
+    This creates the alternative-aware gold view.
+
+    If a mapping group is classified as valid_alternative:
+    - remove preferred mapping units from the gold view;
+    - add acceptable alternative units to the gold view.
+    """
+    adjusted = copy_units(gold_units)
+
+    report_by_id = {
+        group.get("alternative_group_id"): group
+        for group in mapping_report.get("groups", [])
+        if group.get("alternative_group_id")
+    }
+
+    for alt in as_list(gold_schema.get("mapping_alternatives")):
+        if not isinstance(alt, dict):
+            continue
+
+        alt_id = alt.get("id", "")
+        report = report_by_id.get(alt_id)
+
+        if not report:
+            continue
+
+        if report.get("classification") != "valid_alternative":
+            continue
+
+        preferred = alt.get("preferred_mapping", {})
+        matched_detail = report.get("matched_detail") or {}
+
+        # Remove preferred tables and dependent units.
+        for table in as_list(preferred.get("expected_tables")):
+            remove_table_from_units(adjusted, normalize_name(table))
+
+        # Remove preferred columns explicitly.
+        for col in as_list(preferred.get("expected_columns")):
+            col_ref = normalize_column_reference(col)
+            if col_ref:
+                adjusted.setdefault("attributes", set()).discard(col_ref)
+
+        # Remove preferred foreign keys explicitly.
+        for fk in as_list(preferred.get("expected_foreign_keys")):
+            fk_ref = normalize_fk_reference_to_unit(fk)
+            if fk_ref:
+                adjusted.setdefault("foreign_keys", set()).discard(fk_ref)
+
+        # Add acceptable alternative tables.
+        for table in as_list(matched_detail.get("expected_tables")):
+            table_norm = normalize_name(table)
+            if table_norm:
+                adjusted.setdefault("tables", set()).add(table_norm)
+
+        # Add acceptable alternative columns.
+        for col in as_list(matched_detail.get("expected_columns")):
+            col_ref = normalize_column_reference(col)
+            if col_ref:
+                adjusted.setdefault("attributes", set()).add(col_ref)
+
+        # Add acceptable alternative foreign keys.
+        for fk in as_list(matched_detail.get("expected_foreign_keys")):
+            fk_ref = normalize_fk_reference_to_unit(fk)
+            if fk_ref:
+                adjusted.setdefault("foreign_keys", set()).add(fk_ref)
+
+    return adjusted
+
+
+def evaluate_components_alternative_aware(
+    gold_schema: Dict[str, Any],
+    pred_schema: Dict[str, Any],
+    mapping_report: Dict[str, Any],
+) -> Tuple[Dict[str, Any], List[Dict[str, Any]]]:
+    """
+    Evaluate using similarity/structure-aware table matching and acceptable alternatives.
+
+    This mode treats valid non-preferred mappings as correct.
+    """
+    gold_tables = get_tables(gold_schema)
+    pred_tables = get_tables(pred_schema)
+
+    table_mapping, mapping_evidence = build_table_mapping(gold_tables, pred_tables, mode="matched")
+    reverse = {v: k for k, v in table_mapping.items()}
+
+    gold_units = extract_units(gold_schema)
+    pred_units = extract_units(pred_schema, table_mapping=reverse, reverse_mapping=True)
+
+    adjusted_gold_units = apply_valid_alternatives_to_gold_units(
+        gold_units=gold_units,
+        gold_schema=gold_schema,
+        mapping_report=mapping_report,
+    )
+
+    components = [
+        "tables",
+        "attributes",
+        "primary_keys",
+        "foreign_keys",
+        "relationship_tables",
+        "specialization_mappings",
+    ]
+
+    result = {}
+    for comp in components:
+        result[comp] = compare_sets(
+            adjusted_gold_units.get(comp, set()),
+            pred_units.get(comp, set()),
+        )
+
+    total_tp = sum(result[c]["tp"] for c in components)
+    total_fp = sum(result[c]["fp"] for c in components)
+    total_fn = sum(result[c]["fn"] for c in components)
+    result["global"] = metric_dict(total_tp, total_fp, total_fn)
+
+    return result, mapping_evidence
+
+
 def build_run_id(dataset: str, model: str, condition: str) -> str:
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     parts = [normalize_name(dataset), normalize_name(model), normalize_name(condition), timestamp]
@@ -736,11 +947,19 @@ def main() -> None:
 
     mapping_report = classify_mapping_alternatives(gold_schema, pred_schema)
 
+    alternative_aware_results, alternative_aware_mapping_evidence = evaluate_components_alternative_aware(
+        gold_schema,
+        pred_schema,
+        mapping_report,
+    )
+
     strict_error_counts = build_error_counts(strict_results, mapping_report)
     matched_error_counts = build_error_counts(matched_results, mapping_report)
+    alternative_aware_error_counts = build_error_counts(alternative_aware_results, mapping_report)
 
     strict_distance = structural_distance(strict_error_counts)
     matched_distance = structural_distance(matched_error_counts)
+    alternative_aware_distance = structural_distance(alternative_aware_error_counts)
 
     mass = expected_structural_mass(gold_schema)
 
@@ -750,9 +969,15 @@ def main() -> None:
     matched_normalized_weighted_distance = (
         matched_distance["weighted_structural_manhattan_distance"] / mass
     )
+    alternative_aware_normalized_weighted_distance = (
+        alternative_aware_distance["weighted_structural_manhattan_distance"] / mass
+    )
 
     distance_reduction_from_matching = (
         strict_normalized_weighted_distance - matched_normalized_weighted_distance
+    )
+    distance_reduction_from_alternatives = (
+        matched_normalized_weighted_distance - alternative_aware_normalized_weighted_distance
     )
 
     metrics = {
@@ -765,10 +990,14 @@ def main() -> None:
         "matched": {
             "global": matched_results["global"],
         },
+        "alternative_aware": {
+            "global": alternative_aware_results["global"],
+        },
         "mapping_alternatives": mapping_report["summary"],
         "error_counts_for_distance": {
             "strict": strict_error_counts,
             "matched": matched_error_counts,
+            "alternative_aware": alternative_aware_error_counts,
         },
         "structural_distance": {
             "strict": {
@@ -781,7 +1010,13 @@ def main() -> None:
                 "expected_structural_mass": mass,
                 "normalized_weighted_structural_distance": matched_normalized_weighted_distance,
             },
+            "alternative_aware": {
+                **alternative_aware_distance,
+                "expected_structural_mass": mass,
+                "normalized_weighted_structural_distance": alternative_aware_normalized_weighted_distance,
+            },
             "distance_reduction_from_matching": distance_reduction_from_matching,
+            "distance_reduction_from_alternatives": distance_reduction_from_alternatives,
         },
     }
 
@@ -792,20 +1027,24 @@ def main() -> None:
     write_json(output_dir / "evaluation_metrics.json", metrics)
     write_json(output_dir / "strict_component_results.json", strict_results)
     write_json(output_dir / "matched_component_results.json", matched_results)
+    write_json(output_dir / "alternative_aware_component_results.json", alternative_aware_results)
     write_json(output_dir / "table_mapping_evidence.json", {
         "strict": strict_mapping_evidence,
         "matched": matched_mapping_evidence,
+        "alternative_aware": alternative_aware_mapping_evidence,
     })
     write_json(output_dir / "mapping_alternative_report.json", mapping_report)
 
     component_rows = []
     component_rows.extend(build_rows_from_component_results("strict", strict_results))
     component_rows.extend(build_rows_from_component_results("matched", matched_results))
+    component_rows.extend(build_rows_from_component_results("alternative_aware", alternative_aware_results))
     write_csv(output_dir / "component_metrics.csv", component_rows)
 
     error_rows = []
     error_rows.extend(build_error_items("strict", strict_results))
     error_rows.extend(build_error_items("matched", matched_results))
+    error_rows.extend(build_error_items("alternative_aware", alternative_aware_results))
     write_csv(output_dir / "evaluation_errors.csv", error_rows)
     write_json(output_dir / "evaluation_errors.json", error_rows)
 
@@ -827,6 +1066,7 @@ def main() -> None:
             "evaluation_metrics.json",
             "strict_component_results.json",
             "matched_component_results.json",
+            "alternative_aware_component_results.json",
             "table_mapping_evidence.json",
             "mapping_alternative_report.json",
             "component_metrics.csv",
@@ -843,9 +1083,12 @@ def main() -> None:
     print(f"Output directory: {output_dir}")
     print(f"Strict global F1: {strict_results['global']['f1']}")
     print(f"Matched global F1: {matched_results['global']['f1']}")
+    print(f"Alternative-aware global F1: {alternative_aware_results['global']['f1']}")
     print(f"Strict normalized weighted distance: {strict_normalized_weighted_distance}")
     print(f"Matched normalized weighted distance: {matched_normalized_weighted_distance}")
+    print(f"Alternative-aware normalized weighted distance: {alternative_aware_normalized_weighted_distance}")
     print(f"Distance reduction from matching: {distance_reduction_from_matching}")
+    print(f"Distance reduction from alternatives: {distance_reduction_from_alternatives}")
 
 
 if __name__ == "__main__":
