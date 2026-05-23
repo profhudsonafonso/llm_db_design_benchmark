@@ -1,0 +1,6 @@
+{
+  "warnings": [
+    "Raw text is not directly valid JSON. Trying to extract first JSON object.",
+    "JSON object was extracted from surrounding text."
+  ]
+}

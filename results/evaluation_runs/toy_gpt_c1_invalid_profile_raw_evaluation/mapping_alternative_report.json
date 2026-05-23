@@ -1,0 +1,27 @@
+{
+  "summary": {
+    "preferred_correct": 0,
+    "valid_alternative": 0,
+    "invalid_mapping": 1,
+    "missing_mapping": 0,
+    "hallucinated_mapping": 0,
+    "total_alternative_groups": 1,
+    "preferred_mapping_accuracy": 0.0,
+    "valid_mapping_accuracy": 0.0,
+    "alternative_mapping_rate": 0.0,
+    "invalid_mapping_rate": 1.0
+  },
+  "groups": [
+    {
+      "alternative_group_id": "ALT_R003",
+      "conceptual_element_id": "R003",
+      "conceptual_element_name": "CustomerHasProfile",
+      "classification": "invalid_mapping",
+      "reason": "A table related to the preferred mapping exists, but required FK structure is missing.",
+      "matched_detail": null,
+      "preferred_table_hit": true,
+      "preferred_column_hit": true,
+      "preferred_fk_hit": false
+    }
+  ]
+}

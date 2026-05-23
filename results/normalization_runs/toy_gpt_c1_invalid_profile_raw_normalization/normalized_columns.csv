@@ -1,0 +1,16 @@
+table_name,table_name_norm,name,name_norm,data_type,nullable,required,is_primary_key,is_foreign_key,is_unique,source_conceptual_attribute,source_conceptual_entity,notes
+Customer,customer,customer_id,customerid,integer,False,True,True,False,True,customer_id,Customer,
+Customer,customer,name,name,string,False,True,False,False,False,name,Customer,
+Customer,customer,email,email,string,False,True,False,False,True,email,Customer,
+CustomerProfile,customerprofile,customer_id,customerid,integer,False,True,True,False,True,customer_id,Customer,Invalid test case: customer_id is not declared as FK.
+CustomerProfile,customerprofile,bio,bio,text,True,False,False,False,False,bio,CustomerProfile,
+CustomerProfile,customerprofile,birth_date,birthdate,date,True,False,False,False,False,birth_date,CustomerProfile,
+Order,order,order_id,orderid,integer,False,True,True,False,True,order_id,Order,
+Order,order,order_date,orderdate,date,False,True,False,False,False,order_date,Order,
+Order,order,customer_id,customerid,integer,False,True,False,True,False,customer_id,Customer,
+Product,product,product_id,productid,integer,False,True,True,False,True,product_id,Product,
+Product,product,product_name,productname,string,False,True,False,False,False,product_name,Product,
+Product,product,price,price,float,False,True,False,False,False,price,Product,
+OrdProd,ordprod,order_id,orderid,integer,False,True,True,True,False,order_id,Order,
+OrdProd,ordprod,product_id,productid,integer,False,True,True,True,False,product_id,Product,
+OrdProd,ordprod,quantity,quantity,integer,False,True,False,False,False,quantity,OrderContainsProduct,

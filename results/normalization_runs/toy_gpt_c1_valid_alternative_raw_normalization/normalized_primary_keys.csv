@@ -1,0 +1,5 @@
+table_name,table_name_norm,name,name_norm,columns,columns_norm
+Customer,customer,CustomerPK,customerpk,"[""customer_id""]","[""customerid""]"
+Order,order,OrderPK,orderpk,"[""order_id""]","[""orderid""]"
+Product,product,ProductPK,productpk,"[""product_id""]","[""productid""]"
+OrdProd,ordprod,OrdProdPK,ordprodpk,"[""order_id"", ""product_id""]","[""orderid"", ""productid""]"

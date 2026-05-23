@@ -1,0 +1,377 @@
+{
+  "schema_metadata": {
+    "schema_id": "toy_example_valid_alternative",
+    "dataset_name": "toy_example",
+    "dataset_complexity": "low",
+    "target_model": "relational",
+    "version": "llm_output",
+    "created_by": "gpt",
+    "reviewed_by": "",
+    "creation_date": "2026-05-20",
+    "notes": "Toy output using valid alternative mapping: CustomerProfile attributes merged into Customer."
+  },
+  "tables": [
+    {
+      "name": "Customer",
+      "description": "Customer table.",
+      "origin": {
+        "conceptual_elements": [
+          "Customer"
+        ],
+        "mapping_rule": "entity_to_table",
+        "notes": ""
+      },
+      "columns": [
+        {
+          "name": "customer_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "is_unique": true,
+          "source_conceptual_attribute": "customer_id",
+          "source_conceptual_entity": "Customer",
+          "notes": ""
+        },
+        {
+          "name": "name",
+          "data_type": "string",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "name",
+          "source_conceptual_entity": "Customer",
+          "notes": ""
+        },
+        {
+          "name": "email",
+          "data_type": "string",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": true,
+          "source_conceptual_attribute": "email",
+          "source_conceptual_entity": "Customer",
+          "notes": ""
+        },
+        {
+          "name": "bio",
+          "data_type": "text",
+          "nullable": true,
+          "required": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "bio",
+          "source_conceptual_entity": "CustomerProfile",
+          "notes": "Merged from CustomerProfile as an acceptable alternative."
+        },
+        {
+          "name": "birth_date",
+          "data_type": "date",
+          "nullable": true,
+          "required": false,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "birth_date",
+          "source_conceptual_entity": "CustomerProfile",
+          "notes": "Merged from CustomerProfile as an acceptable alternative."
+        }
+      ],
+      "primary_key": {
+        "name": "CustomerPK",
+        "columns": [
+          "customer_id"
+        ]
+      },
+      "candidate_keys": [],
+      "foreign_keys": [],
+      "unique_constraints": [],
+      "check_constraints": [],
+      "notes": ""
+    },
+    {
+      "name": "Order",
+      "description": "Order table.",
+      "origin": {
+        "conceptual_elements": [
+          "Order",
+          "CustomerPlacesOrder"
+        ],
+        "mapping_rule": "entity_to_table_with_fk",
+        "notes": ""
+      },
+      "columns": [
+        {
+          "name": "order_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "is_unique": true,
+          "source_conceptual_attribute": "order_id",
+          "source_conceptual_entity": "Order",
+          "notes": ""
+        },
+        {
+          "name": "order_date",
+          "data_type": "date",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "order_date",
+          "source_conceptual_entity": "Order",
+          "notes": ""
+        },
+        {
+          "name": "customer_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": true,
+          "is_unique": false,
+          "source_conceptual_attribute": "customer_id",
+          "source_conceptual_entity": "Customer",
+          "notes": ""
+        }
+      ],
+      "primary_key": {
+        "name": "OrderPK",
+        "columns": [
+          "order_id"
+        ]
+      },
+      "candidate_keys": [],
+      "foreign_keys": [
+        {
+          "name": "OrderCustomerFK",
+          "columns": [
+            "customer_id"
+          ],
+          "referenced_table": "Customer",
+          "referenced_columns": [
+            "customer_id"
+          ],
+          "source_relationship": "CustomerPlacesOrder",
+          "mandatory": true,
+          "nullable": false,
+          "notes": ""
+        }
+      ],
+      "unique_constraints": [],
+      "check_constraints": [],
+      "notes": ""
+    },
+    {
+      "name": "Product",
+      "description": "Product table.",
+      "origin": {
+        "conceptual_elements": [
+          "Product"
+        ],
+        "mapping_rule": "entity_to_table",
+        "notes": ""
+      },
+      "columns": [
+        {
+          "name": "product_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": false,
+          "is_unique": true,
+          "source_conceptual_attribute": "product_id",
+          "source_conceptual_entity": "Product",
+          "notes": ""
+        },
+        {
+          "name": "product_name",
+          "data_type": "string",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "product_name",
+          "source_conceptual_entity": "Product",
+          "notes": ""
+        },
+        {
+          "name": "price",
+          "data_type": "float",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "price",
+          "source_conceptual_entity": "Product",
+          "notes": ""
+        }
+      ],
+      "primary_key": {
+        "name": "ProductPK",
+        "columns": [
+          "product_id"
+        ]
+      },
+      "candidate_keys": [],
+      "foreign_keys": [],
+      "unique_constraints": [],
+      "check_constraints": [],
+      "notes": ""
+    },
+    {
+      "name": "OrdProd",
+      "description": "Order product relationship table.",
+      "origin": {
+        "conceptual_elements": [
+          "OrderContainsProduct"
+        ],
+        "mapping_rule": "many_to_many_relationship_table",
+        "notes": "Same structure as OrderProduct, but with a different name."
+      },
+      "columns": [
+        {
+          "name": "order_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": true,
+          "is_unique": false,
+          "source_conceptual_attribute": "order_id",
+          "source_conceptual_entity": "Order",
+          "notes": ""
+        },
+        {
+          "name": "product_id",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": true,
+          "is_foreign_key": true,
+          "is_unique": false,
+          "source_conceptual_attribute": "product_id",
+          "source_conceptual_entity": "Product",
+          "notes": ""
+        },
+        {
+          "name": "quantity",
+          "data_type": "integer",
+          "nullable": false,
+          "required": true,
+          "is_primary_key": false,
+          "is_foreign_key": false,
+          "is_unique": false,
+          "source_conceptual_attribute": "quantity",
+          "source_conceptual_entity": "OrderContainsProduct",
+          "notes": ""
+        }
+      ],
+      "primary_key": {
+        "name": "OrdProdPK",
+        "columns": [
+          "order_id",
+          "product_id"
+        ]
+      },
+      "candidate_keys": [],
+      "foreign_keys": [
+        {
+          "name": "OrdProdOrderFK",
+          "columns": [
+            "order_id"
+          ],
+          "referenced_table": "Order",
+          "referenced_columns": [
+            "order_id"
+          ],
+          "source_relationship": "OrderContainsProduct",
+          "mandatory": true,
+          "nullable": false,
+          "notes": ""
+        },
+        {
+          "name": "OrdProdProductFK",
+          "columns": [
+            "product_id"
+          ],
+          "referenced_table": "Product",
+          "referenced_columns": [
+            "product_id"
+          ],
+          "source_relationship": "OrderContainsProduct",
+          "mandatory": true,
+          "nullable": false,
+          "notes": ""
+        }
+      ],
+      "unique_constraints": [],
+      "check_constraints": [],
+      "notes": ""
+    }
+  ],
+  "relationship_tables": [
+    {
+      "table_name": "OrdProd",
+      "source_relationship": "OrderContainsProduct",
+      "relationship_type": "many_to_many",
+      "participating_entities": [
+        "Order",
+        "Product"
+      ],
+      "primary_key": [
+        "order_id",
+        "product_id"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "order_id"
+          ],
+          "referenced_table": "Order",
+          "referenced_columns": [
+            "order_id"
+          ]
+        },
+        {
+          "columns": [
+            "product_id"
+          ],
+          "referenced_table": "Product",
+          "referenced_columns": [
+            "product_id"
+          ]
+        }
+      ],
+      "relationship_attributes": [
+        "quantity"
+      ],
+      "notes": "Naming mismatch but structurally compatible with OrderProduct."
+    }
+  ],
+  "specialization_mapping": [],
+  "mapping_decisions": [],
+  "mapping_alternatives": [],
+  "normalization": {
+    "num_tables": 4,
+    "num_columns": 14,
+    "num_primary_keys": 4,
+    "num_foreign_keys": 3,
+    "num_relationship_tables": 1,
+    "num_specialization_mappings": 0,
+    "num_mapping_decisions": 0,
+    "num_mapping_alternatives": 0
+  }
+}

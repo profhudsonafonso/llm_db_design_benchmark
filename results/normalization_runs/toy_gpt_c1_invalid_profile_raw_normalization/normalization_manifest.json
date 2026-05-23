@@ -1,0 +1,36 @@
+{
+  "run_id": "toy_gpt_c1_invalid_profile_raw_normalization",
+  "created_at_utc": "2026-05-23T13:19:39.739143+00:00",
+  "script": "scripts/normalize_output.py",
+  "dataset": "toy_example",
+  "model": "gpt",
+  "condition": "C1",
+  "input_file": "llm_outputs/toy_example/gpt_c1_invalid_profile_raw.txt",
+  "input_sha256": "ac2a042b6c5899f47fe3f12ddc92d3adcb9ebc6adcb29601163b108c32d326b6",
+  "prompt_file": "prompts/prompt_1_basic.txt",
+  "input_eer_file": "datasets/toy_example/prompt_inputs/eer_input_text.md",
+  "output_dir": "results/normalization_runs/toy_gpt_c1_invalid_profile_raw_normalization",
+  "notes": "Toy example normalization test: gpt_c1_invalid_profile_raw",
+  "generated_files": [
+    "raw_input.txt",
+    "extracted_json.json",
+    "normalized_schema.json",
+    "normalized_tables.csv",
+    "normalized_columns.csv",
+    "normalized_primary_keys.csv",
+    "normalized_foreign_keys.csv",
+    "normalization_warnings.json",
+    "normalization_manifest.json"
+  ],
+  "normalization_summary": {
+    "num_tables": 5,
+    "num_columns": 15,
+    "num_primary_keys": 5,
+    "num_foreign_keys": 3,
+    "num_relationship_tables": 1,
+    "num_specialization_mappings": 0,
+    "num_mapping_decisions": 0,
+    "num_mapping_alternatives": 0
+  },
+  "num_warnings": 0
+}

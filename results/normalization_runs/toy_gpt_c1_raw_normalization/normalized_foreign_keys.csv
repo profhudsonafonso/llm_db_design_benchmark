@@ -1,0 +1,5 @@
+table_name,table_name_norm,name,name_norm,columns,columns_norm,referenced_table,referenced_table_norm,referenced_columns,referenced_columns_norm,source_relationship,mandatory,nullable,notes
+CustomerProfile,customerprofile,CustomerProfileCustomerFK,customerprofilecustomerfk,"[""customer_id""]","[""customerid""]",Customer,customer,"[""customer_id""]","[""customerid""]",CustomerHasProfile,True,False,
+Order,order,OrderCustomerFK,ordercustomerfk,"[""customer_id""]","[""customerid""]",Customer,customer,"[""customer_id""]","[""customerid""]",CustomerPlacesOrder,True,False,
+OrdProd,ordprod,OrdProdOrderFK,ordprodorderfk,"[""order_id""]","[""orderid""]",Order,order,"[""order_id""]","[""orderid""]",OrderContainsProduct,True,False,
+OrdProd,ordprod,OrdProdProductFK,ordprodproductfk,"[""product_id""]","[""productid""]",Product,product,"[""product_id""]","[""productid""]",OrderContainsProduct,True,False,

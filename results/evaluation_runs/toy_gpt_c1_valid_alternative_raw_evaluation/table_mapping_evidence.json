@@ -1,0 +1,62 @@
+{
+  "strict": [
+    {
+      "gold_table": "Customer",
+      "pred_table": "Customer",
+      "mode": "strict",
+      "combined_score": 1.0,
+      "name_similarity": 1.0,
+      "structural_similarity": 0.86
+    },
+    {
+      "gold_table": "Order",
+      "pred_table": "Order",
+      "mode": "strict",
+      "combined_score": 1.0,
+      "name_similarity": 1.0,
+      "structural_similarity": 1.0
+    },
+    {
+      "gold_table": "Product",
+      "pred_table": "Product",
+      "mode": "strict",
+      "combined_score": 1.0,
+      "name_similarity": 1.0,
+      "structural_similarity": 1.0
+    }
+  ],
+  "matched": [
+    {
+      "gold_table": "Customer",
+      "pred_table": "Customer",
+      "mode": "matched",
+      "combined_score": 1.0,
+      "name_similarity": 1.0,
+      "structural_similarity": 0.86
+    },
+    {
+      "gold_table": "Order",
+      "pred_table": "Order",
+      "mode": "matched",
+      "combined_score": 1.0,
+      "name_similarity": 1.0,
+      "structural_similarity": 1.0
+    },
+    {
+      "gold_table": "Product",
+      "pred_table": "Product",
+      "mode": "matched",
+      "combined_score": 1.0,
+      "name_similarity": 1.0,
+      "structural_similarity": 1.0
+    },
+    {
+      "gold_table": "OrderProduct",
+      "pred_table": "OrdProd",
+      "mode": "matched",
+      "combined_score": 1.0,
+      "name_similarity": 0.7368421052631579,
+      "structural_similarity": 1.0
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+name,name_norm,description,origin,notes
+Customer,customer,Customer table.,"{""conceptual_elements"": [""Customer""], ""mapping_rule"": ""entity_to_table"", ""notes"": """"}",
+Order,order,Order table.,"{""conceptual_elements"": [""Order"", ""CustomerPlacesOrder""], ""mapping_rule"": ""entity_to_table_with_fk"", ""notes"": """"}",
+Product,product,Product table.,"{""conceptual_elements"": [""Product""], ""mapping_rule"": ""entity_to_table"", ""notes"": """"}",
+OrdProd,ordprod,Order product relationship table.,"{""conceptual_elements"": [""OrderContainsProduct""], ""mapping_rule"": ""many_to_many_relationship_table"", ""notes"": ""Same structure as OrderProduct, but with a different name.""}",

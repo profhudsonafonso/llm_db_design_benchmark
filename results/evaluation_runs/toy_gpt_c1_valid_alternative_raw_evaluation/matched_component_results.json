@@ -1,0 +1,118 @@
+{
+  "tables": {
+    "tp": 4,
+    "fp": 0,
+    "fn": 1,
+    "precision": 1.0,
+    "recall": 0.8,
+    "f1": 0.888888888888889,
+    "tp_items": [
+      "customer",
+      "order",
+      "orderproduct",
+      "product"
+    ],
+    "fp_items": [],
+    "fn_items": [
+      "customerprofile"
+    ]
+  },
+  "attributes": {
+    "tp": 12,
+    "fp": 2,
+    "fn": 3,
+    "precision": 0.8571428571428571,
+    "recall": 0.8,
+    "f1": 0.8275862068965518,
+    "tp_items": [
+      "customer.customerid",
+      "customer.email",
+      "customer.name",
+      "order.customerid",
+      "order.orderdate",
+      "order.orderid",
+      "orderproduct.orderid",
+      "orderproduct.productid",
+      "orderproduct.quantity",
+      "product.price",
+      "product.productid",
+      "product.productname"
+    ],
+    "fp_items": [
+      "customer.bio",
+      "customer.birthdate"
+    ],
+    "fn_items": [
+      "customerprofile.bio",
+      "customerprofile.birthdate",
+      "customerprofile.customerid"
+    ]
+  },
+  "primary_keys": {
+    "tp": 4,
+    "fp": 0,
+    "fn": 1,
+    "precision": 1.0,
+    "recall": 0.8,
+    "f1": 0.888888888888889,
+    "tp_items": [
+      "customer:customerid",
+      "order:orderid",
+      "orderproduct:orderid+productid",
+      "product:productid"
+    ],
+    "fp_items": [],
+    "fn_items": [
+      "customerprofile:customerid"
+    ]
+  },
+  "foreign_keys": {
+    "tp": 3,
+    "fp": 0,
+    "fn": 1,
+    "precision": 1.0,
+    "recall": 0.75,
+    "f1": 0.8571428571428571,
+    "tp_items": [
+      "order:customerid->customer:customerid",
+      "orderproduct:orderid->order:orderid",
+      "orderproduct:productid->product:productid"
+    ],
+    "fp_items": [],
+    "fn_items": [
+      "customerprofile:customerid->customer:customerid"
+    ]
+  },
+  "relationship_tables": {
+    "tp": 1,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp_items": [
+      "orderproduct"
+    ],
+    "fp_items": [],
+    "fn_items": []
+  },
+  "specialization_mappings": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "tp_items": [],
+    "fp_items": [],
+    "fn_items": []
+  },
+  "global": {
+    "tp": 24,
+    "fp": 2,
+    "fn": 6,
+    "precision": 0.9230769230769231,
+    "recall": 0.8,
+    "f1": 0.8571428571428571
+  }
+}

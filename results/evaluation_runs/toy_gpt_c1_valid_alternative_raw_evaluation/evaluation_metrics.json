@@ -1,0 +1,106 @@
+{
+  "dataset": "toy_example",
+  "model": "gpt",
+  "condition": "C1",
+  "strict": {
+    "global": {
+      "tp": 16,
+      "fp": 10,
+      "fn": 14,
+      "precision": 0.6153846153846154,
+      "recall": 0.5333333333333333,
+      "f1": 0.5714285714285715
+    }
+  },
+  "matched": {
+    "global": {
+      "tp": 24,
+      "fp": 2,
+      "fn": 6,
+      "precision": 0.9230769230769231,
+      "recall": 0.8,
+      "f1": 0.8571428571428571
+    }
+  },
+  "mapping_alternatives": {
+    "preferred_correct": 0,
+    "valid_alternative": 1,
+    "invalid_mapping": 0,
+    "missing_mapping": 0,
+    "hallucinated_mapping": 0,
+    "total_alternative_groups": 1,
+    "preferred_mapping_accuracy": 0.0,
+    "valid_mapping_accuracy": 1.0,
+    "alternative_mapping_rate": 1.0,
+    "invalid_mapping_rate": 0.0
+  },
+  "error_counts_for_distance": {
+    "strict": {
+      "missing_tables": 2,
+      "hallucinated_tables": 1,
+      "missing_attributes": 6,
+      "hallucinated_attributes": 5,
+      "wrong_primary_keys": 3,
+      "missing_foreign_keys": 3,
+      "wrong_foreign_key_targets": 2,
+      "wrong_relationship_tables": 2,
+      "cardinality_errors": 0,
+      "specialization_errors": 0,
+      "invalid_mappings": 0
+    },
+    "matched": {
+      "missing_tables": 1,
+      "hallucinated_tables": 0,
+      "missing_attributes": 3,
+      "hallucinated_attributes": 2,
+      "wrong_primary_keys": 1,
+      "missing_foreign_keys": 1,
+      "wrong_foreign_key_targets": 0,
+      "wrong_relationship_tables": 0,
+      "cardinality_errors": 0,
+      "specialization_errors": 0,
+      "invalid_mappings": 0
+    }
+  },
+  "structural_distance": {
+    "strict": {
+      "unweighted_structural_manhattan_distance": 24,
+      "weighted_structural_manhattan_distance": 48,
+      "weights": {
+        "missing_attributes": 1,
+        "hallucinated_attributes": 1,
+        "missing_tables": 2,
+        "hallucinated_tables": 2,
+        "wrong_primary_keys": 2,
+        "missing_foreign_keys": 3,
+        "wrong_foreign_key_targets": 4,
+        "wrong_relationship_tables": 4,
+        "cardinality_errors": 4,
+        "specialization_errors": 5,
+        "invalid_mappings": 5
+      },
+      "expected_structural_mass": 66,
+      "normalized_weighted_structural_distance": 0.7272727272727273
+    },
+    "matched": {
+      "unweighted_structural_manhattan_distance": 8,
+      "weighted_structural_manhattan_distance": 12,
+      "weights": {
+        "missing_attributes": 1,
+        "hallucinated_attributes": 1,
+        "missing_tables": 2,
+        "hallucinated_tables": 2,
+        "wrong_primary_keys": 2,
+        "missing_foreign_keys": 3,
+        "wrong_foreign_key_targets": 4,
+        "wrong_relationship_tables": 4,
+        "cardinality_errors": 4,
+        "specialization_errors": 5,
+        "invalid_mappings": 5
+      },
+      "expected_structural_mass": 66,
+      "normalized_weighted_structural_distance": 0.18181818181818182
+    },
+    "distance_reduction_from_matching": 0.5454545454545454
+  }
+}
