@@ -420,6 +420,37 @@ The validation report includes:
 - found value;
 - summary counts.
 
+## Script Output Reproducibility
+
+All scripts used in the benchmark must save their outputs in a dedicated run folder.
+
+Each run folder should include:
+
+- main output files;
+- intermediate artifacts;
+- warnings or error reports;
+- a manifest file with execution metadata.
+
+The manifest should record:
+
+- script name;
+- timestamp;
+- dataset;
+- model;
+- condition;
+- input files;
+- input file hashes;
+- prompt file;
+- output directory;
+- generated files;
+- relevant parameters.
+
+The first script following this rule is `scripts/normalize_output.py`.
+
+Its outputs are saved by default under:
+
+- `results/normalization_runs/<run_id>/`
+
 ## 17. Reproducibility
 
 Each experiment must record:

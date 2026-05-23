@@ -126,6 +126,25 @@ Some EER features are difficult to represent completely in Mermaid, such as:
 
 For this reason, the main conceptual ground truth is represented in YAML. Mermaid may be used only as an optional visualization format.
 
+## Reproducible Script Outputs
+
+All benchmark scripts must save their outputs in dedicated folders.
+
+Each script execution should produce:
+
+- the main output files;
+- intermediate files when useful;
+- warnings or error reports;
+- a manifest file with execution metadata.
+
+This rule supports reproducibility and makes it possible to inspect each step of the benchmark pipeline.
+
+The normalization script is documented in `scripts/README.md`.
+
+Default normalization outputs are saved in:
+
+- `results/normalization_runs/<run_id>/`
+
 ## Repository Structure
 
 ```text
