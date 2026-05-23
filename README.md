@@ -145,6 +145,19 @@ Default normalization outputs are saved in:
 
 - `results/normalization_runs/<run_id>/`
 
+## Paper Material
+
+The repository stores reusable paper-support text blocks in:
+
+- `paper_material/text_blocks/`
+
+The current text block:
+
+- `paper_material/text_blocks/toy_pipeline_validation.md`
+
+summarizes the toy example used to validate the normalization and evaluation pipeline. It explains the strict, matched, and alternative-aware evaluation modes and reports the toy validation results.
+
+
 ## Repository Structure
 
 ```text
