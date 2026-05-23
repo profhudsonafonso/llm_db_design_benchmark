@@ -62,3 +62,20 @@ The LLM should:
 - correct reported errors;
 - avoid introducing new unsupported schema elements;
 - return only valid JSON.
+
+## Mapping Alternative Classification
+
+The validator must distinguish preferred mappings from valid alternatives.
+
+Possible mapping classifications:
+
+| Classification | Meaning |
+|---|---|
+| preferred_correct | The generated mapping matches the preferred gold mapping. |
+| valid_alternative | The generated mapping is different from the preferred one but appears in the acceptable alternatives. |
+| invalid_mapping | The generated mapping appears in the not allowed mappings or violates the EER semantics. |
+| missing_mapping | The expected mapping was not generated. |
+| hallucinated_mapping | The generated mapping is not supported by the EER input. |
+
+The validation report may include these classifications in the error list or in a separate mapping summary.
+

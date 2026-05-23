@@ -60,6 +60,39 @@ IMDb is used as the medium-complexity dataset. It contains several interconnecte
 
 Yelp is used as the high-complexity dataset. It contains heterogeneous JSON-based structures and several connected concepts, such as businesses, users, reviews, tips, and check-ins. It is useful for testing how LLMs behave with larger and more complex schema structures.
 
+## Preferred and Alternative Valid Mappings
+
+Conceptual-to-logical database design may have more than one valid implementation.
+
+For this reason, the benchmark uses:
+
+- one preferred logical relational gold standard;
+- local alternative valid mappings for discretionary design decisions.
+
+Examples of discretionary decisions include:
+
+- mapping a relationship as a separate relationship table;
+- mapping a relationship as a foreign key column;
+- merging tables in specific one-to-one cases;
+- choosing a strategy for specialization/generalization.
+
+The file `logical_relational_gold.json` contains a `mapping_alternatives` section where the expert documents:
+
+- the preferred mapping;
+- other acceptable mappings;
+- mappings that should not be used;
+- the rationale for each decision.
+
+During evaluation, an LLM output can be classified as:
+
+- `preferred_correct`;
+- `valid_alternative`;
+- `invalid_mapping`;
+- `missing_mapping`;
+- `hallucinated_mapping`.
+
+This avoids penalizing a model when it produces a logically valid alternative that differs from the preferred expert choice.
+
 ## Ground Truth Strategy
 
 Each dataset has two main reference files.

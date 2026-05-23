@@ -4,7 +4,7 @@
     "dataset_name": "",
     "dataset_complexity": "",
     "target_model": "relational",
-    "version": "0.1",
+    "version": "0.2",
     "created_by": "",
     "reviewed_by": "",
     "creation_date": "",
@@ -17,6 +17,8 @@
       "origin": {
         "conceptual_elements": [],
         "mapping_rule": "",
+        "is_preferred_mapping": true,
+        "alternative_group_id": null,
         "notes": ""
       },
       "columns": [
@@ -88,6 +90,8 @@
         }
       ],
       "relationship_attributes": [],
+      "is_preferred_mapping": true,
+      "alternative_group_id": null,
       "notes": ""
     }
   ],
@@ -105,6 +109,8 @@
       ],
       "tables": [],
       "discriminator_column": null,
+      "is_preferred_mapping": true,
+      "alternative_group_id": null,
       "notes": ""
     }
   ],
@@ -113,8 +119,61 @@
       "id": "MD001",
       "conceptual_element": "",
       "decision": "",
+      "decision_type": "",
+      "allowed_values": [
+        "entity_to_table",
+        "relationship_table",
+        "foreign_key_column",
+        "table_merge",
+        "weak_entity_mapping",
+        "multivalued_attribute_table",
+        "specialization_mapping",
+        "not_applicable"
+      ],
+      "status": "preferred",
       "reason": "",
       "affected_tables": [],
+      "affected_columns": [],
+      "affected_foreign_keys": [],
+      "alternative_group_id": null,
+      "notes": ""
+    }
+  ],
+  "mapping_alternatives": [
+    {
+      "id": "ALT001",
+      "conceptual_element_id": "",
+      "conceptual_element_name": "",
+      "conceptual_element_type": "",
+      "decision_context": "",
+      "preferred_mapping": {
+        "mapping_type": "",
+        "status": "preferred",
+        "expected_tables": [],
+        "expected_columns": [],
+        "expected_foreign_keys": [],
+        "expected_constraints": [],
+        "rationale": ""
+      },
+      "acceptable_mappings": [
+        {
+          "mapping_type": "",
+          "status": "acceptable",
+          "expected_tables": [],
+          "expected_columns": [],
+          "expected_foreign_keys": [],
+          "expected_constraints": [],
+          "conditions": "",
+          "rationale": ""
+        }
+      ],
+      "not_allowed_mappings": [
+        {
+          "mapping_type": "",
+          "status": "not_allowed",
+          "reason": ""
+        }
+      ],
       "notes": ""
     }
   ],
@@ -124,12 +183,15 @@
     "primary_keys_expected": [],
     "foreign_keys_expected": [],
     "relationship_tables_expected": [],
-    "specialization_mappings_expected": []
+    "specialization_mappings_expected": [],
+    "mapping_decisions_expected": [],
+    "alternative_mapping_groups": []
   },
   "expert_notes": {
     "assumptions": [],
     "ambiguities": [],
     "alternative_valid_mappings": [],
+    "discretionary_decisions": [],
     "excluded_details": []
   }
 }

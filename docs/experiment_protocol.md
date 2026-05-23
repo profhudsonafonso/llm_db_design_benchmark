@@ -297,6 +297,35 @@ The main evaluated components are:
 - constraints;
 - mapping decisions.
 
+## Preferred and Alternative Valid Mappings
+
+The benchmark recognizes that conceptual-to-logical database design may have multiple valid implementations.
+
+Therefore, the expert-defined logical gold standard contains:
+
+- a preferred mapping;
+- acceptable alternative mappings for discretionary cases;
+- not allowed mappings.
+
+The evaluator must first compare the LLM output against the preferred mapping. If the output does not match the preferred mapping, the evaluator must compare it against the acceptable alternatives.
+
+The final mapping classification can be:
+
+| Classification | Meaning |
+|---|---|
+| preferred_correct | The LLM generated the preferred expert mapping. |
+| valid_alternative | The LLM generated a valid but non-preferred mapping. |
+| invalid_mapping | The LLM generated a mapping explicitly marked as not allowed. |
+| missing_mapping | The LLM omitted the required mapping. |
+| hallucinated_mapping | The LLM invented a mapping unsupported by the EER input. |
+
+This distinction is important because a non-preferred but valid logical design should not be counted as a structural error.
+
+The evaluation will report both:
+
+- preferred mapping accuracy;
+- valid mapping accuracy.
+
 ## 14. Metrics
 
 The benchmark uses component-level and global metrics.

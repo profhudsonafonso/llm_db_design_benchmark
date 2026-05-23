@@ -117,3 +117,20 @@ The taxonomy is used to produce:
 - repair gain;
 - error reduction after validation-guided repair;
 - new error rate after repair.
+
+## Mapping Alternative Categories
+
+Some mapping outcomes are not simple errors.
+
+| Category | Description |
+|---|---|
+| preferred_correct | The output follows the preferred mapping defined by the expert. |
+| valid_alternative | The output follows an acceptable non-preferred mapping. |
+| invalid_mapping | The output uses a mapping marked as not allowed. |
+| missing_mapping | The output omits a required mapping. |
+| hallucinated_mapping | The output creates an unsupported mapping. |
+
+`valid_alternative` should not be counted as a structural error. However, it should be counted separately from `preferred_correct` because the model did not follow the preferred expert decision.
+
+This allows the benchmark to report both strict preference-based scores and broader validity-based scores.
+

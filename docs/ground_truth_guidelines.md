@@ -4,10 +4,8 @@ This document explains how to create the expert-defined ground truths used in th
 
 Each dataset must have two ground truth files:
 
-```text
-datasets/<dataset>/ground_truth/conceptual_eer.yaml
-datasets/<dataset>/ground_truth/logical_relational_gold.json
-```
+- `datasets/<dataset>/ground_truth/conceptual_eer.yaml`
+- `datasets/<dataset>/ground_truth/logical_relational_gold.json`
 
 ## 1. Goal
 
@@ -23,9 +21,7 @@ The LLM must not see the logical ground truth.
 
 File:
 
-```text
-conceptual_eer.yaml
-```
+- `conceptual_eer.yaml`
 
 This file represents the conceptual EER model.
 
@@ -48,9 +44,7 @@ This file is used to generate the input given to the LLMs.
 
 File:
 
-```text
-logical_relational_gold.json
-```
+- `logical_relational_gold.json`
 
 This file represents the expected logical relational schema.
 
@@ -63,33 +57,74 @@ It must describe:
 - unique constraints;
 - relationship tables;
 - inheritance mapping decisions;
-- mapping notes.
+- mapping notes;
+- valid alternative mappings when more than one logical implementation is acceptable.
 
 This file is used only for evaluation.
 
-## 3. Why YAML for EER?
+## 3. Important Methodological Decision: Preferred vs. Acceptable Mappings
 
-The benchmark uses YAML instead of Mermaid as the main conceptual representation because Mermaid does not fully capture all EER constructs.
+Conceptual-to-logical database design does not always have a single correct answer.
 
-Important EER constructs include:
+Some EER constructs may be transformed into a relational schema in more than one valid way. For example, depending on cardinality and participation constraints, a relationship may be implemented as:
 
-- minimum and maximum cardinalities;
-- total and partial participation;
-- weak entities;
-- identifying relationships;
-- relationship attributes;
-- specialization/generalization;
-- disjoint and overlapping subtypes;
-- total and partial specialization;
-- composite and multivalued attributes.
+- a separate relationship table;
+- a foreign key column;
+- a table merge in specific one-to-one cases.
 
-Mermaid may be used only as an optional visualization.
+Therefore, the benchmark uses one main preferred gold schema plus local alternative valid mappings for discretionary cases.
 
-## 4. Mandatory Conceptual Elements
+The expert must define:
+
+1. the preferred mapping;
+2. other acceptable mappings, if any;
+3. mappings that should not be used;
+4. a short rationale for each decision.
+
+This prevents penalizing an LLM as incorrect when it generates a logically valid alternative that differs from the preferred expert choice.
+
+## 4. When to Register Alternative Mappings
+
+The expert should register alternatives when the EER construct allows more than one valid relational implementation.
+
+Common cases include:
+
+- binary 1:1 relationships;
+- binary 1:N relationships where a separate relationship table may be acceptable;
+- optional relationships where nullable FK placement may vary;
+- relationships with attributes;
+- associative entities;
+- weak entities with alternative key representation;
+- specialization/generalization mapping strategies;
+- multivalued attributes with alternative naming or key strategies.
+
+The expert does not need to create a full second schema. Only the local discretionary mapping decision must be documented.
+
+## 5. Mapping Status Values
+
+Use the following status values:
+
+| Status | Meaning |
+|---|---|
+| preferred | The expert's main recommended implementation. |
+| acceptable | A logically valid alternative implementation. |
+| not_allowed | An implementation that should be considered incorrect. |
+
+## 6. Example of Alternative Mapping Documentation
+
+Example for a relationship between `Pessoa` and `Compra`:
+
+- preferred mapping: relationship table `PessoaCompra`;
+- acceptable mapping: foreign key in `Compra`, if the cardinality permits it;
+- not allowed: merging `Pessoa` and `Compra` into one table, if they are independent entity types.
+
+In the JSON template, this must be documented in the `mapping_alternatives` section.
+
+## 7. Mandatory Conceptual Elements
 
 The expert must fill the following elements whenever they exist in the dataset.
 
-### 4.1 Entities
+### 7.1 Entities
 
 For each entity, specify:
 
@@ -101,7 +136,7 @@ For each entity, specify:
 - description;
 - source table, file, or collection.
 
-### 4.2 Attributes
+### 7.2 Attributes
 
 For each attribute, specify:
 
@@ -112,7 +147,7 @@ For each attribute, specify:
 - whether it belongs to a key;
 - source field, if applicable.
 
-### 4.3 Relationships
+### 7.3 Relationships
 
 For each relationship, specify:
 
@@ -127,7 +162,7 @@ For each relationship, specify:
 - whether it is identifying;
 - relationship semantics.
 
-### 4.4 Weak Entities
+### 7.4 Weak Entities
 
 For weak entities, specify:
 
@@ -136,7 +171,7 @@ For weak entities, specify:
 - partial key;
 - full identifier after mapping.
 
-### 4.5 Specialization and Generalization
+### 7.5 Specialization and Generalization
 
 For each specialization/generalization, specify:
 
@@ -147,21 +182,9 @@ For each specialization/generalization, specify:
 - inheritance type: single or multiple;
 - subtype predicate, when applicable.
 
-### 4.6 Constraints
+## 8. Logical Relational Ground Truth
 
-Specify relevant constraints such as:
-
-- key constraints;
-- uniqueness constraints;
-- mandatory participation;
-- cardinality constraints;
-- inclusion constraints;
-- exclusion constraints;
-- semantic business rules.
-
-## 5. Logical Relational Ground Truth
-
-The logical relational gold standard must represent the correct target schema.
+The logical relational gold standard must represent the preferred target schema.
 
 For each table, specify:
 
@@ -197,7 +220,31 @@ For each specialization, specify the chosen relational mapping strategy:
 - concrete-table inheritance;
 - other.
 
-## 6. Rules for the Expert
+## 9. Alternative Valid Mappings
+
+For each discretionary mapping decision, fill the `mapping_alternatives` section.
+
+Each alternative group must include:
+
+- conceptual element ID;
+- conceptual element name;
+- conceptual element type;
+- preferred mapping;
+- acceptable mappings;
+- not allowed mappings;
+- rationale.
+
+The evaluator will classify an LLM output as:
+
+| Classification | Meaning |
+|---|---|
+| preferred_correct | The LLM followed the preferred gold mapping. |
+| valid_alternative | The LLM generated an acceptable but non-preferred mapping. |
+| invalid_mapping | The LLM used a mapping explicitly marked as not allowed. |
+| missing_mapping | The LLM omitted the required mapping. |
+| hallucinated_mapping | The LLM invented a mapping not supported by the EER input. |
+
+## 10. Rules for the Expert
 
 Use stable and consistent names.
 
@@ -213,36 +260,9 @@ Prefer explicit cardinalities using `min` and `max`.
 
 Use `many` for unbounded maximum cardinality.
 
-## 7. Example Cardinality Format
+When more than one logical implementation is valid, do not create multiple complete schemas. Instead, document the alternatives in `mapping_alternatives`.
 
-```yaml
-participants:
-  - entity: Customer
-    role: customer
-    cardinality:
-      min: 1
-      max: 1
-    participation: mandatory
-
-  - entity: Order
-    role: order
-    cardinality:
-      min: 0
-      max: many
-    participation: optional
-```
-
-## 8. Benchmark Datasets
-
-The benchmark currently uses three datasets:
-
-| Dataset | Complexity | Role |
-|---|---|---|
-| Chinook | Low | Small and controlled relational schema |
-| IMDb | Medium | Real-world dataset with multiple interconnected entities |
-| Yelp | High | Heterogeneous JSON-based dataset with complex relationships |
-
-## 9. Final Check Before Submission
+## 11. Final Check Before Submission
 
 Before sending the ground truth files, verify:
 
@@ -253,4 +273,5 @@ Before sending the ground truth files, verify:
 - all specialization structures have completeness and disjointness;
 - all logical tables have primary keys;
 - all foreign keys reference existing tables and columns;
-- all mapping decisions are documented.
+- all mapping decisions are documented;
+- all discretionary mappings have preferred, acceptable, and not allowed options when applicable.
