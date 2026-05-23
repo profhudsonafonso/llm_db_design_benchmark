@@ -1,0 +1,45 @@
+{
+  "summary": {
+    "preferred_correct": 1,
+    "valid_alternative": 0,
+    "invalid_mapping": 0,
+    "missing_mapping": 0,
+    "hallucinated_mapping": 0,
+    "total_alternative_groups": 1,
+    "preferred_mapping_accuracy": 1.0,
+    "valid_mapping_accuracy": 1.0,
+    "alternative_mapping_rate": 0.0,
+    "invalid_mapping_rate": 0.0
+  },
+  "groups": [
+    {
+      "alternative_group_id": "ALT_R003",
+      "conceptual_element_id": "R003",
+      "conceptual_element_name": "CustomerHasProfile",
+      "classification": "preferred_correct",
+      "reason": "Generated mapping satisfies the preferred mapping.",
+      "matched_detail": {
+        "mapping_type": "foreign_key_column",
+        "status": "preferred",
+        "expected_tables": [
+          "CustomerProfile"
+        ],
+        "expected_columns": [
+          "CustomerProfile.customer_id",
+          "CustomerProfile.bio",
+          "CustomerProfile.birth_date"
+        ],
+        "expected_foreign_keys": [
+          "CustomerProfile.customer_id -> Customer.customer_id"
+        ],
+        "expected_constraints": [
+          "CustomerProfile.customer_id is PK and FK"
+        ],
+        "rationale": "Keeps optional profile attributes separate and avoids nulls in Customer."
+      },
+      "preferred_table_hit": true,
+      "preferred_column_hit": true,
+      "preferred_fk_hit": true
+    }
+  ]
+}

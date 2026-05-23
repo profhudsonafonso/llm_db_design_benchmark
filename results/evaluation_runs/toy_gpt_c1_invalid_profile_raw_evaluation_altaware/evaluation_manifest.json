@@ -1,0 +1,27 @@
+{
+  "run_id": "toy_gpt_c1_invalid_profile_raw_evaluation_altaware",
+  "created_at_utc": "2026-05-23T13:32:27.060420+00:00",
+  "script": "scripts/evaluate_schema.py",
+  "dataset": "toy_example",
+  "model": "gpt",
+  "condition": "C1",
+  "gold_file": "datasets/toy_example/ground_truth/logical_relational_gold.json",
+  "gold_sha256": "ac4fee96113baa6faff416f7418e1e8b69df4b7816101c7e2a94bd33e4d5e37f",
+  "prediction_file": "results/normalization_runs/toy_gpt_c1_invalid_profile_raw_normalization/normalized_schema.json",
+  "prediction_sha256": "48f4e70bfe139a825db07c8a87f605b24df531efce800ffb02410a3c6b1c56a0",
+  "normalization_run_dir": "results/normalization_runs/toy_gpt_c1_invalid_profile_raw_normalization",
+  "output_dir": "results/evaluation_runs/toy_gpt_c1_invalid_profile_raw_evaluation_altaware",
+  "notes": "Toy example alternative-aware evaluation test: gpt_c1_invalid_profile_raw",
+  "generated_files": [
+    "evaluation_metrics.json",
+    "strict_component_results.json",
+    "matched_component_results.json",
+    "alternative_aware_component_results.json",
+    "table_mapping_evidence.json",
+    "mapping_alternative_report.json",
+    "component_metrics.csv",
+    "evaluation_errors.csv",
+    "evaluation_errors.json",
+    "evaluation_manifest.json"
+  ]
+}

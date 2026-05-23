@@ -1,0 +1,149 @@
+{
+  "dataset": "toy_example",
+  "model": "gpt",
+  "condition": "C1",
+  "strict": {
+    "global": {
+      "tp": 22,
+      "fp": 8,
+      "fn": 8,
+      "precision": 0.7333333333333333,
+      "recall": 0.7333333333333333,
+      "f1": 0.7333333333333333
+    }
+  },
+  "matched": {
+    "global": {
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "alternative_aware": {
+    "global": {
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "mapping_alternatives": {
+    "preferred_correct": 1,
+    "valid_alternative": 0,
+    "invalid_mapping": 0,
+    "missing_mapping": 0,
+    "hallucinated_mapping": 0,
+    "total_alternative_groups": 1,
+    "preferred_mapping_accuracy": 1.0,
+    "valid_mapping_accuracy": 1.0,
+    "alternative_mapping_rate": 0.0,
+    "invalid_mapping_rate": 0.0
+  },
+  "error_counts_for_distance": {
+    "strict": {
+      "missing_tables": 1,
+      "hallucinated_tables": 1,
+      "missing_attributes": 3,
+      "hallucinated_attributes": 3,
+      "wrong_primary_keys": 2,
+      "missing_foreign_keys": 2,
+      "wrong_foreign_key_targets": 2,
+      "wrong_relationship_tables": 2,
+      "cardinality_errors": 0,
+      "specialization_errors": 0,
+      "invalid_mappings": 0
+    },
+    "matched": {
+      "missing_tables": 0,
+      "hallucinated_tables": 0,
+      "missing_attributes": 0,
+      "hallucinated_attributes": 0,
+      "wrong_primary_keys": 0,
+      "missing_foreign_keys": 0,
+      "wrong_foreign_key_targets": 0,
+      "wrong_relationship_tables": 0,
+      "cardinality_errors": 0,
+      "specialization_errors": 0,
+      "invalid_mappings": 0
+    },
+    "alternative_aware": {
+      "missing_tables": 0,
+      "hallucinated_tables": 0,
+      "missing_attributes": 0,
+      "hallucinated_attributes": 0,
+      "wrong_primary_keys": 0,
+      "missing_foreign_keys": 0,
+      "wrong_foreign_key_targets": 0,
+      "wrong_relationship_tables": 0,
+      "cardinality_errors": 0,
+      "specialization_errors": 0,
+      "invalid_mappings": 0
+    }
+  },
+  "structural_distance": {
+    "strict": {
+      "unweighted_structural_manhattan_distance": 16,
+      "weighted_structural_manhattan_distance": 36,
+      "weights": {
+        "missing_attributes": 1,
+        "hallucinated_attributes": 1,
+        "missing_tables": 2,
+        "hallucinated_tables": 2,
+        "wrong_primary_keys": 2,
+        "missing_foreign_keys": 3,
+        "wrong_foreign_key_targets": 4,
+        "wrong_relationship_tables": 4,
+        "cardinality_errors": 4,
+        "specialization_errors": 5,
+        "invalid_mappings": 5
+      },
+      "expected_structural_mass": 66,
+      "normalized_weighted_structural_distance": 0.5454545454545454
+    },
+    "matched": {
+      "unweighted_structural_manhattan_distance": 0,
+      "weighted_structural_manhattan_distance": 0,
+      "weights": {
+        "missing_attributes": 1,
+        "hallucinated_attributes": 1,
+        "missing_tables": 2,
+        "hallucinated_tables": 2,
+        "wrong_primary_keys": 2,
+        "missing_foreign_keys": 3,
+        "wrong_foreign_key_targets": 4,
+        "wrong_relationship_tables": 4,
+        "cardinality_errors": 4,
+        "specialization_errors": 5,
+        "invalid_mappings": 5
+      },
+      "expected_structural_mass": 66,
+      "normalized_weighted_structural_distance": 0.0
+    },
+    "alternative_aware": {
+      "unweighted_structural_manhattan_distance": 0,
+      "weighted_structural_manhattan_distance": 0,
+      "weights": {
+        "missing_attributes": 1,
+        "hallucinated_attributes": 1,
+        "missing_tables": 2,
+        "hallucinated_tables": 2,
+        "wrong_primary_keys": 2,
+        "missing_foreign_keys": 3,
+        "wrong_foreign_key_targets": 4,
+        "wrong_relationship_tables": 4,
+        "cardinality_errors": 4,
+        "specialization_errors": 5,
+        "invalid_mappings": 5
+      },
+      "expected_structural_mass": 66,
+      "normalized_weighted_structural_distance": 0.0
+    },
+    "distance_reduction_from_matching": 0.5454545454545454,
+    "distance_reduction_from_alternatives": 0.0
+  }
+}

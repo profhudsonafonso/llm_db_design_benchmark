@@ -1,0 +1,194 @@
+[
+  {
+    "mode": "strict",
+    "component": "tables",
+    "error_type": "false_positive",
+    "item": "ordprod"
+  },
+  {
+    "mode": "strict",
+    "component": "tables",
+    "error_type": "false_negative",
+    "item": "customerprofile"
+  },
+  {
+    "mode": "strict",
+    "component": "tables",
+    "error_type": "false_negative",
+    "item": "orderproduct"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_positive",
+    "item": "customer.bio"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_positive",
+    "item": "customer.birthdate"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_positive",
+    "item": "ordprod.orderid"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_positive",
+    "item": "ordprod.productid"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_positive",
+    "item": "ordprod.quantity"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_negative",
+    "item": "customerprofile.bio"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_negative",
+    "item": "customerprofile.birthdate"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_negative",
+    "item": "customerprofile.customerid"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_negative",
+    "item": "orderproduct.orderid"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_negative",
+    "item": "orderproduct.productid"
+  },
+  {
+    "mode": "strict",
+    "component": "attributes",
+    "error_type": "false_negative",
+    "item": "orderproduct.quantity"
+  },
+  {
+    "mode": "strict",
+    "component": "primary_keys",
+    "error_type": "false_positive",
+    "item": "ordprod:orderid+productid"
+  },
+  {
+    "mode": "strict",
+    "component": "primary_keys",
+    "error_type": "false_negative",
+    "item": "customerprofile:customerid"
+  },
+  {
+    "mode": "strict",
+    "component": "primary_keys",
+    "error_type": "false_negative",
+    "item": "orderproduct:orderid+productid"
+  },
+  {
+    "mode": "strict",
+    "component": "foreign_keys",
+    "error_type": "false_positive",
+    "item": "ordprod:orderid->order:orderid"
+  },
+  {
+    "mode": "strict",
+    "component": "foreign_keys",
+    "error_type": "false_positive",
+    "item": "ordprod:productid->product:productid"
+  },
+  {
+    "mode": "strict",
+    "component": "foreign_keys",
+    "error_type": "false_negative",
+    "item": "customerprofile:customerid->customer:customerid"
+  },
+  {
+    "mode": "strict",
+    "component": "foreign_keys",
+    "error_type": "false_negative",
+    "item": "orderproduct:orderid->order:orderid"
+  },
+  {
+    "mode": "strict",
+    "component": "foreign_keys",
+    "error_type": "false_negative",
+    "item": "orderproduct:productid->product:productid"
+  },
+  {
+    "mode": "strict",
+    "component": "relationship_tables",
+    "error_type": "false_positive",
+    "item": "ordprod"
+  },
+  {
+    "mode": "strict",
+    "component": "relationship_tables",
+    "error_type": "false_negative",
+    "item": "orderproduct"
+  },
+  {
+    "mode": "matched",
+    "component": "tables",
+    "error_type": "false_negative",
+    "item": "customerprofile"
+  },
+  {
+    "mode": "matched",
+    "component": "attributes",
+    "error_type": "false_positive",
+    "item": "customer.bio"
+  },
+  {
+    "mode": "matched",
+    "component": "attributes",
+    "error_type": "false_positive",
+    "item": "customer.birthdate"
+  },
+  {
+    "mode": "matched",
+    "component": "attributes",
+    "error_type": "false_negative",
+    "item": "customerprofile.bio"
+  },
+  {
+    "mode": "matched",
+    "component": "attributes",
+    "error_type": "false_negative",
+    "item": "customerprofile.birthdate"
+  },
+  {
+    "mode": "matched",
+    "component": "attributes",
+    "error_type": "false_negative",
+    "item": "customerprofile.customerid"
+  },
+  {
+    "mode": "matched",
+    "component": "primary_keys",
+    "error_type": "false_negative",
+    "item": "customerprofile:customerid"
+  },
+  {
+    "mode": "matched",
+    "component": "foreign_keys",
+    "error_type": "false_negative",
+    "item": "customerprofile:customerid->customer:customerid"
+  }
+]

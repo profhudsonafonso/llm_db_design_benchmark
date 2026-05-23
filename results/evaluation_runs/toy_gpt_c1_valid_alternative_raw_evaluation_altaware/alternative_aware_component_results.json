@@ -1,0 +1,107 @@
+{
+  "tables": {
+    "tp": 4,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp_items": [
+      "customer",
+      "order",
+      "orderproduct",
+      "product"
+    ],
+    "fp_items": [],
+    "fn_items": []
+  },
+  "attributes": {
+    "tp": 14,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp_items": [
+      "customer.bio",
+      "customer.birthdate",
+      "customer.customerid",
+      "customer.email",
+      "customer.name",
+      "order.customerid",
+      "order.orderdate",
+      "order.orderid",
+      "orderproduct.orderid",
+      "orderproduct.productid",
+      "orderproduct.quantity",
+      "product.price",
+      "product.productid",
+      "product.productname"
+    ],
+    "fp_items": [],
+    "fn_items": []
+  },
+  "primary_keys": {
+    "tp": 4,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp_items": [
+      "customer:customerid",
+      "order:orderid",
+      "orderproduct:orderid+productid",
+      "product:productid"
+    ],
+    "fp_items": [],
+    "fn_items": []
+  },
+  "foreign_keys": {
+    "tp": 3,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp_items": [
+      "order:customerid->customer:customerid",
+      "orderproduct:orderid->order:orderid",
+      "orderproduct:productid->product:productid"
+    ],
+    "fp_items": [],
+    "fn_items": []
+  },
+  "relationship_tables": {
+    "tp": 1,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp_items": [
+      "orderproduct"
+    ],
+    "fp_items": [],
+    "fn_items": []
+  },
+  "specialization_mappings": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "tp_items": [],
+    "fp_items": [],
+    "fn_items": []
+  },
+  "global": {
+    "tp": 26,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  }
+}

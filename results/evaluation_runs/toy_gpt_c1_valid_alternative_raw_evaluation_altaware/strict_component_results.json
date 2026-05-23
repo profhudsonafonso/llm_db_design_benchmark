@@ -1,0 +1,130 @@
+{
+  "tables": {
+    "tp": 3,
+    "fp": 1,
+    "fn": 2,
+    "precision": 0.75,
+    "recall": 0.6,
+    "f1": 0.6666666666666665,
+    "tp_items": [
+      "customer",
+      "order",
+      "product"
+    ],
+    "fp_items": [
+      "ordprod"
+    ],
+    "fn_items": [
+      "customerprofile",
+      "orderproduct"
+    ]
+  },
+  "attributes": {
+    "tp": 9,
+    "fp": 5,
+    "fn": 6,
+    "precision": 0.6428571428571429,
+    "recall": 0.6,
+    "f1": 0.6206896551724138,
+    "tp_items": [
+      "customer.customerid",
+      "customer.email",
+      "customer.name",
+      "order.customerid",
+      "order.orderdate",
+      "order.orderid",
+      "product.price",
+      "product.productid",
+      "product.productname"
+    ],
+    "fp_items": [
+      "customer.bio",
+      "customer.birthdate",
+      "ordprod.orderid",
+      "ordprod.productid",
+      "ordprod.quantity"
+    ],
+    "fn_items": [
+      "customerprofile.bio",
+      "customerprofile.birthdate",
+      "customerprofile.customerid",
+      "orderproduct.orderid",
+      "orderproduct.productid",
+      "orderproduct.quantity"
+    ]
+  },
+  "primary_keys": {
+    "tp": 3,
+    "fp": 1,
+    "fn": 2,
+    "precision": 0.75,
+    "recall": 0.6,
+    "f1": 0.6666666666666665,
+    "tp_items": [
+      "customer:customerid",
+      "order:orderid",
+      "product:productid"
+    ],
+    "fp_items": [
+      "ordprod:orderid+productid"
+    ],
+    "fn_items": [
+      "customerprofile:customerid",
+      "orderproduct:orderid+productid"
+    ]
+  },
+  "foreign_keys": {
+    "tp": 1,
+    "fp": 2,
+    "fn": 3,
+    "precision": 0.3333333333333333,
+    "recall": 0.25,
+    "f1": 0.28571428571428575,
+    "tp_items": [
+      "order:customerid->customer:customerid"
+    ],
+    "fp_items": [
+      "ordprod:orderid->order:orderid",
+      "ordprod:productid->product:productid"
+    ],
+    "fn_items": [
+      "customerprofile:customerid->customer:customerid",
+      "orderproduct:orderid->order:orderid",
+      "orderproduct:productid->product:productid"
+    ]
+  },
+  "relationship_tables": {
+    "tp": 0,
+    "fp": 1,
+    "fn": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tp_items": [],
+    "fp_items": [
+      "ordprod"
+    ],
+    "fn_items": [
+      "orderproduct"
+    ]
+  },
+  "specialization_mappings": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "tp_items": [],
+    "fp_items": [],
+    "fn_items": []
+  },
+  "global": {
+    "tp": 16,
+    "fp": 10,
+    "fn": 14,
+    "precision": 0.6153846153846154,
+    "recall": 0.5333333333333333,
+    "f1": 0.5714285714285715
+  }
+}

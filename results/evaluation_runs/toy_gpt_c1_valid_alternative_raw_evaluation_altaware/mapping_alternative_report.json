@@ -1,0 +1,41 @@
+{
+  "summary": {
+    "preferred_correct": 0,
+    "valid_alternative": 1,
+    "invalid_mapping": 0,
+    "missing_mapping": 0,
+    "hallucinated_mapping": 0,
+    "total_alternative_groups": 1,
+    "preferred_mapping_accuracy": 0.0,
+    "valid_mapping_accuracy": 1.0,
+    "alternative_mapping_rate": 1.0,
+    "invalid_mapping_rate": 0.0
+  },
+  "groups": [
+    {
+      "alternative_group_id": "ALT_R003",
+      "conceptual_element_id": "R003",
+      "conceptual_element_name": "CustomerHasProfile",
+      "classification": "valid_alternative",
+      "reason": "Generated mapping satisfies an acceptable non-preferred mapping.",
+      "matched_detail": {
+        "mapping_type": "table_merge",
+        "status": "acceptable",
+        "expected_tables": [
+          "Customer"
+        ],
+        "expected_columns": [
+          "Customer.bio",
+          "Customer.birth_date"
+        ],
+        "expected_foreign_keys": [],
+        "expected_constraints": [],
+        "conditions": "Acceptable because CustomerProfile has optional descriptive attributes and a one-to-one relationship with Customer.",
+        "rationale": "A table merge is a valid simplification for this toy case."
+      },
+      "preferred_table_hit": false,
+      "preferred_column_hit": false,
+      "preferred_fk_hit": false
+    }
+  ]
+}
