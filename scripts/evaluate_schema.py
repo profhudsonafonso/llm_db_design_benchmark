@@ -412,12 +412,87 @@ def evaluate_components(gold_schema: Dict[str, Any], pred_schema: Dict[str, Any]
     return result, mapping_evidence
 
 
+def normalize_qualified_reference(value: str) -> str:
+    """
+    Normalize strings like:
+    CustomerProfile.customer_id -> Customer.customer_id
+    """
+    value = str(value).strip()
+    value = value.replace(" ", "")
+    if "->" not in value:
+        return normalize_name(value)
+
+    left, right = value.split("->", 1)
+
+    def norm_side(side: str) -> str:
+        if "." in side:
+            table, col = side.split(".", 1)
+            return f"{normalize_name(table)}.{normalize_name(col)}"
+        return normalize_name(side)
+
+    return f"{norm_side(left)}->{norm_side(right)}"
+
+
+def predicted_fk_references(schema: Dict[str, Any]) -> Set[str]:
+    """
+    Return normalized FK references from a schema.
+
+    Format:
+    table.column -> referenced_table.referenced_column
+    """
+    refs = set()
+
+    for table in get_tables(schema):
+        table_name = get_table_name(table)
+        table_norm = normalize_name(table_name)
+
+        for fk in get_foreign_keys(table):
+            local_cols = as_list(fk.get("columns"))
+            ref_table = fk.get("referenced_table", fk.get("refTable", ""))
+            ref_cols = as_list(fk.get("referenced_columns", fk.get("refColumns", [])))
+
+            # Pair columns positionally when possible.
+            if len(local_cols) == len(ref_cols):
+                for local, ref in zip(local_cols, ref_cols):
+                    refs.add(
+                        f"{table_norm}.{normalize_name(local)}->{normalize_name(ref_table)}.{normalize_name(ref)}"
+                    )
+            else:
+                local_join = "+".join(normalize_name(c) for c in local_cols)
+                ref_join = "+".join(normalize_name(c) for c in ref_cols)
+                refs.add(
+                    f"{table_norm}.{local_join}->{normalize_name(ref_table)}.{ref_join}"
+                )
+
+    return refs
+
+
+def expected_columns_hit(expected_columns: List[Any], pred_columns: Set[str]) -> bool:
+    expected_norm = set()
+    for c in expected_columns:
+        if "." in str(c):
+            t, col = str(c).split(".", 1)
+            expected_norm.add(f"{normalize_name(t)}.{normalize_name(col)}")
+    return expected_norm.issubset(pred_columns) if expected_norm else True
+
+
+def expected_fks_hit(expected_fks: List[Any], pred_fks: Set[str]) -> bool:
+    expected_norm = {normalize_qualified_reference(str(fk)) for fk in expected_fks if str(fk).strip()}
+    return expected_norm.issubset(pred_fks) if expected_norm else True
+
+
 def classify_mapping_alternatives(gold_schema: Dict[str, Any], pred_schema: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Initial alternative-mapping classifier.
+    Classify discretionary mapping decisions.
 
-    This is intentionally conservative. It checks whether expected preferred
-    tables or acceptable alternative tables/columns are present after normalization.
+    The classifier distinguishes:
+    - preferred_correct;
+    - valid_alternative;
+    - invalid_mapping;
+    - missing_mapping;
+    - hallucinated_mapping.
+
+    This version checks expected tables, expected columns, and expected FKs.
     """
     pred_tables = {normalize_name(get_table_name(t)) for t in get_tables(pred_schema)}
     pred_columns = set()
@@ -428,6 +503,8 @@ def classify_mapping_alternatives(gold_schema: Dict[str, Any], pred_schema: Dict
             col_norm = normalize_name(col.get("name", ""))
             if table_norm and col_norm:
                 pred_columns.add(f"{table_norm}.{col_norm}")
+
+    pred_fks = predicted_fk_references(pred_schema)
 
     reports = []
     counts = {
@@ -447,44 +524,42 @@ def classify_mapping_alternatives(gold_schema: Dict[str, Any], pred_schema: Dict
         acceptable = as_list(alt.get("acceptable_mappings"))
 
         preferred_tables = {normalize_name(t) for t in as_list(preferred.get("expected_tables")) if t}
-        preferred_columns = {normalize_name(c).replace(".", ".") for c in as_list(preferred.get("expected_columns")) if c}
-
-        # More robust normalized table.column representation for preferred columns.
-        preferred_columns_norm = set()
-        for c in as_list(preferred.get("expected_columns")):
-            if "." in str(c):
-                t, col = str(c).split(".", 1)
-                preferred_columns_norm.add(f"{normalize_name(t)}.{normalize_name(col)}")
-
-        preferred_table_hit = preferred_tables.issubset(pred_tables) if preferred_tables else False
-        preferred_column_hit = preferred_columns_norm.issubset(pred_columns) if preferred_columns_norm else True
+        preferred_table_hit = preferred_tables.issubset(pred_tables) if preferred_tables else True
+        preferred_column_hit = expected_columns_hit(as_list(preferred.get("expected_columns")), pred_columns)
+        preferred_fk_hit = expected_fks_hit(as_list(preferred.get("expected_foreign_keys")), pred_fks)
 
         classification = "missing_mapping"
         matched_detail = None
+        reason = ""
 
-        if preferred_table_hit and preferred_column_hit:
+        if preferred_table_hit and preferred_column_hit and preferred_fk_hit:
             classification = "preferred_correct"
             matched_detail = preferred
+            reason = "Generated mapping satisfies the preferred mapping."
         else:
             for acc in acceptable:
                 if not isinstance(acc, dict):
                     continue
 
                 acc_tables = {normalize_name(t) for t in as_list(acc.get("expected_tables")) if t}
-                acc_columns_norm = set()
+                acc_table_hit = acc_tables.issubset(pred_tables) if acc_tables else True
+                acc_column_hit = expected_columns_hit(as_list(acc.get("expected_columns")), pred_columns)
+                acc_fk_hit = expected_fks_hit(as_list(acc.get("expected_foreign_keys")), pred_fks)
 
-                for c in as_list(acc.get("expected_columns")):
-                    if "." in str(c):
-                        t, col = str(c).split(".", 1)
-                        acc_columns_norm.add(f"{normalize_name(t)}.{normalize_name(col)}")
-
-                table_hit = acc_tables.issubset(pred_tables) if acc_tables else True
-                column_hit = acc_columns_norm.issubset(pred_columns) if acc_columns_norm else True
-
-                if table_hit and column_hit:
+                if acc_table_hit and acc_column_hit and acc_fk_hit:
                     classification = "valid_alternative"
                     matched_detail = acc
+                    reason = "Generated mapping satisfies an acceptable non-preferred mapping."
                     break
+
+            # If the preferred table exists but its required FK is missing, this is not simply missing;
+            # it is an invalid/disconnected implementation.
+            if classification == "missing_mapping":
+                if preferred_tables and (preferred_tables & pred_tables) and not preferred_fk_hit:
+                    classification = "invalid_mapping"
+                    reason = "A table related to the preferred mapping exists, but required FK structure is missing."
+                else:
+                    reason = "No preferred or acceptable mapping was detected."
 
         counts[classification] += 1
 
@@ -493,7 +568,11 @@ def classify_mapping_alternatives(gold_schema: Dict[str, Any], pred_schema: Dict
             "conceptual_element_id": alt.get("conceptual_element_id", ""),
             "conceptual_element_name": alt.get("conceptual_element_name", ""),
             "classification": classification,
+            "reason": reason,
             "matched_detail": matched_detail,
+            "preferred_table_hit": preferred_table_hit,
+            "preferred_column_hit": preferred_column_hit,
+            "preferred_fk_hit": preferred_fk_hit,
         })
 
     total = sum(counts.values())
@@ -657,10 +736,24 @@ def main() -> None:
 
     mapping_report = classify_mapping_alternatives(gold_schema, pred_schema)
 
-    error_counts = build_error_counts(matched_results, mapping_report)
-    distance = structural_distance(error_counts)
+    strict_error_counts = build_error_counts(strict_results, mapping_report)
+    matched_error_counts = build_error_counts(matched_results, mapping_report)
+
+    strict_distance = structural_distance(strict_error_counts)
+    matched_distance = structural_distance(matched_error_counts)
+
     mass = expected_structural_mass(gold_schema)
-    normalized_weighted_distance = distance["weighted_structural_manhattan_distance"] / mass
+
+    strict_normalized_weighted_distance = (
+        strict_distance["weighted_structural_manhattan_distance"] / mass
+    )
+    matched_normalized_weighted_distance = (
+        matched_distance["weighted_structural_manhattan_distance"] / mass
+    )
+
+    distance_reduction_from_matching = (
+        strict_normalized_weighted_distance - matched_normalized_weighted_distance
+    )
 
     metrics = {
         "dataset": args.dataset,
@@ -673,11 +766,22 @@ def main() -> None:
             "global": matched_results["global"],
         },
         "mapping_alternatives": mapping_report["summary"],
-        "error_counts_for_distance": error_counts,
+        "error_counts_for_distance": {
+            "strict": strict_error_counts,
+            "matched": matched_error_counts,
+        },
         "structural_distance": {
-            **distance,
-            "expected_structural_mass": mass,
-            "normalized_weighted_structural_distance": normalized_weighted_distance,
+            "strict": {
+                **strict_distance,
+                "expected_structural_mass": mass,
+                "normalized_weighted_structural_distance": strict_normalized_weighted_distance,
+            },
+            "matched": {
+                **matched_distance,
+                "expected_structural_mass": mass,
+                "normalized_weighted_structural_distance": matched_normalized_weighted_distance,
+            },
+            "distance_reduction_from_matching": distance_reduction_from_matching,
         },
     }
 
@@ -739,7 +843,9 @@ def main() -> None:
     print(f"Output directory: {output_dir}")
     print(f"Strict global F1: {strict_results['global']['f1']}")
     print(f"Matched global F1: {matched_results['global']['f1']}")
-    print(f"Normalized weighted distance: {normalized_weighted_distance}")
+    print(f"Strict normalized weighted distance: {strict_normalized_weighted_distance}")
+    print(f"Matched normalized weighted distance: {matched_normalized_weighted_distance}")
+    print(f"Distance reduction from matching: {distance_reduction_from_matching}")
 
 
 if __name__ == "__main__":

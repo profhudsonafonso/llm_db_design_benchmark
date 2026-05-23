@@ -388,6 +388,8 @@ The evaluation uses:
 - preferred mapping accuracy;
 - valid mapping accuracy;
 - normalized weighted structural Manhattan distance;
+- strict and matched weighted structural Manhattan distances;
+- distance reduction from matching;
 - C4 repair metrics.
 
 This design avoids over-penalizing LLM outputs that use different names for semantically equivalent schema elements and also accounts for discretionary conceptual-to-logical mapping decisions.

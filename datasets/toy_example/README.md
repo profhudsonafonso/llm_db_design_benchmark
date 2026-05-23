@@ -81,3 +81,19 @@ Example command:
 The outputs are saved under:
 
 `results/normalization_runs/<run_id>/`
+
+## Additional Toy Outputs
+
+The toy example includes three raw LLM-style outputs.
+
+| File | Purpose | Expected behavior |
+|---|---|---|
+| `llm_outputs/toy_example/gpt_c1_raw.txt` | Naming mismatch case | `OrderProduct` is generated as `OrdProd`; strict score should decrease, matched score should recover. |
+| `llm_outputs/toy_example/gpt_c1_valid_alternative_raw.txt` | Valid alternative mapping case | `CustomerProfile` is merged into `Customer`; expected classification is `valid_alternative`. |
+| `llm_outputs/toy_example/gpt_c1_invalid_profile_raw.txt` | Invalid mapping case | `CustomerProfile` exists but has no FK to `Customer`; expected classification is `invalid_mapping`. |
+
+These files are used to test whether the evaluator distinguishes:
+
+- naming mismatch;
+- valid non-preferred mapping;
+- invalid mapping.

@@ -482,3 +482,26 @@ Positive repair gain in C4:
 Negative repair gain in C4:
 
 - repair introduced more problems than it solved.
+
+## 20. Strict and Matched Structural Distances
+
+The benchmark reports structural Manhattan distance under two regimes.
+
+| Distance | Meaning |
+|---|---|
+| strict structural distance | Computed from strict evaluation errors, after name normalization but without similarity/structure-aware matching. |
+| matched structural distance | Computed after similarity and structure-aware matching. |
+
+This distinction is important because a high strict distance and a low matched distance indicate that many apparent errors are caused by naming differences rather than structural design mistakes.
+
+The evaluator also reports:
+
+Distance Reduction from Matching = strict normalized distance - matched normalized distance
+
+A positive reduction means that similarity/structure-aware matching removed apparent structural errors.
+
+Example interpretation:
+
+- high strict distance and low matched distance: naming mismatch problem;
+- high strict distance and high matched distance: real structural design problem;
+- low strict distance and low matched distance: output closely follows the preferred gold schema.

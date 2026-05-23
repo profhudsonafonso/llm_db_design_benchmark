@@ -376,6 +376,13 @@ The main score groups are:
 - normalized weighted structural Manhattan distance;
 - validation-guided repair metrics for C4.
 
+The evaluator computes structural Manhattan distance in two ways:
+
+- strict distance, before similarity/structure-aware matching;
+- matched distance, after similarity/structure-aware matching.
+
+The difference between them is reported as distance reduction from matching. This helps distinguish naming mismatch from real structural design errors.
+
 The normalized weighted structural Manhattan distance is used as a complementary metric. It measures not only the number of errors, but also their structural severity.
 
 The C4 condition additionally reports:

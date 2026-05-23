@@ -187,3 +187,8 @@ The manifest records:
 - condition;
 - normalization run directory;
 - generated files.
+
+The evaluator reports both strict and matched weighted structural Manhattan distances.
+
+This makes it possible to measure how much apparent structural error is removed by similarity and structure-aware matching.
+
