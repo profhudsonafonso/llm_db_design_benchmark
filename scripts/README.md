@@ -206,3 +206,69 @@ Additional metrics:
 - alternative-aware global F1;
 - alternative-aware normalized weighted structural distance;
 - distance reduction from alternatives.
+
+## `generate_prompt_input.py`
+
+### Goal
+
+Generate a prompt-ready Markdown input from an expert-defined `conceptual_eer.yaml` file.
+
+This script converts the structured EER-YAML representation into a readable textual EER description that can be inserted into the prompt templates.
+
+### Inputs
+
+Required inputs:
+
+- `--conceptual-yaml`: path to the expert-defined `conceptual_eer.yaml`;
+- `--dataset`: dataset name.
+
+Optional inputs:
+
+- `--output-dir`: base output folder;
+- `--run-id`: custom run identifier;
+- `--publish-to`: optional path to copy the generated `eer_input_text.md`;
+- `--notes`: execution notes.
+
+### Example
+
+Command:
+
+`python scripts/generate_prompt_input.py --conceptual-yaml datasets/toy_example/ground_truth/conceptual_eer.yaml --dataset toy_example --run-id toy_example_prompt_input --publish-to datasets/toy_example/prompt_inputs/eer_input_text.md`
+
+### Outputs
+
+By default, outputs are saved under:
+
+`results/prompt_input_runs/<run_id>/`
+
+Expected output files:
+
+- `eer_input_text.md`;
+- `source_conceptual_eer.yaml`;
+- `prompt_input_manifest.json`.
+
+If `--publish-to` is used, a copy of `eer_input_text.md` is also written to the selected dataset prompt input folder.
+
+### Processing Steps
+
+The script performs the following steps:
+
+1. reads the expert `conceptual_eer.yaml`;
+2. extracts metadata, entities, attributes, identifiers, relationships, cardinalities, specializations, constraints, and expert notes;
+3. renders a Markdown textual EER input;
+4. saves the generated prompt input;
+5. saves a snapshot of the source YAML;
+6. saves a manifest with input hash, dataset, output directory, and schema counts.
+
+### Reproducibility
+
+The manifest records:
+
+- run id;
+- timestamp;
+- source conceptual YAML path;
+- source YAML SHA256 hash;
+- dataset;
+- generated files;
+- optional published prompt input path;
+- schema counts.

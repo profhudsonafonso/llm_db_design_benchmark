@@ -348,6 +348,31 @@ The benchmark currently considers three prompt types.
 | Prompt 2 | Schema extraction with cardinality mapping rules |
 | Prompt 3 | Schema extraction with cardinality rules and self-check validation |
 
+## Prompt Input Generation
+
+The script `scripts/generate_prompt_input.py` converts an expert-defined `conceptual_eer.yaml` file into a prompt-ready Markdown file.
+
+Input:
+
+- `datasets/<dataset>/ground_truth/conceptual_eer.yaml`
+
+Main output:
+
+- `results/prompt_input_runs/<run_id>/eer_input_text.md`
+
+Optional published copy:
+
+- `datasets/<dataset>/prompt_inputs/eer_input_text.md`
+
+The script also saves:
+
+- a snapshot of the source conceptual YAML;
+- a reproducibility manifest;
+- schema counts.
+
+This generated Markdown file is later inserted into the C1-C4 prompt templates as the textual EER input.
+
+
 ## Prompt Templates
 
 The benchmark uses four prompt templates corresponding to the four experimental conditions.

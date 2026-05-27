@@ -1,0 +1,24 @@
+{
+  "run_id": "toy_example_prompt_input",
+  "created_at_utc": "2026-05-27T14:47:11.917702+00:00",
+  "script": "scripts/generate_prompt_input.py",
+  "dataset": "toy_example",
+  "conceptual_yaml": "datasets/toy_example/ground_truth/conceptual_eer.yaml",
+  "conceptual_yaml_sha256": "2d9b7d6af1c251c4d4b1bd4da956991993a0dd1e5bbdda999bb7572134d2047d",
+  "output_dir": "results/prompt_input_runs/toy_example_prompt_input",
+  "prompt_input_file": "results/prompt_input_runs/toy_example_prompt_input/eer_input_text.md",
+  "published_prompt_input_file": "datasets/toy_example/prompt_inputs/eer_input_text.md",
+  "notes": "Toy example prompt input generation test",
+  "schema_counts": {
+    "num_entities": 4,
+    "num_relationships": 3,
+    "num_specializations": 0,
+    "num_entity_attributes": 10,
+    "num_relationship_attributes": 1
+  },
+  "generated_files": [
+    "eer_input_text.md",
+    "source_conceptual_eer.yaml",
+    "prompt_input_manifest.json"
+  ]
+}
