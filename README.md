@@ -165,6 +165,25 @@ Default normalization outputs are saved in:
 
 - `results/normalization_runs/<run_id>/`
 
+## Expected Analysis Plan
+
+A reusable analysis plan is available at:
+
+- `paper_material/text_blocks/expected_analysis_plan.md`
+
+It explains how to analyze the final aggregate results, including:
+
+- model quality;
+- prompt condition effects;
+- dataset complexity effects;
+- component-level weaknesses;
+- naming mismatch;
+- valid alternative mappings;
+- invalid mappings;
+- cost-quality trade-offs;
+- C4 repair effects.
+
+
 ## Paper Positioning
 
 A reusable positioning text block is available at:
