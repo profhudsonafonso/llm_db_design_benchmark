@@ -348,6 +348,49 @@ The benchmark currently considers three prompt types.
 | Prompt 2 | Schema extraction with cardinality mapping rules |
 | Prompt 3 | Schema extraction with cardinality rules and self-check validation |
 
+## LLM Execution
+
+The script `scripts/run_llm_experiments.py` runs one LLM experiment by combining:
+
+- a prompt template;
+- a prompt-ready textual EER input;
+- the required logical relational JSON output format;
+- a configured model/provider.
+
+Supported providers:
+
+- `ollama`;
+- `openai`;
+- `gemini`;
+- `anthropic`;
+- `manual`.
+
+Model definitions are stored in:
+
+- `configs/models.yaml`
+
+Provider settings are stored locally in:
+
+- `configs/provider_settings.yaml`
+
+The local provider settings file must not be committed.
+
+Each LLM execution saves:
+
+- the rendered prompt;
+- the raw provider response;
+- the extracted response text;
+- a reproducibility manifest.
+
+Default output folder:
+
+- `results/llm_runs/<run_id>/`
+
+Published raw text output:
+
+- `llm_outputs/<dataset>/<run_id>_raw.txt`
+
+
 ## Prompt Input Generation
 
 The script `scripts/generate_prompt_input.py` converts an expert-defined `conceptual_eer.yaml` file into a prompt-ready Markdown file.

@@ -235,6 +235,46 @@ The four experimental conditions are implemented as separate prompt templates.
 
 The detailed prompt design is documented in `docs/prompt_design.md`.
 
+## LLM Execution Script
+
+LLM executions are handled by:
+
+- `scripts/run_llm_experiments.py`
+
+The script renders a prompt from:
+
+- a prompt template;
+- a prompt-ready EER input file;
+- the logical relational output format specification;
+- optional C4 repair inputs.
+
+The script supports local and remote providers, including:
+
+- Ollama local models;
+- OpenAI models;
+- Gemini models;
+- Claude/Anthropic models;
+- manual outputs;
+- dry-run execution.
+
+Each execution produces a dedicated run folder under:
+
+- `results/llm_runs/<run_id>/`
+
+The run folder contains:
+
+- `rendered_prompt.txt`;
+- `response_text.txt`;
+- `raw_response.json`;
+- `llm_run_manifest.json`.
+
+The response text is also published under:
+
+- `llm_outputs/<dataset>/<run_id>_raw.txt`
+
+when a provider returns text.
+
+
 ## 10. Models
 
 The benchmark can evaluate different LLMs, including commercial APIs and local text-only models.

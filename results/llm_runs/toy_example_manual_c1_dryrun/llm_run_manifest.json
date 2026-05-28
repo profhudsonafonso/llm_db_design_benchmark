@@ -1,0 +1,41 @@
+{
+  "run_id": "toy_example_manual_c1_dryrun",
+  "created_at_utc": "2026-05-28T08:07:11.888118+00:00",
+  "script": "scripts/run_llm_experiments.py",
+  "dataset": "toy_example",
+  "condition": "C1",
+  "model_key": "manual_placeholder",
+  "provider": "manual",
+  "model": "manual",
+  "model_config": {
+    "enabled": true,
+    "provider": "manual",
+    "model": "manual",
+    "temperature": 0.0,
+    "max_tokens": 8192
+  },
+  "status": "dry_run",
+  "error_message": null,
+  "latency_seconds": 9.5367431640625e-07,
+  "models_config": "configs/models.yaml",
+  "models_config_sha256": "b0d291835bde6bf516a05bad7ae92a082429b529e05671fcdae725ad18e5b9f9",
+  "provider_settings_file": null,
+  "prompt_file": "prompts/prompt_1_basic.txt",
+  "prompt_file_sha256": "825a83b07e6d6bd6d3a6b5dfd7179fb45377f38eced57fcbbe559880485e1713",
+  "eer_input_file": "datasets/toy_example/prompt_inputs/eer_input_text.md",
+  "eer_input_file_sha256": "ee12f62f07c48d8def1df19d063f67783ea8cd23c96f7397be20a1013ab41411",
+  "output_format_file": "docs/logical_relational_gold_template.json",
+  "output_format_file_sha256": "e5c382f07f09ed9fc91710563d0abb95a8be7e8759116cd71d441b76ba50cdb8",
+  "previous_output_file": null,
+  "validation_report_file": null,
+  "output_dir": "results/llm_runs/toy_example_manual_c1_dryrun",
+  "published_output_file": null,
+  "dry_run": true,
+  "notes": "Dry-run test without provider call",
+  "generated_files": [
+    "rendered_prompt.txt",
+    "response_text.txt",
+    "raw_response.json",
+    "llm_run_manifest.json"
+  ]
+}

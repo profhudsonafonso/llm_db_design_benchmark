@@ -1,0 +1,49 @@
+# Model configuration for the LLM database design benchmark.
+# Model names can be updated according to API availability and the local Ollama installation.
+# Keep enabled=false until the corresponding provider is configured.
+
+models:
+  openai_main:
+    enabled: false
+    provider: openai
+    model: "gpt-4.1"
+    temperature: 0.0
+    max_tokens: 8192
+
+  openai_fast:
+    enabled: false
+    provider: openai
+    model: "gpt-4.1-mini"
+    temperature: 0.0
+    max_tokens: 8192
+
+  gemini_main:
+    enabled: false
+    provider: gemini
+    model: "gemini-3.5-flash"
+    temperature: 0.0
+    max_tokens: 8192
+    response_mime_type: "application/json"
+
+  claude_main:
+    enabled: false
+    provider: anthropic
+    model: "claude-sonnet"
+    temperature: 0.0
+    max_tokens: 8192
+
+  ollama_local_main:
+    enabled: false
+    provider: ollama
+    model: "llama3.1:8b"
+    temperature: 0.0
+    max_tokens: 8192
+    seed: 42
+    format: "json"
+
+  manual_placeholder:
+    enabled: true
+    provider: manual
+    model: "manual"
+    temperature: 0.0
+    max_tokens: 8192

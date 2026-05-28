@@ -272,3 +272,84 @@ The manifest records:
 - generated files;
 - optional published prompt input path;
 - schema counts.
+
+## `run_llm_experiments.py`
+
+### Goal
+
+Run one LLM experiment by combining:
+
+- a prompt template;
+- a prompt-ready EER input file;
+- the required logical relational JSON output format;
+- a configured model/provider.
+
+The script supports:
+
+- `ollama`;
+- `openai`;
+- `gemini`;
+- `anthropic`;
+- `manual`;
+- `dry-run`.
+
+### Inputs
+
+Required inputs:
+
+- `--dataset`: dataset name;
+- `--condition`: experimental condition, such as C1, C2, C3, or C4;
+- `--model-key`: key from `configs/models.yaml`;
+- `--prompt-file`: prompt template file;
+- `--eer-input-file`: prompt-ready EER Markdown file.
+
+Optional inputs:
+
+- `--models-config`: model configuration YAML;
+- `--provider-settings`: provider settings YAML;
+- `--output-format-file`: required output JSON format;
+- `--previous-output-file`: previous relational JSON for C4;
+- `--validation-report-file`: validation report for C4;
+- `--output-dir`: base run output folder;
+- `--publish-dir`: base folder for published raw outputs;
+- `--run-id`: custom run identifier;
+- `--dry-run`: render prompt without calling a provider;
+- `--notes`: execution notes.
+
+### Example: Dry Run
+
+`python scripts/run_llm_experiments.py --dataset toy_example --condition C1 --model-key manual_placeholder --prompt-file prompts/prompt_1_basic.txt --eer-input-file datasets/toy_example/prompt_inputs/eer_input_text.md --dry-run --run-id toy_example_manual_c1_dryrun`
+
+### Outputs
+
+By default, outputs are saved under:
+
+`results/llm_runs/<run_id>/`
+
+Expected files:
+
+- `rendered_prompt.txt`;
+- `response_text.txt`;
+- `raw_response.json`;
+- `llm_run_manifest.json`.
+
+If the provider returns text, the script also publishes a copy under:
+
+`llm_outputs/<dataset>/<run_id>_raw.txt`
+
+### Reproducibility
+
+The manifest records:
+
+- dataset;
+- condition;
+- model key;
+- provider;
+- model name;
+- model configuration;
+- prompt file and hash;
+- EER input file and hash;
+- output format file and hash;
+- latency;
+- status;
+- generated files.
