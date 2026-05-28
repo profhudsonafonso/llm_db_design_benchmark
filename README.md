@@ -556,6 +556,35 @@ Default outputs are saved in:
 The script is documented in `scripts/README.md`.
 
 
+## Result Aggregation
+
+The script `scripts/aggregate_results.py` aggregates individual run outputs into analysis-ready tables.
+
+It reads:
+
+- `results/llm_runs/`;
+- `results/normalization_runs/`;
+- `results/evaluation_runs/`.
+
+It writes aggregate outputs to:
+
+- `results/aggregate_runs/<run_id>/`
+
+The main aggregate table is:
+
+- `aggregate_run_summary.csv`
+
+This table combines quality, error, distance, mapping, usage, latency, and cost metrics.
+
+Additional aggregate tables summarize results by:
+
+- model;
+- condition;
+- dataset complexity;
+- dataset and condition;
+- model and condition.
+
+
 ## Scoring Metrics
 
 The benchmark scoring strategy is documented in `docs/scoring_metrics.md`.

@@ -1,0 +1,7 @@
+alternative_aware_distance,alternative_aware_f1,condition,cost_per_alternative_aware_f1,cost_per_matched_f1,cost_per_valid_mapping_accuracy,dataset,estimated_cost_usd,evaluation_run_id,input_tokens,latency_seconds,llm_run_id,matched_f1,model,model_key,output_tokens,provider,tokens_per_second,total_tokens,valid_mapping_accuracy
+,,C1,,,,toy_example,,toy_gpt_c1_invalid_profile_raw_evaluation,,,,0.983050847457627,gpt,,,,,,0.0
+0.12121212121212122,0.983050847457627,C1,,,,toy_example,,toy_gpt_c1_invalid_profile_raw_evaluation_altaware,,,,0.983050847457627,gpt,,,,,,0.0
+,,C1,,,,toy_example,,toy_gpt_c1_raw_evaluation,,,,1.0,gpt,,,,,,1.0
+0.0,1.0,C1,,,,toy_example,,toy_gpt_c1_raw_evaluation_altaware,,,,1.0,gpt,,,,,,1.0
+,,C1,,,,toy_example,,toy_gpt_c1_valid_alternative_raw_evaluation,,,,0.8571428571428571,gpt,,,,,,1.0
+0.0,1.0,C1,,,,toy_example,,toy_gpt_c1_valid_alternative_raw_evaluation_altaware,,,,0.8571428571428571,gpt,,,,,,1.0

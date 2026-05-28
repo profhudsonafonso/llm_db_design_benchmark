@@ -698,6 +698,47 @@ Each experiment must record:
 
 API keys and private configuration files must not be committed to the repository.
 
+## Result Aggregation
+
+Result aggregation is handled by:
+
+- `scripts/aggregate_results.py`
+
+The script collects outputs from:
+
+- LLM execution runs;
+- normalization runs;
+- evaluation runs.
+
+The aggregate outputs are saved under:
+
+- `results/aggregate_runs/<run_id>/`
+
+The main table is:
+
+- `aggregate_run_summary.csv`
+
+This table is the primary source for the experimental analysis. It combines:
+
+- model and provider metadata;
+- dataset and condition;
+- strict, matched, and alternative-aware F1;
+- structural Manhattan distances;
+- mapping alternative metrics;
+- token usage;
+- latency;
+- estimated cost.
+
+Additional aggregate tables support analysis by:
+
+- model;
+- prompt condition;
+- dataset complexity;
+- component type;
+- error type;
+- cost-quality trade-off.
+
+
 ## 18. Expected Repository Locations
 
 Ground truth files:

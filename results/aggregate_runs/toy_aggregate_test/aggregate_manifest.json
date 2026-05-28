@@ -1,0 +1,38 @@
+{
+  "run_id": "toy_aggregate_test",
+  "created_at_utc": "2026-05-28T09:05:39.803361+00:00",
+  "script": "scripts/aggregate_results.py",
+  "llm_runs_dir": "results/llm_runs",
+  "normalization_runs_dir": "results/normalization_runs",
+  "evaluation_runs_dir": "results/evaluation_runs",
+  "datasets_dir": "datasets",
+  "output_dir": "results/aggregate_runs/toy_aggregate_test",
+  "notes": "Toy aggregation test",
+  "counts": {
+    "llm_runs": 5,
+    "normalization_runs": 3,
+    "evaluation_runs": 6,
+    "component_metric_rows": 105,
+    "error_detail_rows": 133,
+    "error_count_rows": 18,
+    "cost_quality_rows": 6,
+    "by_model_rows": 1,
+    "by_condition_rows": 1,
+    "by_dataset_complexity_rows": 1
+  },
+  "generated_files": [
+    "aggregate_llm_runs.csv",
+    "aggregate_normalization_summary.csv",
+    "aggregate_run_summary.csv",
+    "aggregate_component_metrics.csv",
+    "aggregate_evaluation_errors_detail.csv",
+    "aggregate_error_counts.csv",
+    "aggregate_cost_quality.csv",
+    "aggregate_by_model.csv",
+    "aggregate_by_condition.csv",
+    "aggregate_by_dataset_complexity.csv",
+    "aggregate_by_dataset_condition.csv",
+    "aggregate_by_model_condition.csv",
+    "aggregate_manifest.json"
+  ]
+}

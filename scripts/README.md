@@ -456,3 +456,78 @@ The batch manifest records:
 - filters;
 - number of runs;
 - number of successes, errors, and skipped runs.
+
+## `aggregate_results.py`
+
+### Goal
+
+Aggregate result files from LLM runs, normalization runs, and evaluation runs into analysis-ready tables.
+
+### Inputs
+
+Default input folders:
+
+- `results/llm_runs/`
+- `results/normalization_runs/`
+- `results/evaluation_runs/`
+- `datasets/`
+
+### Example
+
+Command:
+
+`python scripts/aggregate_results.py --run-id toy_aggregate_test --notes "Toy aggregation test"`
+
+### Outputs
+
+Outputs are saved under:
+
+`results/aggregate_runs/<run_id>/`
+
+Expected output files:
+
+- `aggregate_run_summary.csv`;
+- `aggregate_llm_runs.csv`;
+- `aggregate_normalization_summary.csv`;
+- `aggregate_component_metrics.csv`;
+- `aggregate_evaluation_errors_detail.csv`;
+- `aggregate_error_counts.csv`;
+- `aggregate_cost_quality.csv`;
+- `aggregate_by_model.csv`;
+- `aggregate_by_condition.csv`;
+- `aggregate_by_dataset_complexity.csv`;
+- `aggregate_by_dataset_condition.csv`;
+- `aggregate_by_model_condition.csv`;
+- `aggregate_manifest.json`.
+
+### Main Analysis Table
+
+The main table is:
+
+`aggregate_run_summary.csv`
+
+It contains one row per evaluated run and includes:
+
+- dataset;
+- condition;
+- provider;
+- model;
+- strict F1;
+- matched F1;
+- alternative-aware F1;
+- strict/matched/alternative-aware distances;
+- mapping alternative metrics;
+- token usage;
+- latency;
+- estimated cost.
+
+### Reproducibility
+
+The aggregation manifest records:
+
+- input directories;
+- number of LLM runs;
+- number of normalization runs;
+- number of evaluation runs;
+- number of generated rows;
+- generated files.
