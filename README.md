@@ -371,6 +371,34 @@ The benchmark also records execution cost proxies, including:
 - local runtime metrics for Ollama when available.
 
 
+## Usage and Cost Outputs
+
+Each LLM run can produce standardized usage and cost metadata.
+
+Output file:
+
+- `results/llm_runs/<run_id>/usage_and_cost.json`
+
+This file records, when available:
+
+- input tokens;
+- output tokens;
+- total tokens;
+- cached input tokens;
+- reasoning tokens;
+- latency;
+- tokens per second;
+- estimated cost in USD;
+- provider-specific usage metadata;
+- Ollama local duration metrics.
+
+Cost estimates use:
+
+- `configs/model_pricing.yaml`
+
+Pricing values must be checked and updated before running the final experiments.
+
+
 ## LLM Execution
 
 The script `scripts/run_llm_experiments.py` runs one LLM experiment by combining:

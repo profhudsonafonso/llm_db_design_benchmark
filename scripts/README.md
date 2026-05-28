@@ -353,3 +353,32 @@ The manifest records:
 - latency;
 - status;
 - generated files.
+
+### Usage and Cost Tracking
+
+`run_llm_experiments.py` writes a standardized usage and cost file:
+
+- `usage_and_cost.json`
+
+This file may include:
+
+- input tokens;
+- output tokens;
+- total tokens;
+- cached input tokens;
+- reasoning tokens;
+- latency in seconds;
+- tokens per second;
+- estimated cost in USD;
+- raw provider usage metadata;
+- Ollama duration metrics when available.
+
+Cost estimation uses:
+
+- `configs/model_pricing.yaml`
+
+Prices in `configs/model_pricing.yaml` must be checked and updated before final experiments.
+
+For remote APIs, cost is estimated from token usage and configured prices.
+
+For Ollama/local models, financial cost is normally zero, but runtime metrics such as duration and tokens per second can be recorded.

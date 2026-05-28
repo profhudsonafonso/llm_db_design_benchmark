@@ -270,3 +270,42 @@ The provider settings example exists:
 - `configs/provider_settings.example.yaml`
 
 Ollama access is currently pending support from the project server.
+
+## 13. Implementation of Usage and Cost Tracking
+
+The LLM execution runner stores usage and cost metadata for each run.
+
+Output file:
+
+- `results/llm_runs/<run_id>/usage_and_cost.json`
+
+The same information is also embedded in:
+
+- `results/llm_runs/<run_id>/llm_run_manifest.json`
+
+The cost estimation uses:
+
+- `configs/model_pricing.yaml`
+
+This file stores prices per one million tokens. Prices should be updated from official provider pricing pages immediately before running final experiments.
+
+The runner attempts to extract token usage from each provider response.
+
+For remote providers, the benchmark records observable cost proxies:
+
+- input tokens;
+- output tokens;
+- total tokens;
+- cached input tokens, when available;
+- reasoning tokens, when available;
+- latency;
+- estimated financial cost.
+
+For Ollama/local models, the benchmark records:
+
+- prompt evaluation count;
+- generation token count;
+- total duration;
+- prompt evaluation duration;
+- generation duration;
+- tokens per second.

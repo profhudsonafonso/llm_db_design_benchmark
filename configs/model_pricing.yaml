@@ -1,0 +1,49 @@
+# Model pricing configuration.
+#
+# Prices must be checked and updated from official provider pricing pages
+# immediately before running the final experiments.
+#
+# All prices are in USD per 1 million tokens.
+# Use null when the price is unknown or not applicable.
+
+pricing:
+  openai:
+    gpt-4.1:
+      input_price_per_1m_usd: null
+      output_price_per_1m_usd: null
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null
+
+    gpt-4.1-mini:
+      input_price_per_1m_usd: null
+      output_price_per_1m_usd: null
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null
+
+  gemini:
+    gemini-3.5-flash:
+      input_price_per_1m_usd: null
+      output_price_per_1m_usd: null
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null
+
+  anthropic:
+    claude-sonnet:
+      input_price_per_1m_usd: null
+      output_price_per_1m_usd: null
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null
+
+  ollama:
+    llama3.1:8b:
+      input_price_per_1m_usd: 0.0
+      output_price_per_1m_usd: 0.0
+      cached_input_price_per_1m_usd: 0.0
+      reasoning_price_per_1m_usd: 0.0
+
+  manual:
+    manual:
+      input_price_per_1m_usd: null
+      output_price_per_1m_usd: null
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null

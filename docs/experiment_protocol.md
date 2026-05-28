@@ -235,6 +235,31 @@ The four experimental conditions are implemented as separate prompt templates.
 
 The detailed prompt design is documented in `docs/prompt_design.md`.
 
+## Usage and Cost Metadata
+
+Each LLM execution stores usage and cost metadata in:
+
+- `results/llm_runs/<run_id>/usage_and_cost.json`
+
+The manifest also embeds this information.
+
+The metadata may include:
+
+- input tokens;
+- output tokens;
+- total tokens;
+- cached input tokens;
+- reasoning tokens;
+- latency;
+- tokens per second;
+- estimated cost in USD;
+- provider-specific usage metadata;
+- Ollama local timing metrics.
+
+The cost estimation uses `configs/model_pricing.yaml`.
+
+Prices must be updated before final experiments. If prices or token usage are unavailable, the estimated cost is recorded as null.
+
 ## LLM Execution Script
 
 LLM executions are handled by:

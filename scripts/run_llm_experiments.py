@@ -113,6 +113,252 @@ def get_api_key(provider_settings: Dict[str, Any]) -> Optional[str]:
     return os.environ.get(env_name)
 
 
+def load_pricing_config(path: Optional[str]) -> Dict[str, Any]:
+    """Load pricing configuration if available."""
+    if not path:
+        return {}
+    p = Path(path)
+    if not p.exists():
+        return {}
+    return load_yaml(p)
+
+
+def get_pricing_entry(
+    pricing_config: Dict[str, Any],
+    provider: str,
+    model_name: str,
+) -> Dict[str, Any]:
+    """Return pricing entry for a provider/model pair."""
+    pricing = pricing_config.get("pricing", {}) or {}
+    provider_prices = pricing.get(provider, {}) or {}
+    return provider_prices.get(model_name, {}) or {}
+
+
+def ns_to_seconds(value: Any) -> Optional[float]:
+    """Convert nanoseconds to seconds when possible."""
+    if value is None:
+        return None
+    try:
+        return float(value) / 1_000_000_000
+    except Exception:
+        return None
+
+
+def extract_usage_openai(raw: Dict[str, Any]) -> Dict[str, Any]:
+    """Extract token usage from an OpenAI Responses API response."""
+    usage = raw.get("usage", {}) or {}
+
+    input_tokens = usage.get("input_tokens")
+    output_tokens = usage.get("output_tokens")
+    total_tokens = usage.get("total_tokens")
+
+    input_details = usage.get("input_tokens_details", {}) or {}
+    output_details = usage.get("output_tokens_details", {}) or {}
+
+    cached_input_tokens = input_details.get("cached_tokens")
+    reasoning_tokens = output_details.get("reasoning_tokens")
+
+    return {
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "total_tokens": total_tokens,
+        "cached_input_tokens": cached_input_tokens,
+        "reasoning_tokens": reasoning_tokens,
+        "provider_usage_raw": usage,
+    }
+
+
+def extract_usage_gemini(raw: Dict[str, Any]) -> Dict[str, Any]:
+    """Extract token usage from a Gemini generateContent response."""
+    usage = raw.get("usageMetadata", {}) or {}
+
+    input_tokens = usage.get("promptTokenCount")
+    output_tokens = usage.get("candidatesTokenCount")
+    reasoning_tokens = usage.get("thoughtsTokenCount")
+    total_tokens = usage.get("totalTokenCount")
+
+    return {
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "total_tokens": total_tokens,
+        "cached_input_tokens": None,
+        "reasoning_tokens": reasoning_tokens,
+        "provider_usage_raw": usage,
+    }
+
+
+def extract_usage_anthropic(raw: Dict[str, Any]) -> Dict[str, Any]:
+    """Extract token usage from an Anthropic Messages API response."""
+    usage = raw.get("usage", {}) or {}
+
+    input_tokens = usage.get("input_tokens")
+    output_tokens = usage.get("output_tokens")
+
+    cache_creation = usage.get("cache_creation_input_tokens")
+    cache_read = usage.get("cache_read_input_tokens")
+
+    cached_input_tokens = None
+    if cache_creation is not None or cache_read is not None:
+        cached_input_tokens = (cache_creation or 0) + (cache_read or 0)
+
+    total_tokens = None
+    if input_tokens is not None or output_tokens is not None:
+        total_tokens = (input_tokens or 0) + (output_tokens or 0)
+
+    return {
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "total_tokens": total_tokens,
+        "cached_input_tokens": cached_input_tokens,
+        "reasoning_tokens": None,
+        "provider_usage_raw": usage,
+    }
+
+
+def extract_usage_ollama(raw: Dict[str, Any]) -> Dict[str, Any]:
+    """Extract token and timing usage from an Ollama /api/generate response."""
+    input_tokens = raw.get("prompt_eval_count")
+    output_tokens = raw.get("eval_count")
+
+    total_tokens = None
+    if input_tokens is not None or output_tokens is not None:
+        total_tokens = (input_tokens or 0) + (output_tokens or 0)
+
+    total_duration_seconds = ns_to_seconds(raw.get("total_duration"))
+    load_duration_seconds = ns_to_seconds(raw.get("load_duration"))
+    prompt_eval_duration_seconds = ns_to_seconds(raw.get("prompt_eval_duration"))
+    eval_duration_seconds = ns_to_seconds(raw.get("eval_duration"))
+
+    tokens_per_second = None
+    if output_tokens and eval_duration_seconds and eval_duration_seconds > 0:
+        tokens_per_second = output_tokens / eval_duration_seconds
+
+    return {
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "total_tokens": total_tokens,
+        "cached_input_tokens": None,
+        "reasoning_tokens": None,
+        "ollama_total_duration_seconds": total_duration_seconds,
+        "ollama_load_duration_seconds": load_duration_seconds,
+        "ollama_prompt_eval_duration_seconds": prompt_eval_duration_seconds,
+        "ollama_eval_duration_seconds": eval_duration_seconds,
+        "tokens_per_second": tokens_per_second,
+        "provider_usage_raw": {
+            "prompt_eval_count": raw.get("prompt_eval_count"),
+            "eval_count": raw.get("eval_count"),
+            "total_duration": raw.get("total_duration"),
+            "load_duration": raw.get("load_duration"),
+            "prompt_eval_duration": raw.get("prompt_eval_duration"),
+            "eval_duration": raw.get("eval_duration"),
+        },
+    }
+
+
+def extract_usage_by_provider(provider: str, raw: Dict[str, Any]) -> Dict[str, Any]:
+    """Extract usage metadata according to provider."""
+    if provider == "openai":
+        return extract_usage_openai(raw)
+    if provider == "gemini":
+        return extract_usage_gemini(raw)
+    if provider == "anthropic":
+        return extract_usage_anthropic(raw)
+    if provider == "ollama":
+        return extract_usage_ollama(raw)
+
+    return {
+        "input_tokens": None,
+        "output_tokens": None,
+        "total_tokens": None,
+        "cached_input_tokens": None,
+        "reasoning_tokens": None,
+        "provider_usage_raw": {},
+    }
+
+
+def estimate_cost_usd(
+    usage: Dict[str, Any],
+    pricing_entry: Dict[str, Any],
+) -> Optional[float]:
+    """Estimate API cost in USD from usage and prices per 1M tokens."""
+    if not pricing_entry:
+        return None
+
+    input_price = pricing_entry.get("input_price_per_1m_usd")
+    output_price = pricing_entry.get("output_price_per_1m_usd")
+    cached_price = pricing_entry.get("cached_input_price_per_1m_usd")
+    reasoning_price = pricing_entry.get("reasoning_price_per_1m_usd")
+
+    input_tokens = usage.get("input_tokens")
+    output_tokens = usage.get("output_tokens")
+    cached_tokens = usage.get("cached_input_tokens")
+    reasoning_tokens = usage.get("reasoning_tokens")
+
+    cost = 0.0
+    has_any_price = False
+
+    if input_tokens is not None and input_price is not None:
+        uncached_input = input_tokens - (cached_tokens or 0)
+        cost += max(uncached_input, 0) / 1_000_000 * float(input_price)
+        has_any_price = True
+
+    if cached_tokens is not None and cached_price is not None:
+        cost += cached_tokens / 1_000_000 * float(cached_price)
+        has_any_price = True
+
+    if output_tokens is not None and output_price is not None:
+        cost += output_tokens / 1_000_000 * float(output_price)
+        has_any_price = True
+
+    if reasoning_tokens is not None and reasoning_price is not None:
+        cost += reasoning_tokens / 1_000_000 * float(reasoning_price)
+        has_any_price = True
+
+    if not has_any_price:
+        return None
+
+    return cost
+
+
+def build_usage_and_cost(
+    provider: str,
+    model_name: str,
+    raw_response: Dict[str, Any],
+    latency_seconds: float,
+    pricing_config: Dict[str, Any],
+    pricing_config_path: Optional[str],
+) -> Dict[str, Any]:
+    """Build standardized usage and cost record."""
+    usage = extract_usage_by_provider(provider, raw_response)
+    pricing_entry = get_pricing_entry(pricing_config, provider, model_name)
+
+    estimated_cost = estimate_cost_usd(usage, pricing_entry)
+
+    tokens_per_second = usage.get("tokens_per_second")
+    if tokens_per_second is None:
+        output_tokens = usage.get("output_tokens")
+        if output_tokens is not None and latency_seconds and latency_seconds > 0:
+            tokens_per_second = output_tokens / latency_seconds
+
+    return {
+        "input_tokens": usage.get("input_tokens"),
+        "output_tokens": usage.get("output_tokens"),
+        "total_tokens": usage.get("total_tokens"),
+        "cached_input_tokens": usage.get("cached_input_tokens"),
+        "reasoning_tokens": usage.get("reasoning_tokens"),
+        "latency_seconds": latency_seconds,
+        "tokens_per_second": tokens_per_second,
+        "estimated_cost_usd": estimated_cost,
+        "cost_source": pricing_config_path,
+        "pricing_entry": pricing_entry,
+        "provider_usage_raw": usage.get("provider_usage_raw", {}),
+        "ollama_total_duration_seconds": usage.get("ollama_total_duration_seconds"),
+        "ollama_load_duration_seconds": usage.get("ollama_load_duration_seconds"),
+        "ollama_prompt_eval_duration_seconds": usage.get("ollama_prompt_eval_duration_seconds"),
+        "ollama_eval_duration_seconds": usage.get("ollama_eval_duration_seconds"),
+    }
+
+
 def extract_openai_text(raw: Dict[str, Any]) -> str:
     if "output_text" in raw and raw["output_text"]:
         return str(raw["output_text"])
@@ -342,6 +588,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model-key", required=True, help="Model key from configs/models.yaml.")
     parser.add_argument("--models-config", default="configs/models.yaml", help="Models config YAML.")
     parser.add_argument("--provider-settings", default="configs/provider_settings.yaml", help="Provider settings YAML.")
+    parser.add_argument("--pricing-config", default="configs/model_pricing.yaml", help="Model pricing YAML.")
     parser.add_argument("--prompt-file", required=True, help="Prompt template file.")
     parser.add_argument("--eer-input-file", required=True, help="Prompt-ready EER input Markdown.")
     parser.add_argument("--output-format-file", default="docs/logical_relational_gold_template.json", help="Output format spec file.")
@@ -381,6 +628,9 @@ def main() -> None:
         provider_settings_all = load_yaml(provider_settings_path)
 
     provider_settings = get_provider_settings(provider_settings_all, provider)
+
+    pricing_config_path = Path(args.pricing_config)
+    pricing_config = load_pricing_config(str(pricing_config_path)) if pricing_config_path.exists() else {}
 
     prompt_template_path = Path(args.prompt_file)
     eer_input_path = Path(args.eer_input_file)
@@ -444,11 +694,22 @@ def main() -> None:
     response_text = call_result.get("response_text", "")
     raw_response = call_result.get("raw_response", {})
 
+    usage_and_cost = build_usage_and_cost(
+        provider=provider,
+        model_name=model_cfg.get("model"),
+        raw_response=raw_response,
+        latency_seconds=latency_seconds,
+        pricing_config=pricing_config,
+        pricing_config_path=str(pricing_config_path) if pricing_config_path.exists() else None,
+    )
     response_text_path = output_dir / "response_text.txt"
     response_text_path.write_text(response_text, encoding="utf-8")
 
     raw_response_path = output_dir / "raw_response.json"
     write_json(raw_response_path, raw_response)
+
+    usage_and_cost_path = output_dir / "usage_and_cost.json"
+    write_json(usage_and_cost_path, usage_and_cost)
 
     published_output_path = None
     if response_text:
@@ -470,6 +731,9 @@ def main() -> None:
         "status": status,
         "error_message": error_message,
         "latency_seconds": latency_seconds,
+        "usage_and_cost": usage_and_cost,
+        "pricing_config": str(pricing_config_path) if pricing_config_path.exists() else None,
+        "pricing_config_sha256": file_sha256(pricing_config_path) if pricing_config_path.exists() else None,
         "models_config": str(models_config_path),
         "models_config_sha256": file_sha256(models_config_path),
         "provider_settings_file": str(provider_settings_path) if provider_settings_path.exists() else None,
@@ -501,6 +765,9 @@ def main() -> None:
     print(f"Provider: {provider}")
     print(f"Model: {model_cfg.get('model')}")
     print(f"Output directory: {output_dir}")
+    print(f"Input tokens: {usage_and_cost.get('input_tokens')}")
+    print(f"Output tokens: {usage_and_cost.get('output_tokens')}")
+    print(f"Estimated cost USD: {usage_and_cost.get('estimated_cost_usd')}")
     if published_output_path:
         print(f"Published response: {published_output_path}")
     if error_message:
