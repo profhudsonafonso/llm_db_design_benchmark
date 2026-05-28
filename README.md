@@ -165,6 +165,24 @@ Default normalization outputs are saved in:
 
 - `results/normalization_runs/<run_id>/`
 
+## Paper Positioning
+
+A reusable positioning text block is available at:
+
+- `paper_material/text_blocks/paper_positioning.md`
+
+It summarizes:
+
+- the main problem;
+- research questions;
+- contribution statement;
+- conceptual modeling positioning;
+- database conference positioning;
+- AI conference positioning;
+- possible title directions;
+- claims to validate experimentally.
+
+
 ## Methodology Text Block
 
 A reusable methodology text block is available at:
