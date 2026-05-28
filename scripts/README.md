@@ -382,3 +382,77 @@ Prices in `configs/model_pricing.yaml` must be checked and updated before final 
 For remote APIs, cost is estimated from token usage and configured prices.
 
 For Ollama/local models, financial cost is normally zero, but runtime metrics such as duration and tokens per second can be recorded.
+
+## `run_llm_batch.py`
+
+### Goal
+
+Run multiple LLM experiments from an experiment matrix.
+
+This script expands combinations of:
+
+- datasets;
+- prompt conditions;
+- model keys;
+
+and calls `scripts/run_llm_experiments.py` for each run.
+
+### Inputs
+
+Required or default inputs:
+
+- `--matrix`: experiment matrix YAML, default `configs/experiment_matrix.yaml`;
+- `--models-config`: model configuration YAML;
+- `--provider-settings`: provider settings YAML;
+- `--pricing-config`: pricing configuration YAML.
+
+Optional filters:
+
+- `--only-dataset`;
+- `--only-condition`;
+- `--only-model`;
+- `--max-runs`.
+
+Execution control:
+
+- `--dry-run`: force all runs to dry-run mode;
+- `--execute`: execute provider calls instead of matrix dry-run defaults.
+
+### Example
+
+Dry-run all enabled toy example combinations:
+
+`python scripts/run_llm_batch.py --matrix configs/experiment_matrix.yaml --batch-id toy_batch_dryrun --dry-run`
+
+Run only C1:
+
+`python scripts/run_llm_batch.py --matrix configs/experiment_matrix.yaml --batch-id toy_c1_dryrun --only-condition C1 --dry-run`
+
+### Outputs
+
+By default, outputs are saved under:
+
+`results/batch_runs/<batch_id>/`
+
+Expected files:
+
+- `batch_manifest.json`;
+- `batch_runs.csv`;
+- `logs/<run_id>.stdout.txt`;
+- `logs/<run_id>.stderr.txt`.
+
+Each individual LLM run also writes its own folder under:
+
+`results/llm_runs/<run_id>/`
+
+### Reproducibility
+
+The batch manifest records:
+
+- matrix file and hash;
+- models config path;
+- provider settings path;
+- pricing config path;
+- filters;
+- number of runs;
+- number of successes, errors, and skipped runs.

@@ -1,0 +1,31 @@
+{
+  "batch_id": "toy_batch_dryrun",
+  "created_at_utc": "2026-05-28T08:46:00.292112+00:00",
+  "finished_at_utc": "2026-05-28T08:46:00.738705+00:00",
+  "script": "scripts/run_llm_batch.py",
+  "matrix_file": "configs/experiment_matrix.yaml",
+  "matrix_sha256": "067c32c85e43016fb854021a53b83f875fd33631efe357a58d4c790e1f9a5859",
+  "models_config": "configs/models.yaml",
+  "provider_settings": "configs/provider_settings.yaml",
+  "pricing_config": "configs/model_pricing.yaml",
+  "num_planned_runs": 3,
+  "num_recorded_rows": 3,
+  "num_success": 3,
+  "num_error": 0,
+  "num_skipped": 0,
+  "filters": {
+    "only_dataset": null,
+    "only_condition": null,
+    "only_model": null,
+    "max_runs": null,
+    "dry_run": true,
+    "execute": false
+  },
+  "notes": "Toy batch dry-run test",
+  "generated_files": [
+    "batch_manifest.json",
+    "batch_runs.csv",
+    "logs/*.stdout.txt",
+    "logs/*.stderr.txt"
+  ]
+}

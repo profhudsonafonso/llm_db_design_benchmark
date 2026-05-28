@@ -399,6 +399,37 @@ Cost estimates use:
 Pricing values must be checked and updated before running the final experiments.
 
 
+## Batch LLM Execution
+
+The script `scripts/run_llm_batch.py` runs multiple LLM experiments from an experiment matrix.
+
+Experiment matrix:
+
+- `configs/experiment_matrix.yaml`
+
+The batch runner expands combinations of:
+
+- datasets;
+- prompt conditions;
+- model keys.
+
+It calls:
+
+- `scripts/run_llm_experiments.py`
+
+for each run.
+
+Batch outputs are saved under:
+
+- `results/batch_runs/<batch_id>/`
+
+Each individual LLM run is saved under:
+
+- `results/llm_runs/<run_id>/`
+
+The batch runner supports dry-run mode, filters by dataset/condition/model, and records a reproducibility manifest.
+
+
 ## LLM Execution
 
 The script `scripts/run_llm_experiments.py` runs one LLM experiment by combining:

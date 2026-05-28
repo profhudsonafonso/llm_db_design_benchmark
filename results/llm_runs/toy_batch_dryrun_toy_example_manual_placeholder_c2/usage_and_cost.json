@@ -1,0 +1,22 @@
+{
+  "input_tokens": null,
+  "output_tokens": null,
+  "total_tokens": null,
+  "cached_input_tokens": null,
+  "reasoning_tokens": null,
+  "latency_seconds": 1.430511474609375e-06,
+  "tokens_per_second": null,
+  "estimated_cost_usd": null,
+  "cost_source": "configs/model_pricing.yaml",
+  "pricing_entry": {
+    "input_price_per_1m_usd": null,
+    "output_price_per_1m_usd": null,
+    "cached_input_price_per_1m_usd": null,
+    "reasoning_price_per_1m_usd": null
+  },
+  "provider_usage_raw": {},
+  "ollama_total_duration_seconds": null,
+  "ollama_load_duration_seconds": null,
+  "ollama_prompt_eval_duration_seconds": null,
+  "ollama_eval_duration_seconds": null
+}

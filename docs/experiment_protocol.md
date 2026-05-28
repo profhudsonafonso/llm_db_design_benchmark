@@ -260,6 +260,42 @@ The cost estimation uses `configs/model_pricing.yaml`.
 
 Prices must be updated before final experiments. If prices or token usage are unavailable, the estimated cost is recorded as null.
 
+## Batch LLM Execution
+
+Batch LLM execution is handled by:
+
+- `scripts/run_llm_batch.py`
+
+The batch runner reads:
+
+- `configs/experiment_matrix.yaml`
+
+and expands combinations of:
+
+- datasets;
+- conditions;
+- model keys.
+
+The batch runner calls `scripts/run_llm_experiments.py` for each individual run.
+
+Batch outputs are saved under:
+
+- `results/batch_runs/<batch_id>/`
+
+Each individual LLM run is saved under:
+
+- `results/llm_runs/<run_id>/`
+
+The batch runner supports:
+
+- dry-run mode;
+- filtering by dataset;
+- filtering by condition;
+- filtering by model key;
+- limiting the number of runs;
+- reproducibility manifests.
+
+
 ## LLM Execution Script
 
 LLM executions are handled by:

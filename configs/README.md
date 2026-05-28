@@ -46,3 +46,23 @@ If Ollama is not available yet, keep the Ollama model entries with `enabled: fal
 ## Reproducibility
 
 Model names, provider names, temperature, token limits, and seed values are recorded in each LLM run manifest.
+
+## `experiment_matrix.yaml`
+
+This file defines the batch execution matrix.
+
+It specifies:
+
+- enabled datasets;
+- prompt input files;
+- enabled conditions;
+- prompt files;
+- model keys;
+- default output locations;
+- dry-run behavior.
+
+The batch runner reads this file through:
+
+`python scripts/run_llm_batch.py --matrix configs/experiment_matrix.yaml`
+
+For now, only `toy_example` is enabled by default. Real datasets should remain disabled until their expert ground truths and prompt inputs are finalized.

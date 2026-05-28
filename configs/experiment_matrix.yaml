@@ -1,0 +1,51 @@
+# Experiment matrix for batch LLM execution.
+# This file defines which datasets, models, and conditions should be executed.
+
+experiment:
+  name: "llm_db_design_benchmark_batch"
+  description: "Batch execution matrix for conceptual-to-logical database design experiments."
+
+datasets:
+  - name: "toy_example"
+    enabled: true
+    eer_input_file: "datasets/toy_example/prompt_inputs/eer_input_text.md"
+
+  - name: "chinook"
+    enabled: false
+    eer_input_file: "datasets/chinook/prompt_inputs/eer_input_text.md"
+
+  - name: "imdb"
+    enabled: false
+    eer_input_file: "datasets/imdb/prompt_inputs/eer_input_text.md"
+
+  - name: "yelp"
+    enabled: false
+    eer_input_file: "datasets/yelp/prompt_inputs/eer_input_text.md"
+
+conditions:
+  C1:
+    enabled: true
+    prompt_file: "prompts/prompt_1_basic.txt"
+
+  C2:
+    enabled: true
+    prompt_file: "prompts/prompt_2_cardinality_rules.txt"
+
+  C3:
+    enabled: true
+    prompt_file: "prompts/prompt_3_rules_self_check.txt"
+
+  C4:
+    enabled: false
+    prompt_file: "prompts/prompt_4_validation_guided_repair.txt"
+    requires_previous_output: true
+    requires_validation_report: true
+
+model_keys:
+  - "manual_placeholder"
+
+defaults:
+  output_format_file: "docs/logical_relational_gold_template.json"
+  llm_output_dir: "results/llm_runs"
+  published_output_dir: "llm_outputs"
+  dry_run: true
