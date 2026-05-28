@@ -23,3 +23,7 @@ Text blocks in this folder may be reused in:
 ## Reproducibility Note
 
 When a text block summarizes results, it should mention the corresponding scripts and output folders used to generate those results.
+
+| File | Purpose |
+|---|---|
+| `methodology_benchmark_framework.md` | Describes the full benchmark methodology, including ground truth design, prompt conditions, normalization, evaluation, distances, cost tracking, and aggregation. |

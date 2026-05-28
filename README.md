@@ -165,6 +165,27 @@ Default normalization outputs are saved in:
 
 - `results/normalization_runs/<run_id>/`
 
+## Methodology Text Block
+
+A reusable methodology text block is available at:
+
+- `paper_material/text_blocks/methodology_benchmark_framework.md`
+
+It summarizes the benchmark framework, including:
+
+- textual EER ground truth;
+- logical relational gold standards;
+- C1-C4 prompting conditions;
+- output normalization;
+- strict, matched, and alternative-aware evaluation;
+- weighted structural Manhattan distance;
+- cost tracking;
+- result aggregation;
+- planned analysis dimensions.
+
+This text can be adapted for the paper methodology section, appendix, or supervisor report.
+
+
 ## Paper Material
 
 The repository stores reusable paper-support text blocks in:
