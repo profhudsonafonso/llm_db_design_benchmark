@@ -577,6 +577,24 @@ Default outputs are saved in:
 The script is documented in `scripts/README.md`.
 
 
+## Reproduction Pipeline
+
+A step-by-step reproduction guide is available at:
+
+- `docs/reproduction_pipeline.md`
+
+The guide explains how to reproduce the full benchmark pipeline:
+
+- ground truth review;
+- prompt input generation;
+- model/provider configuration;
+- LLM execution;
+- output normalization;
+- schema evaluation;
+- result aggregation;
+- final analysis tables.
+
+
 ## Result Aggregation
 
 The script `scripts/aggregate_results.py` aggregates individual run outputs into analysis-ready tables.

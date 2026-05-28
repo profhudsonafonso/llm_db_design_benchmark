@@ -698,6 +698,17 @@ Each experiment must record:
 
 API keys and private configuration files must not be committed to the repository.
 
+## Reproduction Guide
+
+The full reproduction pipeline is documented in:
+
+- `docs/reproduction_pipeline.md`
+
+This guide describes the sequence from expert ground truth review to final aggregate tables.
+
+It should be used as the main operational guide for rerunning the benchmark.
+
+
 ## Result Aggregation
 
 Result aggregation is handled by:
