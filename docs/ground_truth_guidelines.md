@@ -275,3 +275,14 @@ Before sending the ground truth files, verify:
 - all foreign keys reference existing tables and columns;
 - all mapping decisions are documented;
 - all discretionary mappings have preferred, acceptable, and not allowed options when applicable.
+
+## Ground Truth Review
+
+After the expert prepares the ground truth files, each dataset must be reviewed using:
+
+- `docs/ground_truth_review_checklist.md`
+
+The checklist verifies whether the conceptual EER file and the logical relational gold file are complete, consistent, and ready for LLM experiments.
+
+A dataset should only be enabled in `configs/experiment_matrix.yaml` after this review.
+

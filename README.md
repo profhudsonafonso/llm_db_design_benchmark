@@ -93,6 +93,26 @@ During evaluation, an LLM output can be classified as:
 
 This avoids penalizing a model when it produces a logically valid alternative that differs from the preferred expert choice.
 
+## Ground Truth Review Checklist
+
+Before running experiments on a dataset, the expert ground truth files must be reviewed using:
+
+- `docs/ground_truth_review_checklist.md`
+
+The checklist verifies:
+
+- conceptual EER completeness;
+- logical relational gold completeness;
+- cardinalities and participation constraints;
+- primary keys and foreign keys;
+- relationship tables;
+- specialization/generalization mappings;
+- preferred and acceptable alternative mappings;
+- consistency between conceptual and logical files.
+
+A dataset should only be enabled in the experiment matrix after its ground truth files are approved or approved with minor notes.
+
+
 ## Ground Truth Strategy
 
 Each dataset has two main reference files.

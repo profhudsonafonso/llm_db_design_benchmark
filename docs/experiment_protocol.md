@@ -762,3 +762,22 @@ The current next steps are:
 5. generate prompt inputs;
 6. run the LLM experiments;
 7. evaluate and analyze results.
+
+## Ground Truth Review Before Execution
+
+Before a dataset is enabled in the experiment matrix, its expert-defined ground truth files must be reviewed using:
+
+- `docs/ground_truth_review_checklist.md`
+
+The review checks:
+
+- completeness of the conceptual EER representation;
+- consistency of entities, relationships, cardinalities, and participation constraints;
+- completeness of the logical relational gold standard;
+- validity of primary keys and foreign keys;
+- correctness of relationship tables;
+- documentation of alternative valid mappings;
+- consistency between conceptual and logical files.
+
+Datasets should only be enabled in `configs/experiment_matrix.yaml` after review approval.
+
