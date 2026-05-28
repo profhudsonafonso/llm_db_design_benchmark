@@ -309,3 +309,36 @@ For Ollama/local models, the benchmark records:
 - prompt evaluation duration;
 - generation duration;
 - tokens per second.
+
+## 14. Provisional Model Set
+
+The current provisional model set is configured in:
+
+- `configs/models.yaml`
+
+The candidate groups are:
+
+| Group | Model keys | Status |
+|---|---|---|
+| OpenAI strong/balanced/efficient | `openai_gpt_5_5`, `openai_gpt_5_4`, `openai_gpt_5_4_mini` | disabled until API execution |
+| Gemini strong/efficient | `gemini_3_5_flash`, `gemini_2_5_pro`, `gemini_2_5_flash`, `gemini_2_5_flash_lite` | disabled until API execution |
+| Claude strong/balanced/efficient | `claude_opus_4_7`, `claude_sonnet_4_6`, `claude_haiku_4_5` | disabled until API execution |
+| Ollama local | `ollama_llama_3_1_8b`, `ollama_llama_3_2`, `ollama_mistral`, `ollama_qwen` | disabled until `ollama list` confirms availability |
+| Manual/debug | `manual_placeholder` | enabled for dry-runs |
+
+For the final paper, the minimum recommended execution set is:
+
+1. one strong commercial model;
+2. one efficient commercial model;
+3. one Claude model;
+4. one Gemini model;
+5. one Ollama local model, if server access is available.
+
+If cost or time is limited, the reduced execution set should include:
+
+- `openai_gpt_5_4_mini`;
+- `gemini_2_5_flash`;
+- `claude_haiku_4_5`;
+- one Ollama model if available.
+
+The full execution set should be used only after confirming API budget and runtime.

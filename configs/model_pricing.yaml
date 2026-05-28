@@ -1,24 +1,33 @@
 # Model pricing configuration.
 #
 # Prices must be checked and updated from official provider pricing pages
-# immediately before running the final experiments.
+# immediately before running final experiments.
 #
 # All prices are in USD per 1 million tokens.
 # Use null when the price is unknown or not applicable.
 
 pricing:
   openai:
-    gpt-4.1:
-      input_price_per_1m_usd: null
-      output_price_per_1m_usd: null
+    gpt-5.5:
+      input_price_per_1m_usd: 5.0
+      output_price_per_1m_usd: 30.0
       cached_input_price_per_1m_usd: null
       reasoning_price_per_1m_usd: null
+      source: "https://platform.openai.com/docs/models"
 
-    gpt-4.1-mini:
-      input_price_per_1m_usd: null
-      output_price_per_1m_usd: null
+    gpt-5.4:
+      input_price_per_1m_usd: 2.5
+      output_price_per_1m_usd: 15.0
       cached_input_price_per_1m_usd: null
       reasoning_price_per_1m_usd: null
+      source: "https://platform.openai.com/docs/models"
+
+    gpt-5.4-mini:
+      input_price_per_1m_usd: 0.75
+      output_price_per_1m_usd: 4.5
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null
+      source: "https://platform.openai.com/docs/models"
 
   gemini:
     gemini-3.5-flash:
@@ -26,20 +35,79 @@ pricing:
       output_price_per_1m_usd: null
       cached_input_price_per_1m_usd: null
       reasoning_price_per_1m_usd: null
+      source: "https://ai.google.dev/gemini-api/docs/models"
 
-  anthropic:
-    claude-sonnet:
+    gemini-2.5-pro:
       input_price_per_1m_usd: null
       output_price_per_1m_usd: null
       cached_input_price_per_1m_usd: null
       reasoning_price_per_1m_usd: null
+      source: "https://ai.google.dev/gemini-api/docs/models"
+
+    gemini-2.5-flash:
+      input_price_per_1m_usd: null
+      output_price_per_1m_usd: null
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null
+      source: "https://ai.google.dev/gemini-api/docs/models"
+
+    gemini-2.5-flash-lite:
+      input_price_per_1m_usd: null
+      output_price_per_1m_usd: null
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null
+      source: "https://ai.google.dev/gemini-api/docs/models"
+
+  anthropic:
+    claude-opus-4-7:
+      input_price_per_1m_usd: 5.0
+      output_price_per_1m_usd: 25.0
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null
+      source: "https://docs.anthropic.com/en/docs/about-claude/models/overview"
+
+    claude-sonnet-4-6:
+      input_price_per_1m_usd: 3.0
+      output_price_per_1m_usd: 15.0
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null
+      source: "https://docs.anthropic.com/en/docs/about-claude/models/overview"
+
+    claude-haiku-4-5:
+      input_price_per_1m_usd: 1.0
+      output_price_per_1m_usd: 5.0
+      cached_input_price_per_1m_usd: null
+      reasoning_price_per_1m_usd: null
+      source: "https://docs.anthropic.com/en/docs/about-claude/models/overview"
 
   ollama:
-    llama3.1:8b:
+    "llama3.1:8b":
       input_price_per_1m_usd: 0.0
       output_price_per_1m_usd: 0.0
       cached_input_price_per_1m_usd: 0.0
       reasoning_price_per_1m_usd: 0.0
+      source: "local_ollama"
+
+    llama3.2:
+      input_price_per_1m_usd: 0.0
+      output_price_per_1m_usd: 0.0
+      cached_input_price_per_1m_usd: 0.0
+      reasoning_price_per_1m_usd: 0.0
+      source: "local_ollama"
+
+    mistral:
+      input_price_per_1m_usd: 0.0
+      output_price_per_1m_usd: 0.0
+      cached_input_price_per_1m_usd: 0.0
+      reasoning_price_per_1m_usd: 0.0
+      source: "local_ollama"
+
+    qwen2.5:
+      input_price_per_1m_usd: 0.0
+      output_price_per_1m_usd: 0.0
+      cached_input_price_per_1m_usd: 0.0
+      reasoning_price_per_1m_usd: 0.0
+      source: "local_ollama"
 
   manual:
     manual:
@@ -47,3 +115,4 @@ pricing:
       output_price_per_1m_usd: null
       cached_input_price_per_1m_usd: null
       reasoning_price_per_1m_usd: null
+      source: "manual_debug"

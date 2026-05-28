@@ -1,49 +1,178 @@
-# Model configuration for the LLM database design benchmark.
-# Model names can be updated according to API availability and the local Ollama installation.
-# Keep enabled=false until the corresponding provider is configured.
+# Model configuration for the LLM Database Design Benchmark.
+#
+# This file defines candidate models for conceptual-to-logical database design.
+# Keep paid/API models disabled until provider settings and API keys are configured.
+# Keep Ollama models disabled until `ollama list` confirms they exist on the server.
 
 models:
-  openai_main:
+  # ---------------------------------------------------------------------------
+  # OpenAI models
+  # ---------------------------------------------------------------------------
+
+  openai_gpt_5_5:
     enabled: false
     provider: openai
-    model: "gpt-4.1"
+    model: "gpt-5.5"
+    role: "commercial_strong"
+    description: "OpenAI flagship model for complex reasoning and coding."
     temperature: 0.0
     max_tokens: 8192
 
-  openai_fast:
+  openai_gpt_5_4:
     enabled: false
     provider: openai
-    model: "gpt-4.1-mini"
+    model: "gpt-5.4"
+    role: "commercial_balanced"
+    description: "OpenAI balanced model for professional work at lower cost than gpt-5.5."
     temperature: 0.0
     max_tokens: 8192
 
-  gemini_main:
+  openai_gpt_5_4_mini:
+    enabled: false
+    provider: openai
+    model: "gpt-5.4-mini"
+    role: "commercial_efficient"
+    description: "OpenAI efficient model for lower-latency and lower-cost workloads."
+    temperature: 0.0
+    max_tokens: 8192
+
+  # ---------------------------------------------------------------------------
+  # Gemini models
+  # ---------------------------------------------------------------------------
+
+  gemini_3_5_flash:
     enabled: false
     provider: gemini
     model: "gemini-3.5-flash"
+    role: "commercial_efficient"
+    description: "Gemini stable Flash model for agentic/coding tasks and sustained frontier performance."
     temperature: 0.0
     max_tokens: 8192
     response_mime_type: "application/json"
 
-  claude_main:
+  gemini_2_5_pro:
+    enabled: false
+    provider: gemini
+    model: "gemini-2.5-pro"
+    role: "commercial_strong"
+    description: "Gemini Pro model for complex tasks with reasoning and coding capabilities."
+    temperature: 0.0
+    max_tokens: 8192
+    response_mime_type: "application/json"
+
+  gemini_2_5_flash:
+    enabled: false
+    provider: gemini
+    model: "gemini-2.5-flash"
+    role: "commercial_efficient"
+    description: "Gemini Flash model for low-latency and high-volume tasks."
+    temperature: 0.0
+    max_tokens: 8192
+    response_mime_type: "application/json"
+
+  gemini_2_5_flash_lite:
+    enabled: false
+    provider: gemini
+    model: "gemini-2.5-flash-lite"
+    role: "commercial_low_cost"
+    description: "Gemini lightweight model for faster and more budget-friendly workloads."
+    temperature: 0.0
+    max_tokens: 8192
+    response_mime_type: "application/json"
+
+  # ---------------------------------------------------------------------------
+  # Anthropic / Claude models
+  # ---------------------------------------------------------------------------
+
+  claude_opus_4_7:
     enabled: false
     provider: anthropic
-    model: "claude-sonnet"
+    model: "claude-opus-4-7"
+    role: "commercial_strong"
+    description: "Claude strongest generally available model for complex reasoning and agentic coding."
     temperature: 0.0
     max_tokens: 8192
 
-  ollama_local_main:
+  claude_sonnet_4_6:
+    enabled: false
+    provider: anthropic
+    model: "claude-sonnet-4-6"
+    role: "commercial_balanced"
+    description: "Claude balanced model combining speed and intelligence."
+    temperature: 0.0
+    max_tokens: 8192
+
+  claude_haiku_4_5:
+    enabled: false
+    provider: anthropic
+    model: "claude-haiku-4-5"
+    role: "commercial_efficient"
+    description: "Claude fastest model with near-frontier intelligence."
+    temperature: 0.0
+    max_tokens: 8192
+
+  # ---------------------------------------------------------------------------
+  # Ollama local models
+  # ---------------------------------------------------------------------------
+  # These model names must be confirmed with:
+  #
+  #   ollama list
+  #
+  # Keep enabled=false until the project server confirms availability.
+
+  ollama_llama_3_1_8b:
     enabled: false
     provider: ollama
     model: "llama3.1:8b"
+    role: "local_medium"
+    description: "Local Llama model placeholder. Confirm availability with ollama list."
     temperature: 0.0
     max_tokens: 8192
     seed: 42
     format: "json"
 
+  ollama_llama_3_2:
+    enabled: false
+    provider: ollama
+    model: "llama3.2"
+    role: "local_medium"
+    description: "Local Llama model placeholder. Confirm availability with ollama list."
+    temperature: 0.0
+    max_tokens: 8192
+    seed: 42
+    format: "json"
+
+  ollama_mistral:
+    enabled: false
+    provider: ollama
+    model: "mistral"
+    role: "local_medium"
+    description: "Local Mistral model placeholder. Confirm availability with ollama list."
+    temperature: 0.0
+    max_tokens: 8192
+    seed: 42
+    format: "json"
+
+  ollama_qwen:
+    enabled: false
+    provider: ollama
+    model: "qwen2.5"
+    role: "local_structured_generation"
+    description: "Local Qwen model placeholder. Confirm exact installed model name with ollama list."
+    temperature: 0.0
+    max_tokens: 8192
+    seed: 42
+    format: "json"
+
+  # ---------------------------------------------------------------------------
+  # Manual/debug provider
+  # ---------------------------------------------------------------------------
+
   manual_placeholder:
     enabled: true
     provider: manual
     model: "manual"
+    role: "debug"
+    description: "Manual/debug provider for dry-runs and manually pasted outputs."
     temperature: 0.0
     max_tokens: 8192
