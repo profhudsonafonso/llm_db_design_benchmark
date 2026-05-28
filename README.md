@@ -595,6 +595,29 @@ The guide explains how to reproduce the full benchmark pipeline:
 - final analysis tables.
 
 
+## Batch Normalization and Evaluation
+
+The script `scripts/run_evaluation_batch.py` normalizes and evaluates LLM outputs in batch.
+
+It reads:
+
+- `results/llm_runs/`
+
+Then it calls:
+
+- `scripts/normalize_output.py`;
+- `scripts/evaluate_schema.py`.
+
+Outputs are saved under:
+
+- `results/evaluation_batch_runs/<batch_id>/`
+
+It also creates normalization and evaluation folders under:
+
+- `results/normalization_runs/`
+- `results/evaluation_runs/`
+
+
 ## Result Aggregation
 
 The script `scripts/aggregate_results.py` aggregates individual run outputs into analysis-ready tables.

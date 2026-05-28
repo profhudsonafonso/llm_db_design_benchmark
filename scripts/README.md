@@ -531,3 +531,67 @@ The aggregation manifest records:
 - number of evaluation runs;
 - number of generated rows;
 - generated files.
+
+## `run_evaluation_batch.py`
+
+### Goal
+
+Run normalization and evaluation in batch for LLM outputs.
+
+The script reads LLM run manifests from:
+
+`results/llm_runs/`
+
+Then it calls:
+
+1. `scripts/normalize_output.py`
+2. `scripts/evaluate_schema.py`
+
+### Inputs
+
+Default input folder:
+
+- `results/llm_runs/`
+
+Default gold path pattern:
+
+- `datasets/{dataset}/ground_truth/logical_relational_gold.json`
+
+Optional filters:
+
+- `--only-dataset`;
+- `--only-condition`;
+- `--only-model`;
+- `--max-runs`.
+
+### Example
+
+`python scripts/run_evaluation_batch.py --batch-id toy_eval_batch --include-dry-run --only-dataset toy_example --notes "Toy evaluation batch test"`
+
+### Outputs
+
+Outputs are saved under:
+
+`results/evaluation_batch_runs/<batch_id>/`
+
+Expected files:
+
+- `evaluation_batch_manifest.json`;
+- `evaluation_batch_runs.csv`;
+- `logs/*.stdout.txt`;
+- `logs/*.stderr.txt`.
+
+The script also creates normalization runs under:
+
+`results/normalization_runs/<run_id>/`
+
+and evaluation runs under:
+
+`results/evaluation_runs/<run_id>/`.
+
+### Notes
+
+Dry-run outputs are skipped by default.
+
+Use `--include-dry-run` only when a dry-run folder contains a non-empty `response_text.txt`.
+

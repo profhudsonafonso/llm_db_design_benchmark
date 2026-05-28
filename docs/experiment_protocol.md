@@ -709,6 +709,19 @@ This guide describes the sequence from expert ground truth review to final aggre
 It should be used as the main operational guide for rerunning the benchmark.
 
 
+## Batch Normalization and Evaluation
+
+Batch normalization and evaluation are handled by:
+
+- `scripts/run_evaluation_batch.py`
+
+The script reads completed LLM runs, normalizes the response text, and evaluates the normalized schema against the dataset gold standard.
+
+Batch outputs are saved under:
+
+- `results/evaluation_batch_runs/<batch_id>/`
+
+
 ## Result Aggregation
 
 Result aggregation is handled by:

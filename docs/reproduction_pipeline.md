@@ -274,6 +274,33 @@ Main metrics:
 - `valid_mapping_accuracy`
 - `invalid_mapping_rate`
 
+## Batch Normalization and Evaluation
+
+After LLM execution, outputs can be normalized and evaluated in batch.
+
+Command:
+
+- `python scripts/run_evaluation_batch.py --batch-id final_eval_batch --notes "Final normalization and evaluation batch"`
+
+The script reads LLM run manifests from:
+
+- `results/llm_runs/`
+
+It creates normalization outputs under:
+
+- `results/normalization_runs/`
+
+It creates evaluation outputs under:
+
+- `results/evaluation_runs/`
+
+It also saves a batch report under:
+
+- `results/evaluation_batch_runs/<batch_id>/`
+
+Dry-run outputs are skipped by default.
+
+
 ## 11. Aggregate Results
 
 After LLM runs, normalization, and evaluation, aggregate all results.
