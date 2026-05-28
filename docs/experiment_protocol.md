@@ -698,6 +698,27 @@ Each experiment must record:
 
 API keys and private configuration files must not be committed to the repository.
 
+## Final Execution Checklist
+
+The final operational checklist is documented in:
+
+- `docs/final_execution_checklist.md`
+
+This checklist should be used before running the final experiments on the real datasets.
+
+It covers:
+
+- ground truth approval;
+- prompt input generation;
+- model and provider configuration;
+- dry-run checks;
+- real model execution;
+- batch normalization and evaluation;
+- aggregation;
+- C4 repair;
+- final analysis preparation.
+
+
 ## Reproduction Guide
 
 The full reproduction pipeline is documented in:

@@ -614,6 +614,27 @@ Default outputs are saved in:
 The script is documented in `scripts/README.md`.
 
 
+## Final Execution Checklist
+
+A final operational checklist is available at:
+
+- `docs/final_execution_checklist.md`
+
+It should be used when the expert ground truth files are available and the real benchmark execution is ready.
+
+The checklist covers:
+
+- ground truth approval;
+- prompt input generation;
+- model/provider configuration;
+- dry-run validation;
+- real LLM execution;
+- batch normalization and evaluation;
+- aggregation;
+- C4 repair;
+- final analysis preparation.
+
+
 ## Reproduction Pipeline
 
 A step-by-step reproduction guide is available at:
