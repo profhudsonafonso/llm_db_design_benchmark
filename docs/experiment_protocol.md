@@ -275,6 +275,43 @@ The response text is also published under:
 when a provider returns text.
 
 
+## Model Selection and Cost Tracking
+
+The model selection strategy is documented in:
+
+- `docs/model_selection_plan.md`
+
+The benchmark compares representative models across commercial and local execution scenarios.
+
+The model groups include:
+
+- strong commercial models;
+- efficient commercial models;
+- local Ollama models;
+- manual/debug provider.
+
+The benchmark records cost-related metadata for each run.
+
+For remote APIs, the benchmark records:
+
+- input tokens;
+- output tokens;
+- total tokens;
+- latency;
+- estimated financial cost, when token usage and pricing are available.
+
+For local Ollama models, the benchmark records:
+
+- total duration;
+- prompt evaluation duration;
+- generation duration;
+- prompt token count;
+- generated token count;
+- tokens per second.
+
+Additional CPU/GPU/RAM/energy monitoring may be added later if the project server allows it.
+
+
 ## 10. Models
 
 The benchmark can evaluate different LLMs, including commercial APIs and local text-only models.

@@ -348,6 +348,29 @@ The benchmark currently considers three prompt types.
 | Prompt 2 | Schema extraction with cardinality mapping rules |
 | Prompt 3 | Schema extraction with cardinality rules and self-check validation |
 
+## Model Selection and Cost Tracking
+
+The model selection strategy is documented in:
+
+- `docs/model_selection_plan.md`
+
+The benchmark is designed to compare:
+
+- strong commercial models;
+- efficient commercial models;
+- local Ollama models;
+- manual/debug outputs.
+
+The benchmark also records execution cost proxies, including:
+
+- input tokens;
+- output tokens;
+- total tokens;
+- latency;
+- estimated API cost when pricing and usage metadata are available;
+- local runtime metrics for Ollama when available.
+
+
 ## LLM Execution
 
 The script `scripts/run_llm_experiments.py` runs one LLM experiment by combining:
